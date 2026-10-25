@@ -1,0 +1,7 @@
+{
+  "description": "A solid isometric block that lifts on hover and presses flush into the surface when clicked.",
+  "files": [{ "path": "button.tsx", "target": "@ui/isometric/button.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active", "disabled", "loading"]
+}

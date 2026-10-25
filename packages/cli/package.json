@@ -1,0 +1,26 @@
+{
+  "name": "bahvo",
+  "version": "0.0.0",
+  "description": "Add bahvo UI components to your project.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "bin": {
+    "bahvo": "./dist/index.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@bahvo/config": "workspace:*",
+    "@types/node": "26.6.5",
+    "tsdown": "0.23.2"
+  }
+}

@@ -1,0 +1,13 @@
+/* Preview shell only. Each item's own stylesheet brings preflight, tokens and utilities. */
+.bahvo-stage {
+  box-sizing: border-box;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 48px 32px;
+  background: var(--stage-light);
+}
+
+.dark .bahvo-stage {
+  background: var(--stage-dark);
+}

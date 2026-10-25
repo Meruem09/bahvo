@@ -1,0 +1,7 @@
+{
+  "extends": "@bahvo/config/tsconfig/react-library.json",
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": ["src", "scripts", "styles"]
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "ui": "stream",
+  "globalEnv": ["BAHVO_PUBLIC_URL"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+    },
+    "@bahvo/registry#build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        "src/generated/**",
+        "$TURBO_ROOT$/apps/web/public/r/**",
+        "$TURBO_ROOT$/apps/web/public/css/**"
+      ]
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
+    "@bahvo/registry#typecheck": {
+      "dependsOn": ["build"]
+    },
+    "thumbs": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "budgets": {
+      "dependsOn": ["build"],
+      "cache": false
+    }
+  }
+}

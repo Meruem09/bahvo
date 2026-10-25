@@ -1,0 +1,4 @@
+{
+  "extends": "@bahvo/config/tsconfig/react-library.json",
+  "include": ["src"]
+}

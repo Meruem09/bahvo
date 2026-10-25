@@ -1,0 +1,20 @@
+{
+  "slug": "isometric",
+  "name": "Isometric",
+  "tagline": "Solid blocks at 30°, lit from the top-left, that press into the page.",
+  "description": "Isometric UI treats every interactive surface as a physical block seen from a 30° axonometric angle. Depth is built from hard, unblurred extrusions that fall down and to the right, a single light source keeps faces consistent, and pressing an element pushes it flush into the surface. Text stays flat and axis-aligned so it is always readable.",
+  "tags": ["3d", "playful", "bold", "tactile"],
+  "accent": "#ffcb47",
+  "status": "draft",
+  "fonts": [
+    {
+      "family": "Space Grotesk",
+      "variable": "--font-space-grotesk",
+      "weights": [500, 600, 700]
+    }
+  ],
+  "stage": {
+    "light": "repeating-linear-gradient(30deg, var(--iso-grid) 0 1px, transparent 1px 28px), repeating-linear-gradient(150deg, var(--iso-grid) 0 1px, transparent 1px 28px), var(--iso-stage)",
+    "dark": "repeating-linear-gradient(30deg, var(--iso-grid) 0 1px, transparent 1px 28px), repeating-linear-gradient(150deg, var(--iso-grid) 0 1px, transparent 1px 28px), var(--iso-stage)"
+  }
+}

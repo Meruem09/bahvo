@@ -1,0 +1,44 @@
+{
+  "slug": "button",
+  "name": "Button",
+  "category": "actions",
+  "description": "Triggers an action or event, such as submitting a form or opening a dialog.",
+  "anatomy": ["root", "icon (optional)", "label", "spinner (while loading)"],
+  "props": [
+    {
+      "name": "variant",
+      "type": "\"primary\" | \"secondary\" | \"ghost\"",
+      "default": "\"primary\"",
+      "description": "Visual emphasis. Use one primary button per view."
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "default": "\"md\"",
+      "description": "Height, padding and type size."
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "default": "false",
+      "description": "Shows a spinner, disables the button and sets aria-busy."
+    },
+    {
+      "name": "icon",
+      "type": "ReactNode",
+      "description": "Optional leading icon. Hidden from assistive tech; the label carries meaning."
+    },
+    {
+      "name": "...props",
+      "type": "ButtonHTMLAttributes<HTMLButtonElement>",
+      "description": "All native button attributes, including disabled, type and onClick."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible", "active", "disabled", "loading"],
+  "a11y": [
+    "Renders a native <button>; defaults to type=\"button\" so it never submits a form by accident.",
+    "Keyboard focus shows a visible outline with at least 3:1 contrast against the stage.",
+    "While loading the label stays in the DOM and aria-busy=\"true\" is set.",
+    "Label text meets WCAG AA contrast (4.5:1) against its face color in light and dark themes."
+  ]
+}

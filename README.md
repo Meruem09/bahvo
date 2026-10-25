@@ -10,7 +10,26 @@ bahvo is a community-built library of UI design styles. Pick a style (Isometric,
 
 bahvo will be open source.
 
-> **Status:** pre-V1, being planned and scaffolded. Nothing below is shipped yet.
+> **Status:** pre-V1. Phase 0 (the walking skeleton) works end to end with one component, the Isometric Button. Everything else below is the plan. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how it's built.
+
+## Getting started
+
+Requires Node 24+ and pnpm 10+.
+
+```bash
+pnpm install
+pnpm dev          # registry build + watcher, Next.js on http://localhost:3000
+```
+
+| Command                     | What it does                                                                                    |
+| --------------------------- | ----------------------------------------------------------------------------------------------- |
+| `pnpm build`                | Registry build, CLI build, production site build                                                |
+| `pnpm thumbs`               | Render thumbnails (needs `pnpm --filter @bahvo/registry exec playwright install chromium` once) |
+| `pnpm budgets`              | Check JS/CSS budgets and style isolation against the production build                           |
+| `pnpm typecheck`            | TypeScript across all packages                                                                  |
+| `pnpm lint` / `pnpm format` | Biome                                                                                           |
+
+To add a component, create `packages/registry/styles/<style>/components/<name>/` with `<name>.tsx`, `demo.tsx` and `meta.json`, plus a contract in `packages/registry/contracts/<name>.json`. The registry build validates it and generates everything else.
 
 ---
 
@@ -25,9 +44,9 @@ Every `Button` has the same API in every style, so switching from Minimalist to 
 
 ### V1 scope
 
-| | |
-|---|---|
-| **Styles (12)** | Minimalist, Glassmorphism, Neumorphism, Neubrutalism, Pixel/8-bit, Isometric, Claymorphism, Skeuomorphic, Retro OS, Y2K/Aqua, Terminal/Cyberpunk, Floral/Organic |
+|                     |                                                                                                                                                                                                                                                                            |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Styles (12)**     | Minimalist, Glassmorphism, Neumorphism, Neubrutalism, Pixel/8-bit, Isometric, Claymorphism, Skeuomorphic, Retro OS, Y2K/Aqua, Terminal/Cyberpunk, Floral/Organic                                                                                                           |
 | **Components (30)** | Button, IconButton, Badge, Avatar, Input, Textarea, Select, Checkbox, Radio, Switch, Slider, Card, StatCard, PricingCard, Tabs, Accordion, Dialog, Tooltip, Dropdown, Toast, Alert, Progress, Navbar, Sidebar, Breadcrumbs, Pagination, Table, EmptyState, LoginForm, Hero |
 
 That's 360 component implementations and 12 agent skills. Every one of them must work at launch.
