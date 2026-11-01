@@ -11,3 +11,10 @@
 .dark .bahvo-stage {
   background: var(--stage-dark);
 }
+
+/* Illustrations scale to the frame. */
+[data-bahvo-content] > svg {
+  display: block;
+  width: min(560px, 82vw);
+  height: auto;
+}

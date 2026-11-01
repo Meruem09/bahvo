@@ -1,0 +1,10 @@
+{
+  "description": "Translucent layers stacked on a base: a platform, a stack or an architecture.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/isometric/layers.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

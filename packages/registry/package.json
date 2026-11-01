@@ -11,6 +11,7 @@
     "build": "tsx scripts/build.ts",
     "dev": "tsx scripts/watch.ts",
     "thumbs": "tsx scripts/thumbs.ts",
+    "sheet": "tsx scripts/sheet.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

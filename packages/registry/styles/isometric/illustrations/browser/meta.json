@@ -1,0 +1,10 @@
+{
+  "description": "A floating browser window with page content and a code chip.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/isometric/browser.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

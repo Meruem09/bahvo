@@ -1,17 +1,26 @@
 # bahvo architecture
 
-This is how bahvo is built so it stays fast with tens of thousands of components. Every rule here is enforced by the build, CI, or a check in the code, not just written down.
+This is how bahvo is built so it stays fast with tens of thousands of components and illustrations. Every rule here is enforced by the build, CI, or a check in the code, not just written down.
+
+## Two kinds of style
+
+| Kind            | Items                                           | Shared catalog                                               | Example       |
+| --------------- | ----------------------------------------------- | ------------------------------------------------------------ | ------------- |
+| `components`    | UI components with one API in every style       | `contracts/<component>.json` (props, states, a11y)           | none yet      |
+| `illustrations` | SVG artwork as React components, light and dark | `subjects/<subject>.json` (what is drawn, where it's useful) | **Isometric** |
+
+An illustration style also ships a **kit** (drawing primitives every item imports, published as a `registry:lib` item, including `<Motion>` for one or two tiny ambient animations whose CSS ships inside the SVG and stops for `prefers-reduced-motion`, `animated={false}` or a `[data-iso-motion="off"]` ancestor, which is how the preview's Motion switch works; thumbnails always render still), a **checker** (`skill/scripts/check.mjs`, run by the registry build and by agents), and an **agent skill** (`skill/SKILL.md` + references). The whole site uses the same palette as Isometric: white and gray, with orange as a touch, in light and dark.
 
 ## The three rules
 
 1. **Static by default.** Pages are prerendered and served from the CDN. The root layout sets `ensureStatic = "navigation"`, so the build fails if anything would render at request time. Dynamic features (accounts, likes, the Arena) come later as Suspense-wrapped pieces inside static pages, with the guard relaxed per segment.
-2. **The site never imports hosted components.** Each preview is its own page, `/preview/[style]/[component]`, shown in a lazy-loaded iframe. The site's JS and CSS stay the same size whether we host 1 component or 50,000.
-3. **Grids show thumbnails, not live components.** Grid pages render prebuilt WebP thumbnails. A live iframe mounts only on a component's detail page. CI fails if a grid page contains an iframe.
+2. **The site never imports hosted items.** Each preview is its own page, `/preview/[style]/[item]`, shown in a lazy-loaded iframe. The site's JS and CSS stay the same size whether we host 1 item or 50,000.
+3. **Grids show thumbnails, not live items.** Grid pages render prebuilt WebP thumbnails, one for light and one for dark, picked by `<picture>`. A live iframe mounts only on an item's detail page, where a Light/Dark toggle switches the preview's theme. CI fails if a grid page contains an iframe.
 
 ```
-Grid page (/styles/isometric)            Detail page (/styles/isometric/button)
+Grid page (/styles/isometric)            Detail page (/styles/isometric/server)
 static HTML + WebP thumbnails            static shell + code highlighted at build time
-lazy <img>, content-visibility           <iframe loading="lazy" src="/preview/isometric/button">
+lazy <img>, content-visibility           <iframe loading="lazy" src="/preview/isometric/server">
                                            └─ loads only: that item's hashed CSS,
                                               the style's font, one demo component
 ```
@@ -44,15 +53,20 @@ apps/web/                 Next.js site
   scripts/check-budgets.ts  CI performance and isolation checks
 packages/registry/        the hosted content and its build
   contracts/<component>.json         shared API, states, a11y per component
-  styles/<style>/style.json          name, tagline, tags, fonts, preview stage
+  subjects/<subject>.json            shared illustration subjects: description, uses, tags
+  styles/<style>/style.json          name, kind, tagline, tags, fonts, kit, preview stage
   styles/<style>/tokens.json         light/dark variables + @theme inline mapping
-  styles/<style>/spec.md             principles, signature moves, anti-patterns
-  styles/<style>/components/<c>/     <c>.tsx, demo.tsx, meta.json
+  styles/<style>/spec.md             what the style is, and where its rules live
+  styles/<style>/components/<c>/     <c>.tsx, demo.tsx, meta.json          (kind: components)
+  styles/<style>/illustrations/<s>/  illustration.tsx, meta.json           (kind: illustrations)
+  styles/<style>/kit/                shared primitives every item imports
+  styles/<style>/skill/              SKILL.md, recipes.md, scripts/check.mjs
   src/schema.ts                      Zod schemas: the single source of truth
   scripts/build.ts                   validate + generate (see below)
-  scripts/thumbs.ts                  render thumbnails from the HTML export
+  scripts/thumbs.ts                  render light and dark thumbnails
+  scripts/sheet.ts                   contact sheet of every illustration, for drawing work
 packages/ui/              the site's own UI primitives (never the hosted styles)
-packages/cli/             `npx bahvo add <style>/<component>`
+packages/cli/             `npx bahvo add <style>/<item>`, `npx bahvo skill add <style>`
 packages/config/          shared tsconfig presets
 ```
 
@@ -60,19 +74,24 @@ packages/config/          shared tsconfig presets
 
 `pnpm --filter @bahvo/registry build` checks every source file against its Zod schema, then writes:
 
-| Output                                   | Used by                                                                                               |
-| ---------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `src/generated/manifest.json`            | Small index (no source code) for grids, filters and, later, search                                    |
-| `src/generated/items/<s>/<c>.json`       | Full detail for one item. Loaded through `itemLoaders` dynamic imports, so each item is its own chunk |
-| `src/generated/previews.ts`              | Dynamic-import map of demo components, so Turbopack splits each into its own chunk                    |
-| `apps/web/public/r/**`                   | shadcn registry items (`registry.json`, `<s>/<c>.json`, `<s>/tokens.json`)                            |
-| `apps/web/public/css/<s>/<c>.<hash>.css` | Per-item stylesheet: preflight + tokens + only that item's utilities                                  |
+| Output                                           | Used by                                                                                                 |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| `src/generated/manifest.json`                    | Small index (no source code) for grids, filters and, later, search                                      |
+| `src/generated/items/<s>/<c>.json`               | Full detail for one item. Loaded through `itemLoaders` dynamic imports, so each item is its own chunk   |
+| `src/generated/previews.ts`                      | Dynamic-import map of demo components, so Turbopack splits each into its own chunk                      |
+| `apps/web/public/r/**`                           | shadcn registry items (`registry.json`, `<s>/<c>.json`, `<s>/tokens.json`)                              |
+| `apps/web/public/css/<s>/<c>.<hash>.css`         | Per-item stylesheet: preflight + tokens + only that item's utilities                                    |
+| `apps/web/public/r/<s>/kit.json`                 | The style's kit as a `registry:lib` item; every illustration depends on it                              |
+| `apps/web/public/svg/<s>/<c>.<hash>.<theme>.svg` | Illustrations as standalone SVG, with the theme's colors baked in                                       |
+| `apps/web/public/skills/<s>/**`                  | The style's agent skill: SKILL.md, the kit, every item as an example, tokens, the checker, `index.json` |
 
 The per-item stylesheet is one file with three uses: the live preview, the thumbnail, and the "HTML + CSS" copy tab. All three always match.
 
 Every item has a **content hash** covering its source, demo, tokens, style meta, contract, and the pipeline version. CSS and thumbnail file names include it, so they are cached forever (`immutable`), and only changed items get new thumbnails.
 
-The build fails if a component is missing its contract or its demo, if a file listed in `meta.json` doesn't exist, or if an implementation skips a state its contract requires.
+The build fails if an item is missing its contract or subject or its demo, if a file listed in `meta.json` doesn't exist, if a component skips a state its contract requires, or if an illustration breaks its style's checker. The Isometric checker requires kit primitives and `ink.*` token colors only, with no blur, gradients or free rotate/skew transforms, and warns on heavy strokes and on more than 8 accent uses.
+
+Published files import the kit from the user's alias (`@/lib/isometric`). The build rewrites our relative `../../kit/isometric` imports when it writes registry items and skill examples.
 
 ## Scaling path (designed in, no rewrite needed)
 
@@ -80,7 +99,7 @@ The build fails if a component is missing its contract or its demo, if a file li
 | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Up to ~10k items                  | Everything prebuilt with `generateStaticParams` (today)                                                                                                                                                                      |
 | Beyond that                       | Prebuild only popular items. Dynamic routes already render their content inside `<Suspense>`, so unknown params get an instant static shell and the content streams in, then is cached by `'use cache'` + `cacheLife("max")` |
-| Content edits without redeploying | `revalidateTag("item:<s>/<c>")`, `"style:<s>"` or `"component:<c>"`. The tags are already applied                                                                                                                            |
+| Content edits without redeploying | `revalidateTag("item:<s>/<c>")`, `"style:<s>"` or `"subject:<c>"`. The tags are already applied                                                                                                                              |
 | Community submissions             | Swap the loaders in `@bahvo/registry` for a database. Pages only import through `lib/registry.ts`                                                                                                                            |
 | Thumbnails                        | Move `public/thumbs` to R2/Blob behind the same hash-named URLs                                                                                                                                                              |
 | Search                            | Orama index built at build time, downloaded on first search focus. Move to a server search engine past browser limits                                                                                                        |
@@ -102,13 +121,16 @@ Raise a budget deliberately in the same pull request that needs it, never just t
 
 - **Never import CSS in `app/not-found.tsx`.** It sits on the root layout, so its CSS loads on every route, previews included. The styled site 404 is `app/(site)/not-found.tsx`. The budget check caught this.
 - **Measure the iframe's content, not its document.** The preview stage fills the viewport, so the document height just echoes the iframe's own height. The iframe also says hello back when asked, because it can finish loading before the parent hydrates.
-- **Generated CSS ships unhighlighted.** Token-level Shiki markup made it about 12× heavier on every detail page.
+- **Generated CSS and SVG ship unhighlighted.** Token-level Shiki markup made them about 12× heavier on every detail page.
+- **Cache Components rejects an empty `generateStaticParams`.** `/components/[component]` is removed until the first component style exists; add it back with that style.
+- **An SVG `origin` prop clashes with the SVG attribute of the same name.** Illustrations take `IllustrationProps` from the kit, which omits it.
 
 ## Roadmap
 
-0. **Walking skeleton (done):** monorepo, registry schema and build, isolated previews, thumbnails, code tabs, CLI, budgets. Isometric Button runs end to end.
-1. **Registry hardening:** style assertions (`assertions.ts`), visual regression, axe a11y checks in CI.
-2. **Gallery:** filters (nuqs), virtualized grids, Orama search, token swatches on style pages.
-3. **CLI:** `bahvo init`, `bahvo skill add <style> --agent <agent>`, publish to npm.
-4. **Eval harness:** `packages/evals`, sandboxed agent runs, scoring, skill score badges.
-5. **Content:** the 12 V1 styles × 30 components through this pipeline.
+0. **Walking skeleton (done):** monorepo, registry schema and build, isolated previews, thumbnails, code tabs, CLI, budgets.
+1. **Isometric illustrations (done):** illustration kind, drawing kit, 8 subjects in light and dark, checker, agent skill, `bahvo skill add`, white/gray/orange site theme.
+2. **Skill evals:** `packages/evals`. Run agents with and without the Isometric skill on held-out subjects, render the output, score it with the checker plus a vision judge, and show a skill score badge.
+3. **More illustration subjects** (cloud, API, security shield, chart, team, AI chip, workflow) and a second illustration style.
+4. **Registry hardening:** axe a11y checks, visual regression on thumbnails.
+5. **Gallery:** filters (nuqs), virtualized grids, Orama search, token swatches on style pages.
+6. **Component styles:** the first component style, which brings back `/components/[component]`.

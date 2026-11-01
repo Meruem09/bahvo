@@ -1,0 +1,8 @@
+{
+  "slug": "documents",
+  "name": "Documents",
+  "category": "documents",
+  "description": "A stack of pages with one sheet lifted off: records, docs or reports.",
+  "uses": ["Docs and knowledge bases", "Compliance and records features", "Empty states for files"],
+  "tags": ["docs", "files", "records"]
+}

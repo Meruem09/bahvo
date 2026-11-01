@@ -1,0 +1,8 @@
+{
+  "slug": "database",
+  "name": "Database",
+  "category": "data",
+  "description": "Three stacked database tiers with a highlighted top.",
+  "uses": ["Data and storage features", "Backups and sync", "Analytics"],
+  "tags": ["data", "storage", "sql"]
+}

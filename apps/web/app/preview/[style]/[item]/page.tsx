@@ -5,15 +5,15 @@ import { previewFonts } from "@/lib/preview-fonts";
 import { getItem, manifest } from "@/lib/registry";
 
 export function generateStaticParams() {
-  return manifest.items.map((item) => ({ style: item.style, component: item.component }));
+  return manifest.items.map((item) => ({ style: item.style, item: item.slug }));
 }
 
 /**
- * The page rendered inside each preview iframe: one component, its style's
+ * The page rendered inside each preview iframe: one item, its style's
  * hashed stylesheet and font, and nothing from the site shell. Known items are
  * fully prerendered; anything else gets an instant empty shell, then streams.
  */
-export default function PreviewPage({ params }: PageProps<"/preview/[style]/[component]">) {
+export default function PreviewPage({ params }: PageProps<"/preview/[style]/[item]">) {
   return (
     <Suspense>
       <Preview params={params} />
@@ -21,10 +21,10 @@ export default function PreviewPage({ params }: PageProps<"/preview/[style]/[com
   );
 }
 
-async function Preview({ params }: Pick<PageProps<"/preview/[style]/[component]">, "params">) {
-  const { style, component } = await params;
-  const item = await getItem(style, component);
-  const load = previews[`${style}/${component}`];
+async function Preview({ params }: Pick<PageProps<"/preview/[style]/[item]">, "params">) {
+  const { style, item: slug } = await params;
+  const item = await getItem(style, slug);
+  const load = previews[`${style}/${slug}`];
   if (!item || !load) notFound();
   const { default: Demo } = await load();
 

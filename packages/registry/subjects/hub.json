@@ -1,0 +1,8 @@
+{
+  "slug": "hub",
+  "name": "Integration hub",
+  "category": "integrations",
+  "description": "A rounded hub with an emblem and outgoing connections.",
+  "uses": ["Integrations pages", "API and connector features", "Workflow automation"],
+  "tags": ["integration", "api", "connector"]
+}

@@ -1,0 +1,8 @@
+{
+  "slug": "building",
+  "name": "Building",
+  "category": "business",
+  "description": "An office tower on a base plate: an organization or enterprise.",
+  "uses": ["Enterprise plans", "Customer and team pages", "About sections"],
+  "tags": ["enterprise", "company", "office"]
+}

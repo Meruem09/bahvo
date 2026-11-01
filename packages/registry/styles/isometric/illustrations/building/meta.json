@@ -1,0 +1,10 @@
+{
+  "description": "An office tower on a base plate: an organization or enterprise.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/isometric/building.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

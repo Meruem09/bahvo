@@ -10,7 +10,7 @@ bahvo is a community-built library of UI design styles. Pick a style (Isometric,
 
 bahvo will be open source.
 
-> **Status:** pre-V1. Phase 0 (the walking skeleton) works end to end with one component, the Isometric Button. Everything else below is the plan. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how it's built.
+> **Status:** pre-V1. The first style, **Isometric**, is live: 8 line-art illustrations in light and dark, a drawing kit, and an agent skill (`npx bahvo skill add isometric`). See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how it's built.
 
 ## Getting started
 
@@ -29,7 +29,7 @@ pnpm dev          # registry build + watcher, Next.js on http://localhost:3000
 | `pnpm typecheck`            | TypeScript across all packages                                                                  |
 | `pnpm lint` / `pnpm format` | Biome                                                                                           |
 
-To add a component, create `packages/registry/styles/<style>/components/<name>/` with `<name>.tsx`, `demo.tsx` and `meta.json`, plus a contract in `packages/registry/contracts/<name>.json`. The registry build validates it and generates everything else.
+To add an Isometric illustration, create `packages/registry/styles/isometric/illustrations/<name>/` with `illustration.tsx` (built from the kit) and `meta.json`, plus a subject in `packages/registry/subjects/<name>.json`. Run `pnpm --filter @bahvo/registry sheet` to see every illustration in light and dark while you draw. The registry build runs the style checker and generates everything else. Components work the same way, with `components/<name>/` and a contract in `contracts/<name>.json`.
 
 ---
 

@@ -1,0 +1,10 @@
+{
+  "description": "A phone lying flat with an app screen and a floating notification.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/isometric/phone.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

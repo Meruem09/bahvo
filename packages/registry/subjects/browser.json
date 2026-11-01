@@ -1,0 +1,8 @@
+{
+  "slug": "browser",
+  "name": "Browser window",
+  "category": "devices",
+  "description": "A floating browser window with page content and a code chip.",
+  "uses": ["Web app and front-end features", "Website builders", "Landing pages"],
+  "tags": ["web", "frontend", "app"]
+}

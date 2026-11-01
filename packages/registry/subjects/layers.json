@@ -1,0 +1,8 @@
+{
+  "slug": "layers",
+  "name": "Stacked layers",
+  "category": "abstract",
+  "description": "Translucent layers stacked on a base: a platform, a stack or an architecture.",
+  "uses": ["Platform overviews", "Architecture sections", "Hero illustrations"],
+  "tags": ["stack", "platform", "architecture"]
+}

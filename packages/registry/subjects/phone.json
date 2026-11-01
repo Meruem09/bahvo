@@ -1,0 +1,8 @@
+{
+  "slug": "phone",
+  "name": "Phone",
+  "category": "devices",
+  "description": "A phone lying flat with an app screen and a floating notification.",
+  "uses": ["Mobile app features", "Notifications", "App store sections"],
+  "tags": ["mobile", "app", "notification"]
+}

@@ -2,12 +2,14 @@
  * Registry build: validates source content and generates everything the site,
  * CLI and agents consume.
  *
- *   src/generated/manifest.json          small index (grids, filters, search)
- *   src/generated/items/<s>/<c>.json     full detail per item (one chunk each)
- *   src/generated/loaders.ts             lazy loaders for item detail
- *   src/generated/previews.ts            lazy loaders for preview demos
- *   apps/web/public/r/**                 shadcn-compatible registry JSON
- *   apps/web/public/css/<s>/<c>.<h>.css  per-item stylesheet (preview, thumbs, HTML export)
+ *   src/generated/manifest.json            small index (grids, filters, search)
+ *   src/generated/items/<s>/<slug>.json    full detail per item (one chunk each)
+ *   src/generated/loaders.ts               lazy loaders for item detail
+ *   src/generated/previews.ts              lazy loaders for preview demos
+ *   apps/web/public/r/**                   shadcn-compatible registry JSON
+ *   apps/web/public/css/<s>/<slug>.<h>.css per-item stylesheet (preview, thumbs, HTML export)
+ *   apps/web/public/svg/<s>/<slug>.<h>.<theme>.svg  standalone illustrations
+ *   apps/web/public/skills/<s>/**          the style's agent skill bundle
  */
 import { createHash } from "node:crypto";
 import { access, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
@@ -29,17 +31,19 @@ import {
   type ItemDetail,
   implementationMetaSchema,
   type Manifest,
-  type ManifestComponent,
   type ManifestItem,
   type ManifestStyle,
+  type ManifestSubject,
   type StyleMeta,
+  type Subject,
   styleMetaSchema,
+  subjectSchema,
   type Tokens,
   tokensSchema,
 } from "../src/schema";
 
 /** Bump to invalidate every item hash (thumbnails, CSS) after a pipeline change. */
-const PIPELINE_VERSION = "1";
+const PIPELINE_VERSION = "2";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const generatedDir = path.join(root, "src/generated");
@@ -47,6 +51,10 @@ const webPublic = path.resolve(root, "../../apps/web/public");
 const publicUrl = (process.env.BAHVO_PUBLIC_URL ?? "http://localhost:3000").replace(/\/$/, "");
 
 const errors: string[] = [];
+const warnings: string[] = [];
+
+type Issue = { level: "error" | "warning"; rule: string; message: string; line: number };
+type Checker = (source: string) => Issue[];
 
 async function exists(file: string) {
   return access(file).then(
@@ -75,6 +83,11 @@ async function dirs(parent: string) {
     .filter((e) => e.isDirectory())
     .map((e) => e.name)
     .sort();
+}
+
+async function jsonFiles(dir: string) {
+  if (!(await exists(dir))) return [];
+  return (await readdir(dir)).filter((f) => f.endsWith(".json")).sort();
 }
 
 async function write(file: string, contents: string) {
@@ -115,42 +128,78 @@ async function compileCss(dir: string, tokens: string) {
   return { pretty, minified: code.toString() };
 }
 
+/** Replaces `var(--name, fallback)` with the theme's token value, for standalone SVG. */
+function bakeColors(svg: string, vars: Record<string, string>) {
+  return svg.replace(
+    /var\((--[a-z0-9-]+)(?:,\s*([^)]*))?\)/g,
+    (_, name: string, fallback?: string) => {
+      return vars[name] ?? fallback?.trim() ?? "currentColor";
+    },
+  );
+}
+
+/** Published files import the kit from the user's lib alias, not our relative path. */
+function rewriteKitImports(code: string, kit: StyleMeta["kit"]) {
+  let out = code;
+  for (const file of kit) {
+    const base = path.basename(file.path).replace(/\.tsx?$/, "");
+    const lib = file.target.replace(/^@lib\//, "@/lib/").replace(/\.tsx?$/, "");
+    out = out.replace(new RegExp(`(["'])(?:\\.\\./)+kit/${base}\\1`, "g"), `"${lib}"`);
+  }
+  return out;
+}
+
 const escapeHtml = (text: string) =>
   text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
 const stripDashes = (vars: Record<string, string>) =>
   Object.fromEntries(Object.entries(vars).map(([k, v]) => [k.replace(/^--/, ""), v]));
 
+const skillName = (skillMd: string) => /^name:\s*(.+)$/m.exec(skillMd)?.[1]?.trim();
+
 async function build() {
   const started = performance.now();
 
-  // ---- Contracts ----------------------------------------------------------
+  // ---- Shared catalogs ----------------------------------------------------
   const contracts = new Map<string, Contract>();
-  const contractDir = path.join(root, "contracts");
-  for (const file of (await readdir(contractDir)).filter((f) => f.endsWith(".json")).sort()) {
-    const contract = await readJson(path.join(contractDir, file), contractSchema);
+  for (const file of await jsonFiles(path.join(root, "contracts"))) {
+    const contract = await readJson(path.join(root, "contracts", file), contractSchema);
     if (!contract) continue;
     if (`${contract.slug}.json` !== file) {
       errors.push(`contracts/${file}: slug "${contract.slug}" must match the file name`);
     }
     contracts.set(contract.slug, contract);
   }
+  const subjects = new Map<string, Subject>();
+  for (const file of await jsonFiles(path.join(root, "subjects"))) {
+    const subject = await readJson(path.join(root, "subjects", file), subjectSchema);
+    if (!subject) continue;
+    if (`${subject.slug}.json` !== file) {
+      errors.push(`subjects/${file}: slug "${subject.slug}" must match the file name`);
+    }
+    subjects.set(subject.slug, subject);
+  }
 
-  // ---- Styles and implementations -----------------------------------------
+  // ---- Styles and their items ---------------------------------------------
+  type Item = {
+    slug: string;
+    dir: string;
+    meta: ImplementationMeta;
+    contract?: Contract;
+    subject?: Subject;
+    files: { name: string; target: string; code: string }[];
+    demoPath: string;
+    demoCode: string;
+  };
   type Source = {
     style: StyleMeta;
+    dir: string;
     tokens: Tokens;
     tokensJson: string;
     styleJson: string;
-    components: {
-      slug: string;
-      dir: string;
-      meta: ImplementationMeta;
-      contract: Contract;
-      files: { name: string; target: string; code: string }[];
-      demoPath: string;
-      demoCode: string;
-    }[];
+    kitFiles: { name: string; target: string; code: string }[];
+    skill?: { md: string; name: string };
+    items: Item[];
   };
   const sources: Source[] = [];
 
@@ -165,28 +214,70 @@ async function build() {
       );
     }
 
+    const kitFiles = [];
+    for (const file of style.kit) {
+      const kitPath = path.join(styleDir, file.path);
+      if (!(await exists(kitPath))) {
+        errors.push(`styles/${styleSlug}/style.json: kit file ${file.path} does not exist`);
+        continue;
+      }
+      kitFiles.push({
+        name: path.basename(file.path),
+        target: file.target,
+        code: await readFile(kitPath, "utf8"),
+      });
+    }
+
+    const checkerPath = path.join(styleDir, "skill/scripts/check.mjs");
+    const checker = (await exists(checkerPath))
+      ? ((await import(pathToFileURL(checkerPath).href)) as { checkIllustration: Checker })
+          .checkIllustration
+      : undefined;
+
+    const skillPath = path.join(styleDir, "skill/SKILL.md");
+    let skill: Source["skill"];
+    if (await exists(skillPath)) {
+      const md = await readFile(skillPath, "utf8");
+      const name = skillName(md);
+      if (name) skill = { md, name };
+      else errors.push(`styles/${styleSlug}/skill/SKILL.md: frontmatter needs a name`);
+    }
+
     const source: Source = {
       style,
+      dir: styleDir,
       tokens,
       tokensJson: await readFile(path.join(styleDir, "tokens.json"), "utf8"),
       styleJson: await readFile(path.join(styleDir, "style.json"), "utf8"),
-      components: [],
+      kitFiles,
+      skill,
+      items: [],
     };
 
-    for (const componentSlug of await dirs(path.join(styleDir, "components"))) {
-      const dir = path.join(styleDir, "components", componentSlug);
-      const where = `styles/${styleSlug}/components/${componentSlug}`;
+    for (const slug of await dirs(path.join(styleDir, style.kind))) {
+      const dir = path.join(styleDir, style.kind, slug);
+      const where = `styles/${styleSlug}/${style.kind}/${slug}`;
       const meta = await readJson(path.join(dir, "meta.json"), implementationMetaSchema);
       if (!meta) continue;
 
-      const contract = contracts.get(componentSlug);
-      if (!contract) {
-        errors.push(`${where}: no contract at contracts/${componentSlug}.json`);
-        continue;
-      }
-      const missing = contract.states.filter((state) => !meta.states.includes(state));
-      if (missing.length > 0) {
-        errors.push(`${where}: missing required states from the contract: ${missing.join(", ")}`);
+      let contract: Contract | undefined;
+      let subject: Subject | undefined;
+      if (style.kind === "components") {
+        contract = contracts.get(slug);
+        if (!contract) {
+          errors.push(`${where}: no contract at contracts/${slug}.json`);
+          continue;
+        }
+        const missing = contract.states.filter((state) => !meta.states.includes(state));
+        if (missing.length > 0) {
+          errors.push(`${where}: missing required states from the contract: ${missing.join(", ")}`);
+        }
+      } else {
+        subject = subjects.get(slug);
+        if (!subject) {
+          errors.push(`${where}: no subject at subjects/${slug}.json`);
+          continue;
+        }
       }
 
       const files = [];
@@ -196,11 +287,12 @@ async function build() {
           errors.push(`${where}: file ${file.path} listed in meta.json does not exist`);
           continue;
         }
-        files.push({
-          name: file.path,
-          target: file.target,
-          code: await readFile(filePath, "utf8"),
-        });
+        const code = await readFile(filePath, "utf8");
+        for (const issue of checker?.(code) ?? []) {
+          const line = `${where}/${file.path}:${issue.line} [${issue.rule}] ${issue.message}`;
+          (issue.level === "error" ? errors : warnings).push(line);
+        }
+        files.push({ name: file.path, target: file.target, code });
       }
 
       const demoPath = path.join(dir, meta.demo);
@@ -209,11 +301,12 @@ async function build() {
         continue;
       }
 
-      source.components.push({
-        slug: componentSlug,
+      source.items.push({
+        slug,
         dir,
         meta,
         contract,
+        subject,
         files,
         demoPath,
         demoCode: await readFile(demoPath, "utf8"),
@@ -226,21 +319,22 @@ async function build() {
 
   // ---- Generate -----------------------------------------------------------
   await rm(generatedDir, { recursive: true, force: true });
-  await rm(path.join(webPublic, "r"), { recursive: true, force: true });
-  await rm(path.join(webPublic, "css"), { recursive: true, force: true });
+  for (const dir of ["r", "css", "svg", "skills"]) {
+    await rm(path.join(webPublic, dir), { recursive: true, force: true });
+  }
 
   const highlighter = await createHighlighter({
     themes: ["github-light", "github-dark"],
-    langs: ["tsx", "html", "css"],
+    langs: ["tsx", "html"],
   });
+  // Generated CSS and SVG are long, and token-level highlighting would make
+  // them ~12x heavier on every detail page, so they ship as plain text.
   const codeFile = (name: string, language: CodeFile["language"], code: string): CodeFile => ({
     name,
     language,
     code,
-    // Generated CSS (preflight + utilities) is long, and token-level highlighting
-    // would make it ~12x heavier on every detail page, so it ships as plain text.
     html:
-      language === "css"
+      language === "css" || language === "svg"
         ? `<pre class="shiki"><code>${escapeHtml(code)}</code></pre>`
         : highlighter.codeToHtml(code, {
             lang: language,
@@ -252,24 +346,24 @@ async function build() {
   const manifest: Manifest = {
     generatedAt: new Date().toISOString(),
     styles: [],
-    components: [],
+    subjects: [],
     items: [],
   };
-  const componentIndex = new Map<string, ManifestComponent>();
+  const subjectIndex = new Map<string, ManifestSubject>();
   const registryItems: object[] = [];
   const loaderLines: string[] = [];
   const previewLines: string[] = [];
+  const schemaUrl = "https://ui.shadcn.com/schema/registry-item.json";
 
-  for (const { style, tokens, tokensJson, styleJson, components } of sources) {
+  for (const source of sources) {
+    const { style, tokens, tokensJson, styleJson, kitFiles, items } = source;
     const css = tokensCss(tokens);
-    const manifestStyle: ManifestStyle = {
-      ...style,
-      items: [],
-      tokensUrl: `${publicUrl}/r/${style.slug}/tokens.json`,
-    };
+    const tokensUrl = `${publicUrl}/r/${style.slug}/tokens.json`;
+    const kitUrl = `${publicUrl}/r/${style.slug}/kit.json`;
+    const manifestStyle: ManifestStyle = { ...style, items: [], tokensUrl };
 
     const tokensItem = {
-      $schema: "https://ui.shadcn.com/schema/registry-item.json",
+      $schema: schemaUrl,
       name: `${style.slug}-tokens`,
       type: "registry:theme",
       title: `${style.name} tokens`,
@@ -286,47 +380,79 @@ async function build() {
     );
     registryItems.push({ ...tokensItem, cssVars: undefined });
 
-    for (const component of components) {
-      const id = `${style.slug}/${component.slug}`;
+    if (kitFiles.length > 0) {
+      const kitItem = {
+        $schema: schemaUrl,
+        name: `${style.slug}-kit`,
+        type: "registry:lib",
+        title: `${style.name} kit`,
+        description: `Drawing primitives shared by every ${style.name} item.`,
+        files: kitFiles.map((f) => ({
+          path: `registry/${style.slug}/${f.name}`,
+          type: "registry:lib",
+          target: f.target,
+          content: f.code,
+        })),
+      };
+      await write(
+        path.join(webPublic, "r", style.slug, "kit.json"),
+        JSON.stringify(kitItem, null, 2),
+      );
+      registryItems.push({ ...kitItem, files: kitItem.files.map(({ content: _, ...f }) => f) });
+    }
+
+    const kitHash = kitFiles.map((f) => f.code).join("\0");
+    const isIllustration = style.kind === "illustrations";
+
+    for (const item of items) {
+      const id = `${style.slug}/${item.slug}`;
       const hash = createHash("sha256")
         .update(PIPELINE_VERSION)
         .update(styleJson)
         .update(tokensJson)
-        .update(JSON.stringify(component.contract))
-        .update(JSON.stringify(component.meta))
-        .update(component.demoCode)
-        .update(component.files.map((f) => f.code).join("\0"))
+        .update(kitHash)
+        .update(JSON.stringify(item.contract ?? item.subject))
+        .update(JSON.stringify(item.meta))
+        .update(item.demoCode)
+        .update(item.files.map((f) => f.code).join("\0"))
         .digest("hex")
         .slice(0, 10);
 
-      const { default: Demo } = (await import(pathToFileURL(component.demoPath).href)) as {
+      const { default: Demo } = (await import(pathToFileURL(item.demoPath).href)) as {
         default: ComponentType;
       };
       const markup = await prettier.format(renderToStaticMarkup(createElement(Demo)), {
         parser: "html",
         printWidth: 100,
       });
-      const compiled = await compileCss(component.dir, css);
-
-      const cssUrl = `/css/${style.slug}/${component.slug}.${hash}.css`;
+      const compiled = await compileCss(item.dir, css);
+      const cssUrl = `/css/${id}.${hash}.css`;
       await write(path.join(webPublic, cssUrl), compiled.minified);
 
+      const name = item.contract?.name ?? item.subject?.name ?? item.slug;
+      const category = item.contract?.category ?? item.subject?.category ?? "other";
+      const publishedFiles = item.files.map((f) => ({
+        ...f,
+        code: rewriteKitImports(f.code, style.kit),
+      }));
+
       const registryUrl = `${publicUrl}/r/${id}.json`;
+      const fileType = isIllustration ? "registry:component" : "registry:ui";
       const registryItem = {
-        $schema: "https://ui.shadcn.com/schema/registry-item.json",
-        name: `${style.slug}-${component.slug}`,
-        type: "registry:ui",
-        title: `${style.name} ${component.contract.name}`,
-        description: component.meta.description,
-        dependencies: component.meta.dependencies,
-        registryDependencies: [`${publicUrl}/r/${style.slug}/tokens.json`],
-        files: component.files.map((f) => ({
-          path: `registry/${style.slug}/${f.name}`,
-          type: "registry:ui",
+        $schema: schemaUrl,
+        name: `${style.slug}-${item.slug}`,
+        type: fileType,
+        title: `${style.name} ${name}`,
+        description: item.meta.description,
+        dependencies: item.meta.dependencies,
+        registryDependencies: [tokensUrl, ...(kitFiles.length > 0 ? [kitUrl] : [])],
+        files: publishedFiles.map((f) => ({
+          path: `registry/${style.slug}/${f.name === "illustration.tsx" ? `${item.slug}.tsx` : f.name}`,
+          type: fileType,
           target: f.target,
           content: f.code,
         })),
-        meta: { bahvo: { style: style.slug, component: component.slug, hash } },
+        meta: { bahvo: { kind: style.kind, style: style.slug, slug: item.slug, hash } },
       };
       await write(path.join(webPublic, "r", `${id}.json`), JSON.stringify(registryItem, null, 2));
       registryItems.push({
@@ -334,27 +460,56 @@ async function build() {
         files: registryItem.files.map(({ content: _, ...f }) => f),
       });
 
-      const item: ManifestItem = {
+      let svg: ItemDetail["svg"];
+      if (isIllustration) {
+        const light = bakeColors(markup, tokens.light);
+        const dark = bakeColors(markup, tokens.dark);
+        const lightUrl = `/svg/${id}.${hash}.light.svg`;
+        const darkUrl = `/svg/${id}.${hash}.dark.svg`;
+        await write(path.join(webPublic, lightUrl), light);
+        await write(path.join(webPublic, darkUrl), dark);
+        svg = {
+          light: codeFile(`${item.slug}.light.svg`, "svg", light),
+          dark: codeFile(`${item.slug}.dark.svg`, "svg", dark),
+          lightUrl,
+          darkUrl,
+        };
+      }
+
+      const manifestItem: ManifestItem = {
         id,
+        kind: style.kind,
         style: style.slug,
-        component: component.slug,
-        name: component.contract.name,
-        category: component.contract.category,
-        description: component.meta.description,
+        slug: item.slug,
+        name,
+        category,
+        description: item.meta.description,
         hash,
-        thumb: `/thumbs/${style.slug}/${component.slug}.${hash}.webp`,
+        thumbs: {
+          light: `/thumbs/${id}.${hash}.light.webp`,
+          dark: `/thumbs/${id}.${hash}.dark.webp`,
+        },
       };
       const detail: ItemDetail = {
-        ...item,
+        ...manifestItem,
         styleName: style.name,
-        contract: component.contract,
-        states: component.meta.states,
-        dependencies: component.meta.dependencies,
-        react: component.files.map((f) => codeFile(f.name, "tsx", f.code)),
-        htmlExport: {
-          markup: codeFile("index.html", "html", markup),
-          css: codeFile("styles.css", "css", compiled.pretty),
-        },
+        contract: item.contract,
+        subject: item.subject,
+        states: item.meta.states,
+        dependencies: item.meta.dependencies,
+        react: [
+          ...publishedFiles.map((f) =>
+            codeFile(f.name === "illustration.tsx" ? `${item.slug}.tsx` : f.name, "tsx", f.code),
+          ),
+          ...kitFiles.map((f) => codeFile(f.name, "tsx", f.code)),
+        ],
+        htmlExport: isIllustration
+          ? undefined
+          : {
+              markup: codeFile("index.html", "html", markup),
+              css: codeFile("styles.css", "css", compiled.pretty),
+            },
+        svg,
         cssUrl,
         stage: style.stage,
         registryUrl,
@@ -365,30 +520,36 @@ async function build() {
       };
       await write(path.join(generatedDir, "items", `${id}.json`), JSON.stringify(detail));
 
-      manifest.items.push(item);
+      manifest.items.push(manifestItem);
       manifestStyle.items.push(id);
-      const entry = componentIndex.get(component.slug) ?? {
-        slug: component.slug,
-        name: component.contract.name,
-        category: component.contract.category,
-        description: component.contract.description,
+      const key = `${style.kind}:${item.slug}`;
+      const entry = subjectIndex.get(key) ?? {
+        kind: style.kind,
+        slug: item.slug,
+        name,
+        category,
+        description: item.contract?.description ?? item.subject?.description ?? "",
         styles: [],
       };
       entry.styles.push(style.slug);
-      componentIndex.set(component.slug, entry);
+      subjectIndex.set(key, entry);
 
       loaderLines.push(
         `  "${id}": () => import("./items/${id}.json").then((m) => m.default as unknown as ItemDetail),`,
       );
       const demoImport = path
-        .relative(generatedDir, component.demoPath)
+        .relative(generatedDir, item.demoPath)
         .replaceAll(path.sep, "/")
         .replace(/\.tsx$/, "");
       previewLines.push(`  "${id}": () => import("${demoImport}"),`);
     }
+
+    if (source.skill) {
+      manifestStyle.skill = await writeSkill(source, css);
+    }
     manifest.styles.push(manifestStyle);
   }
-  manifest.components = [...componentIndex.values()].sort((a, b) => a.name.localeCompare(b.name));
+  manifest.subjects = [...subjectIndex.values()].sort((a, b) => a.name.localeCompare(b.name));
 
   highlighter.dispose();
 
@@ -416,11 +577,75 @@ async function build() {
     ),
   );
 
+  for (const warning of warnings) console.warn(`registry: warning ${warning}`);
   const ms = Math.round(performance.now() - started);
   console.log(
     `registry: ${manifest.styles.length} style(s), ${manifest.items.length} item(s) in ${ms}ms`,
   );
   return true;
+}
+
+/**
+ * Writes the style's agent skill as static files plus an index the CLI reads:
+ * SKILL.md, the kit, every published item as an example, tokens and scripts.
+ */
+async function writeSkill(
+  source: {
+    style: StyleMeta;
+    dir: string;
+    kitFiles: { name: string; code: string }[];
+    skill?: { md: string; name: string };
+    items: { slug: string; files: { name: string; code: string }[]; subject?: Subject }[];
+  },
+  tokensCssText: string,
+): Promise<ManifestStyle["skill"]> {
+  const { style, skill } = source;
+  if (!skill) return undefined;
+  const base = path.join(webPublic, "skills", style.slug);
+  const files: Record<string, string> = {
+    "SKILL.md": skill.md,
+    "references/tokens.css": tokensCssText,
+    "scripts/check.mjs": await readFile(path.join(source.dir, "skill/scripts/check.mjs"), "utf8"),
+  };
+  for (const ref of await readdir(path.join(source.dir, "skill")).catch(() => [])) {
+    if (ref.endsWith(".md") && ref !== "SKILL.md") {
+      files[`references/${ref}`] = await readFile(path.join(source.dir, "skill", ref), "utf8");
+    }
+  }
+  for (const kit of source.kitFiles) files[`references/kit/${kit.name}`] = kit.code;
+  for (const item of source.items) {
+    for (const file of item.files) {
+      const name = file.name === "illustration.tsx" ? `${item.slug}.tsx` : file.name;
+      files[`references/examples/${name}`] = rewriteKitImports(file.code, style.kit);
+    }
+  }
+  files["references/catalog.md"] = [
+    `# ${style.name} catalog`,
+    "",
+    "Subjects already drawn. Reuse their composition before inventing a new one.",
+    "",
+    ...source.items.map(
+      (item) =>
+        `- **${item.subject?.name ?? item.slug}** (\`examples/${item.slug}.tsx\`): ${item.subject?.description ?? ""}`,
+    ),
+    "",
+  ].join("\n");
+
+  for (const [file, contents] of Object.entries(files))
+    await write(path.join(base, file), contents);
+  await write(
+    path.join(base, "index.json"),
+    JSON.stringify(
+      { name: skill.name, style: style.slug, files: Object.keys(files).sort() },
+      null,
+      2,
+    ),
+  );
+  return {
+    name: skill.name,
+    url: `${publicUrl}/skills/${style.slug}/index.json`,
+    install: `npx bahvo skill add ${style.slug}`,
+  };
 }
 
 const ok = await build();

@@ -1,0 +1,10 @@
+{
+  "description": "A single server or sandbox unit with status lights.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/isometric/server.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

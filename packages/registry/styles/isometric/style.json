@@ -1,20 +1,16 @@
 {
   "slug": "isometric",
   "name": "Isometric",
-  "tagline": "Solid blocks at 30°, lit from the top-left, that press into the page.",
-  "description": "Isometric UI treats every interactive surface as a physical block seen from a 30° axonometric angle. Depth is built from hard, unblurred extrusions that fall down and to the right, a single light source keeps faces consistent, and pressing an element pushes it flush into the surface. Text stays flat and axis-aligned so it is always readable.",
-  "tags": ["3d", "playful", "bold", "tactile"],
-  "accent": "#ffcb47",
-  "status": "draft",
-  "fonts": [
-    {
-      "family": "Space Grotesk",
-      "variable": "--font-space-grotesk",
-      "weights": [500, 600, 700]
-    }
-  ],
+  "kind": "illustrations",
+  "tagline": "Line-art isometric illustrations in white and gray, with a touch of orange.",
+  "description": "Technical isometric drawings for product sites and docs: thin hairline outlines, white and light-gray faces lit from the top-left, faint construction lines and grids, small mono labels, and orange used only as an accent. Every illustration ships in light and dark, and is built from a small drawing kit that agents can use to draw new ones in the same family.",
+  "tags": ["3d", "technical", "line-art", "minimal"],
+  "accent": "#f76b15",
+  "status": "beta",
+  "fonts": [],
+  "kit": [{ "path": "kit/isometric.tsx", "target": "@lib/isometric.tsx" }],
   "stage": {
-    "light": "repeating-linear-gradient(30deg, var(--iso-grid) 0 1px, transparent 1px 28px), repeating-linear-gradient(150deg, var(--iso-grid) 0 1px, transparent 1px 28px), var(--iso-stage)",
-    "dark": "repeating-linear-gradient(30deg, var(--iso-grid) 0 1px, transparent 1px 28px), repeating-linear-gradient(150deg, var(--iso-grid) 0 1px, transparent 1px 28px), var(--iso-stage)"
+    "light": "var(--iso-stage)",
+    "dark": "var(--iso-stage)"
   }
 }

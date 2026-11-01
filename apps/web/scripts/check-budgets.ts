@@ -26,10 +26,11 @@ const budgets: Budget[] = [
   { path: "/", maxJs: 165 * KB, maxCss: 8 * KB, kind: "grid" },
   { path: "/styles", maxJs: 165 * KB, maxCss: 8 * KB, kind: "grid" },
   { path: "/styles/isometric", maxJs: 165 * KB, maxCss: 8 * KB, kind: "grid" },
+  { path: "/illustrations", maxJs: 165 * KB, maxCss: 8 * KB, kind: "grid" },
+  { path: "/illustrations/server", maxJs: 165 * KB, maxCss: 8 * KB, kind: "grid" },
   { path: "/components", maxJs: 165 * KB, maxCss: 8 * KB, kind: "grid" },
-  { path: "/components/button", maxJs: 165 * KB, maxCss: 8 * KB, kind: "grid" },
-  { path: "/styles/isometric/button", maxJs: 170 * KB, maxCss: 8 * KB, kind: "detail" },
-  { path: "/preview/isometric/button", maxJs: 155 * KB, maxCss: 8 * KB, kind: "preview" },
+  { path: "/styles/isometric/server", maxJs: 170 * KB, maxCss: 8 * KB, kind: "detail" },
+  { path: "/preview/isometric/server", maxJs: 155 * KB, maxCss: 8 * KB, kind: "preview" },
 ];
 
 function startServer(): Promise<ChildProcess> {

@@ -10,15 +10,17 @@ export default function StylesPage() {
       <header className="space-y-2">
         <h1 className="text-3xl font-semibold tracking-tight">Styles</h1>
         <p className="text-muted">
-          Each style comes with the full component set and an agent skill.
+          Each style ships its full set of components or illustrations, its tokens, and an agent
+          skill.
         </p>
       </header>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {manifest.styles.map((style) => (
+        {manifest.styles.map((style, i) => (
           <StyleCard
             key={style.slug}
             style={style}
             cover={manifest.items.find((item) => item.id === style.items[0])}
+            priority={i < 3}
           />
         ))}
       </div>

@@ -1,0 +1,10 @@
+{
+  "description": "A stack of pages with one sheet lifted off: records, docs or reports.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/isometric/documents.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

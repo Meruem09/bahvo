@@ -1,0 +1,10 @@
+{
+  "description": "A rounded hub with an emblem and outgoing connections.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/isometric/hub.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

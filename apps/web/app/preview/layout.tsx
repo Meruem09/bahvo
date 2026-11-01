@@ -5,18 +5,27 @@ import type { ReactNode } from "react";
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 /**
- * Runs before paint inside the iframe: follows the system theme, accepts
- * theme messages from the parent, and reports content height to it.
+ * Runs before paint inside the iframe: follows the system theme and the saved
+ * motion setting, accepts theme and motion messages from the parent, and
+ * reports content height to it.
  */
 const bridge = `(() => {
   const root = document.documentElement;
   const media = matchMedia("(prefers-color-scheme: dark)");
   const set = (theme) => root.classList.toggle("dark", theme === "dark");
   set(media.matches ? "dark" : "light");
+  // Ambient motion follows the site's saved toggle before first paint, then the parent's messages.
+  const motion = (on) => root.setAttribute("data-iso-motion", on ? "on" : "off");
+  try {
+    motion(localStorage.getItem("bahvo:motion") !== "off");
+  } catch {
+    motion(true);
+  }
   media.addEventListener("change", (e) => set(e.matches ? "dark" : "light"));
   let post = () => {};
   addEventListener("message", (e) => {
     if (e.data && e.data.type === "bahvo:theme") set(e.data.theme);
+    if (e.data && e.data.type === "bahvo:motion") motion(e.data.on !== false);
     // The parent may hydrate after this page loaded; it says hello to get the height.
     if (e.data && e.data.type === "bahvo:hello") post();
   });

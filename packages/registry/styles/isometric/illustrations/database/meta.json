@@ -1,0 +1,10 @@
+{
+  "description": "Three stacked database tiers with a highlighted top.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/isometric/database.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

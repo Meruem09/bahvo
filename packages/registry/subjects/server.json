@@ -1,0 +1,8 @@
+{
+  "slug": "server",
+  "name": "Server",
+  "category": "infrastructure",
+  "description": "A single server or sandbox unit with status lights.",
+  "uses": ["Hosting and infrastructure features", "Deploy and sandbox flows", "Status pages"],
+  "tags": ["server", "sandbox", "hosting"]
+}
