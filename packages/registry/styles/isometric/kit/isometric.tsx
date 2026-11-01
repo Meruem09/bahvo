@@ -170,50 +170,101 @@ export function Motion({
 
 /* ---------- Solids ----------------------------------------------------- */
 
-/** A rounded rectangle in the plane z, sampled clockwise as world points. */
-function roundedRect(
-  x: number,
-  y: number,
-  w: number,
-  d: number,
-  r: number,
-  z: number,
-  steps: number,
-) {
-  const radius = Math.min(r, w / 2, d / 2);
-  if (radius <= 0) {
-    return [
-      [x, y, z],
-      [x + w, y, z],
-      [x + w, y + d, z],
-      [x, y + d, z],
-    ] as Vec3[];
-  }
-  const corners: [number, number, number][] = [
-    [x + w - radius, y + radius, -90],
-    [x + w - radius, y + d - radius, 0],
-    [x + radius, y + d - radius, 90],
-    [x + radius, y + radius, 180],
-  ];
-  const pts: Vec3[] = [];
-  for (const [cx, cy, start] of corners) {
-    for (let i = 0; i <= steps; i++) {
-      const a = ((start + (90 * i) / steps) * Math.PI) / 180;
-      pts.push([cx + radius * Math.cos(a), cy + radius * Math.sin(a), z]);
-    }
-  }
-  return pts;
+/**
+ * A rounded rectangle in a horizontal plane, traced as an exact outline.
+ *
+ * A circle in a horizontal plane projects to an axis-aligned ellipse with
+ * radii √2·cos30·r and √2·sin30·r, so every corner is drawn as one SVG
+ * elliptical arc: smooth at any zoom, never a polygon.
+ *
+ * The outline has a perimeter parameter t in [0, 8): even segments are corner
+ * arcs (0 back-right, 2 front-right, 4 front-left, 6 back-left), odd segments
+ * the straight edges between them. Silhouette points sit mid-corner:
+ * t = 0.5 is the rightmost point, 2.5 the front-most, 4.5 the leftmost and
+ * 6.5 the back-most.
+ */
+interface Rect {
+  x: number;
+  y: number;
+  w: number;
+  d: number;
+  r: number;
 }
 
-/** Indices from `a` to `b`, walking forward around a closed loop of length n. */
-function walk(a: number, b: number, n: number) {
-  const out = [a];
-  for (let i = a; i !== b; ) {
-    i = (i + 1) % n;
-    out.push(i);
-  }
-  return out;
+const RIGHT = 0.5;
+const FRONT = 2.5;
+const LEFT = 4.5;
+const BACK = 6.5;
+const ARC_RX = Math.SQRT2 * COS30;
+const ARC_RY = Math.SQRT2 * SIN30;
+
+function rect(x: number, y: number, w: number, d: number, radius: number): Rect {
+  return { x, y, w, d, r: Math.max(0, Math.min(radius, w / 2, d / 2)) };
 }
+
+/** Corner k's center and the angle (degrees) where its arc starts. */
+function corner({ x, y, w, d, r }: Rect, k: number): readonly [number, number, number] {
+  switch (((k % 4) + 4) % 4) {
+    case 0:
+      return [x + w - r, y + r, -90];
+    case 1:
+      return [x + w - r, y + d - r, 0];
+    case 2:
+      return [x + r, y + d - r, 90];
+    default:
+      return [x + r, y + r, 180];
+  }
+}
+
+function onArc(rc: Rect, k: number, degrees: number): Vec2 {
+  const [cx, cy] = corner(rc, k);
+  const a = (degrees * Math.PI) / 180;
+  return [cx + rc.r * Math.cos(a), cy + rc.r * Math.sin(a)];
+}
+
+/** The world point at perimeter parameter t (wraps every 8) in the plane z. */
+function pointAt(rc: Rect, t: number, z: number): Vec3 {
+  const tt = ((t % 8) + 8) % 8;
+  const s = Math.floor(tt);
+  const f = tt - s;
+  const k = Math.floor(s / 2);
+  if (s % 2 === 0) {
+    const [px, py] = onArc(rc, k, (corner(rc, k)[2] as number) + 90 * f);
+    return [px, py, z];
+  }
+  const [ax, ay] = onArc(rc, k, (corner(rc, k)[2] as number) + 90);
+  const [bx, by] = onArc(rc, k + 1, corner(rc, k + 1)[2] as number);
+  return [ax + (bx - ax) * f, ay + (by - ay) * f, z];
+}
+
+function screen(point: Vec3) {
+  const [sx, sy] = project(point);
+  return `${round(sx)} ${round(sy)}`;
+}
+
+/**
+ * Path commands (no leading M) from t0 to t1 along the outline in the plane z:
+ * forward when t1 > t0, backward otherwise. Arcs keep the matching sweep.
+ */
+function trace(rc: Rect, t0: number, t1: number, z: number) {
+  const forward = t1 > t0;
+  const eps = 1e-9;
+  const cmds: string[] = [];
+  let t = t0;
+  while (forward ? t < t1 - eps : t > t1 + eps) {
+    const segment = forward ? Math.floor(t + eps) : Math.ceil(t - eps) - 1;
+    const next = forward ? Math.min(segment + 1, t1) : Math.max(segment, t1);
+    const end = screen(pointAt(rc, next, z));
+    if ((((segment % 8) + 8) % 8) % 2 === 1) cmds.push(`L ${end}`);
+    else if (rc.r > 0) {
+      cmds.push(`A ${round(ARC_RX * rc.r)} ${round(ARC_RY * rc.r)} 0 0 ${forward ? 1 : 0} ${end}`);
+    }
+    t = next;
+  }
+  return cmds.join(" ");
+}
+
+const move = (rc: Rect, t: number, z: number) => `M ${screen(pointAt(rc, t, z))}`;
 
 export interface BoxProps {
   /** The corner with the smallest x, y and z (back, bottom). */
@@ -226,13 +277,12 @@ export interface BoxProps {
   /** Draw the hidden back edges as dashed lines. */
   hidden?: boolean;
   stroke?: string;
-  /** Arc smoothness: segments per rounded corner. */
-  steps?: number;
 }
 
 /**
- * A box, slab or (with radius = side / 2) cylinder. Draws the three visible
- * faces with top-left lighting, then the outline.
+ * A box, slab or (with radius = side / 2) cylinder. Draws the two visible side
+ * faces and the top with top-left lighting, then the outline. Rounded corners
+ * are exact elliptical arcs.
  */
 export function Box({
   at,
@@ -241,36 +291,19 @@ export function Box({
   tone = "solid",
   hidden = false,
   stroke = ink.line,
-  steps,
 }: BoxProps) {
-  const [x, y, z] = at;
+  const [x, y, z0] = at;
   const [w, d, h] = size;
-  const segs = steps ?? (radius >= Math.min(w, d) / 2 - 0.01 ? 16 : 5);
-  const top = roundedRect(x, y, w, d, radius, z + h, segs).map(project);
-  const bottom = roundedRect(x, y, w, d, radius, z, segs).map(project);
-  const n = top.length;
+  const z1 = z0 + h;
+  const rc = rect(x, y, w, d, radius);
 
-  let L = 0;
-  let R = 0;
-  let F = 0;
-  let B = 0;
-  top.forEach(([sx, sy], i) => {
-    const [lx] = top[L] as Vec2;
-    const [rx] = top[R] as Vec2;
-    if (sx < lx - 1e-6) L = i;
-    if (sx > rx + 1e-6) R = i;
-    if (sy > (top[F] as Vec2)[1] + 1e-6) F = i;
-    if (sy < (top[B] as Vec2)[1] - 1e-6) B = i;
-  });
-  // Walking R -> L must pass the front point; otherwise the loop runs the other way.
-  const front = walk(R, L, n).includes(F) ? walk(R, L, n) : walk(L, R, n).reverse();
-  const back = walk(L, R, n).includes(B) ? walk(L, R, n) : walk(R, L, n).reverse();
-  const fIndex = front.indexOf(F);
-  const rightIdx = front.slice(0, fIndex + 1);
-  const leftIdx = front.slice(fIndex);
-
-  const pick = (pts: Vec2[], idx: number[]) => idx.map((i) => pts[i] as Vec2);
-  const face = (idx: number[]) => [...pick(top, idx), ...pick(bottom, idx).reverse()];
+  const top = `${move(rc, 0, z1)} ${trace(rc, 0, 8, z1)} Z`;
+  // A side face: along the top edge, down, back along the bottom edge.
+  const side = (t0: number, t1: number) =>
+    `${move(rc, t0, z1)} ${trace(rc, t0, t1, z1)} L ${screen(pointAt(rc, t1, z0))} ${trace(rc, t1, t0, z0)} Z`;
+  const vertical = (t: number) => `${move(rc, t, z1)} L ${screen(pointAt(rc, t, z0))}`;
+  const frontEdge = `${move(rc, RIGHT, z0)} ${trace(rc, RIGHT, LEFT, z0)}`;
+  const backEdge = `${move(rc, LEFT, z0)} ${trace(rc, LEFT, RIGHT + 8, z0)}`;
 
   const fills: Record<Tone, [string, string, string]> = {
     solid: [ink.top, ink.left, ink.right],
@@ -284,57 +317,35 @@ export function Box({
   const leftFill = cylinder ? rightFill : sideFill;
   const lineColor = tone === "accent" ? ink.accent : stroke;
   const dash = tone === "outline" ? DASH : undefined;
-  const sharp = radius <= 0.5;
+  const sharp = rc.r <= 0.5;
   const opaque = tone === "solid" || tone === "accent";
-  const at2 = (pts: Vec2[], i: number) => pts[i] as Vec2;
 
   return (
     <g>
       {hidden && (
-        <g stroke={ink.dash} strokeDasharray={DASH}>
-          <polyline points={toPoints(pick(bottom, back))} {...hairline} />
-          {sharp && (
-            <line
-              x1={round(at2(bottom, B)[0])}
-              y1={round(at2(bottom, B)[1])}
-              x2={round(at2(top, B)[0])}
-              y2={round(at2(top, B)[1])}
-              {...hairline}
-            />
-          )}
+        <g stroke={ink.dash} strokeDasharray={DASH} fill="none">
+          <path d={backEdge} {...hairline} />
+          {sharp && <path d={vertical(BACK)} {...hairline} />}
         </g>
       )}
       {/* Opaque faces are stroked in their own color to seal the antialiasing seam between them. */}
-      <polygon
-        points={toPoints(face(leftIdx))}
+      <path
+        d={side(FRONT, LEFT)}
         fill={leftFill}
         stroke={opaque ? leftFill : undefined}
         {...(opaque ? hairline : {})}
       />
-      <polygon
-        points={toPoints(face(rightIdx))}
+      <path
+        d={side(RIGHT, FRONT)}
         fill={rightFill}
         stroke={opaque ? rightFill : undefined}
         {...(opaque ? hairline : {})}
       />
-      <polygon
-        points={toPoints(top)}
-        fill={topFill}
-        stroke={lineColor}
-        strokeDasharray={dash}
-        {...hairline}
-      />
-      <g stroke={lineColor} strokeDasharray={dash}>
-        <polyline points={toPoints(pick(bottom, front))} {...hairline} />
-        {[L, R, ...(sharp ? [F] : [])].map((i) => (
-          <line
-            key={i}
-            x1={round(at2(top, i)[0])}
-            y1={round(at2(top, i)[1])}
-            x2={round(at2(bottom, i)[0])}
-            y2={round(at2(bottom, i)[1])}
-            {...hairline}
-          />
+      <path d={top} fill={topFill} stroke={lineColor} strokeDasharray={dash} {...hairline} />
+      <g stroke={lineColor} strokeDasharray={dash} fill="none">
+        <path d={frontEdge} {...hairline} />
+        {[LEFT, RIGHT, ...(sharp ? [FRONT] : [])].map((t) => (
+          <path key={t} d={vertical(t)} {...hairline} />
         ))}
       </g>
     </g>
@@ -387,10 +398,10 @@ export function Footprint({
   dashed?: boolean;
 }) {
   const [x, y, z] = at;
-  const pts = roundedRect(x, y, size[0], size[1], radius, z, 5).map(project);
+  const rc = rect(x, y, size[0], size[1], radius);
   return (
-    <polygon
-      points={toPoints(pts)}
+    <path
+      d={`${move(rc, 0, z)} ${trace(rc, 0, 8, z)} Z`}
       fill={fill}
       stroke={color}
       strokeDasharray={dashed ? DASH : undefined}
