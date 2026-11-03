@@ -1,0 +1,7 @@
+{
+  "description": "App navigation with grouped links, counts, and a thin orange bar on the current page.",
+  "files": [{ "path": "sidebar.tsx", "target": "@ui/minimalist/sidebar.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active"]
+}

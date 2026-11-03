@@ -1,0 +1,21 @@
+{
+  "slug": "minimalist",
+  "name": "Minimalist",
+  "kind": "components",
+  "tagline": "Quiet, precise UI: warm whites, hairline borders, one orange touch.",
+  "description": "A restrained component style for product UI. Surfaces are warm white and near-black, edges are single hairlines, type is Geist, and orange appears only where it carries meaning: focus, the current page, a live state. Every component ships light and dark, with every interactive state, built on native elements.",
+  "tags": ["minimal", "clean", "product", "neutral"],
+  "accent": "#f76b15",
+  "status": "beta",
+  "fonts": [
+    {
+      "family": "Geist",
+      "variable": "--font-geist-sans",
+      "weights": [400, 500, 600]
+    }
+  ],
+  "stage": {
+    "light": "var(--mn-bg)",
+    "dark": "var(--mn-bg)"
+  }
+}

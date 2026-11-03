@@ -1,0 +1,12 @@
+{
+  "description": "Inline messages with a hairline border, an icon and an optional action.",
+  "files": [
+    {
+      "path": "alert.tsx",
+      "target": "@ui/minimalist/alert.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

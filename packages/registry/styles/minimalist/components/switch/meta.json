@@ -1,0 +1,12 @@
+{
+  "description": "A compact on/off switch: near-black when on, with a soft orange focus ring.",
+  "files": [
+    {
+      "path": "switch.tsx",
+      "target": "@ui/minimalist/switch.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"]
+}

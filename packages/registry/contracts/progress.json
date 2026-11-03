@@ -1,0 +1,31 @@
+{
+  "slug": "progress",
+  "name": "Progress",
+  "category": "feedback",
+  "description": "A horizontal bar showing how far a task has got, or that it's working when progress is unknown.",
+  "anatomy": ["label", "value (optional)", "track", "indicator"],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "What is progressing; the bar's accessible name."
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "description": "0-100. Leave it out for an indeterminate bar."
+    },
+    {
+      "name": "showValue",
+      "type": "boolean",
+      "default": "true",
+      "description": "Shows the percentage next to the label."
+    }
+  ],
+  "states": ["default", "loading"],
+  "a11y": [
+    "role=\"progressbar\" with aria-valuenow, aria-valuemin and aria-valuemax; no value when indeterminate.",
+    "The visible label is the accessible name.",
+    "The indeterminate animation stops for prefers-reduced-motion."
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "slug": "switch",
+  "name": "Switch",
+  "category": "forms",
+  "description": "An on/off toggle for a setting that takes effect immediately.",
+  "anatomy": ["track", "thumb", "label", "description (optional)"],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Visible label; also the switch's accessible name."
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Secondary text under the label."
+    },
+    {
+      "name": "checked",
+      "type": "boolean",
+      "description": "Controlled state."
+    },
+    {
+      "name": "defaultChecked",
+      "type": "boolean",
+      "default": "false",
+      "description": "Initial state when uncontrolled."
+    },
+    {
+      "name": "onCheckedChange",
+      "type": "(checked: boolean) => void",
+      "description": "Called with the new state."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Prevents changes."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"],
+  "a11y": [
+    "Renders a <button role=\"switch\"> with aria-checked, so Space and Enter toggle it.",
+    "The label is the accessible name; the description is linked with aria-describedby.",
+    "On and off differ by thumb position as well as color."
+  ]
+}

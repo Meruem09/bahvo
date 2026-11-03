@@ -1,0 +1,45 @@
+{
+  "slug": "sidebar",
+  "name": "Sidebar",
+  "category": "navigation",
+  "description": "Vertical app navigation with grouped links, a current page, and optional counts.",
+  "anatomy": [
+    "root (nav)",
+    "header (optional)",
+    "section label",
+    "item",
+    "item icon",
+    "item badge",
+    "footer (optional)"
+  ],
+  "props": [
+    {
+      "name": "sections",
+      "type": "{ label?: string; items: { label: string; href: string; icon?: ReactNode; badge?: string | number; current?: boolean }[] }[]",
+      "description": "Groups of links. Mark the page the user is on with current."
+    },
+    {
+      "name": "header",
+      "type": "ReactNode",
+      "description": "Content above the links, such as a logo or workspace switcher."
+    },
+    {
+      "name": "footer",
+      "type": "ReactNode",
+      "description": "Content pinned below the links, such as the signed-in user."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Main\"",
+      "description": "Accessible name for the navigation landmark."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible", "active"],
+  "a11y": [
+    "Renders a <nav> landmark with an accessible name.",
+    "The current page link has aria-current=\"page\" and a non-color indicator.",
+    "Section labels are headings or labelled lists so screen readers announce the groups.",
+    "Every item is a real link reachable with Tab, with a visible focus style."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "description": "A labelled text field with hint and error text, an optional icon, and a soft orange focus ring.",
+  "files": [{ "path": "input.tsx", "target": "@ui/minimalist/input.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "disabled", "invalid"]
+}

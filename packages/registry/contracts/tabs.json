@@ -1,0 +1,30 @@
+{
+  "slug": "tabs",
+  "name": "Tabs",
+  "category": "navigation",
+  "description": "Switches between related panels of content in the same place.",
+  "anatomy": ["tab list", "tab", "selected indicator", "panel"],
+  "props": [
+    {
+      "name": "tabs",
+      "type": "{ id: string; label: string; content: ReactNode; disabled?: boolean }[]",
+      "description": "The tabs and their panels."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "description": "The id of the tab selected first. Defaults to the first tab."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name for the tab list."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible", "active", "disabled"],
+  "a11y": [
+    "tablist, tab and tabpanel roles with aria-selected and aria-controls.",
+    "Arrow keys move between tabs, Home and End jump to the ends; only the selected tab is in the Tab order.",
+    "The selected tab is shown by an indicator and weight, not color alone."
+  ]
+}

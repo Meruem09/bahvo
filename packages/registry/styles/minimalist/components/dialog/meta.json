@@ -1,0 +1,7 @@
+{
+  "description": "A native modal dialog over a dimmed page, with a title, description and divided actions.",
+  "files": [{ "path": "dialog.tsx", "target": "@ui/minimalist/dialog.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["open", "focus-visible"]
+}

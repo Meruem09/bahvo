@@ -1,0 +1,35 @@
+{
+  "slug": "alert",
+  "name": "Alert",
+  "category": "feedback",
+  "description": "An inline message about the state of a page or a task, with an optional action.",
+  "anatomy": ["root", "icon", "title", "description", "action (optional)"],
+  "props": [
+    {
+      "name": "tone",
+      "type": "\"neutral\" | \"accent\" | \"danger\"",
+      "default": "\"neutral\"",
+      "description": "neutral for information, accent for something new or in progress, danger for problems."
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "One-line summary."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "Details under the title."
+    },
+    {
+      "name": "action",
+      "type": "ReactNode",
+      "description": "A button or link on the right."
+    }
+  ],
+  "states": ["default"],
+  "a11y": [
+    "danger alerts use role=\"alert\"; the others use role=\"status\", so they're announced without stealing focus.",
+    "Tone is carried by the icon and wording as well as color."
+  ]
+}

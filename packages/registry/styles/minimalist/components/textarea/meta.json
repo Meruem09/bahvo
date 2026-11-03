@@ -1,0 +1,12 @@
+{
+  "description": "A labelled multi-line field with hint, error and a live character count.",
+  "files": [
+    {
+      "path": "textarea.tsx",
+      "target": "@ui/minimalist/textarea.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "disabled", "invalid"]
+}

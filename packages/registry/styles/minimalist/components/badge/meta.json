@@ -1,0 +1,12 @@
+{
+  "description": "Small status labels: neutral, live with an orange dot, outline and danger.",
+  "files": [
+    {
+      "path": "badge.tsx",
+      "target": "@ui/minimalist/badge.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

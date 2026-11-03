@@ -1,0 +1,12 @@
+{
+  "description": "Round avatars with an image or initials, three sizes and a presence dot.",
+  "files": [
+    {
+      "path": "avatar.tsx",
+      "target": "@ui/minimalist/avatar.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

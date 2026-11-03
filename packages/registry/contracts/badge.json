@@ -1,0 +1,31 @@
+{
+  "slug": "badge",
+  "name": "Badge",
+  "category": "display",
+  "description": "A small label for a status, count or category.",
+  "anatomy": ["root", "dot (optional)", "label"],
+  "props": [
+    {
+      "name": "variant",
+      "type": "\"neutral\" | \"live\" | \"outline\" | \"danger\"",
+      "default": "\"neutral\"",
+      "description": "Meaning of the badge. live marks something active right now."
+    },
+    {
+      "name": "dot",
+      "type": "boolean",
+      "default": "false",
+      "description": "Leading status dot."
+    },
+    {
+      "name": "...props",
+      "type": "HTMLAttributes<HTMLSpanElement>",
+      "description": "All native attributes of the underlying element."
+    }
+  ],
+  "states": ["default"],
+  "a11y": [
+    "The text carries the meaning; the dot and color only reinforce it.",
+    "Text meets 4.5:1 contrast against the badge fill in light and dark."
+  ]
+}

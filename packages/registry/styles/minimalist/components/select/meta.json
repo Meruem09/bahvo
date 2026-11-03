@@ -1,0 +1,12 @@
+{
+  "description": "A native select with a hairline border, a quiet chevron and error text.",
+  "files": [
+    {
+      "path": "select.tsx",
+      "target": "@ui/minimalist/select.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "disabled", "invalid"]
+}

@@ -1,0 +1,12 @@
+{
+  "description": "Underlined tabs with an orange indicator and full keyboard support.",
+  "files": [
+    {
+      "path": "tabs.tsx",
+      "target": "@ui/minimalist/tabs.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active", "disabled"]
+}

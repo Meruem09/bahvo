@@ -1,0 +1,35 @@
+{
+  "slug": "avatar",
+  "name": "Avatar",
+  "category": "display",
+  "description": "A person's picture, or their initials when there's no picture, with an optional presence dot.",
+  "anatomy": ["root", "image or initials", "status dot (optional)"],
+  "props": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "The person's name: the image's alt text and the source of the initials."
+    },
+    {
+      "name": "src",
+      "type": "string",
+      "description": "Image URL. Initials show when it's missing."
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "default": "\"md\"",
+      "description": "24, 32 or 40 pixels."
+    },
+    {
+      "name": "status",
+      "type": "\"online\" | \"away\"",
+      "description": "Presence dot, announced through the accessible name."
+    }
+  ],
+  "states": ["default"],
+  "a11y": [
+    "The image's alt is the person's name; initials get role=\"img\" with the name as aria-label.",
+    "Presence is included in the accessible name, not only shown by color."
+  ]
+}

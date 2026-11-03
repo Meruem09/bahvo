@@ -230,8 +230,9 @@ async function build() {
 
     const checkerPath = path.join(styleDir, "skill/scripts/check.mjs");
     const checker = (await exists(checkerPath))
-      ? ((await import(pathToFileURL(checkerPath).href)) as { checkIllustration: Checker })
-          .checkIllustration
+      ? await import(pathToFileURL(checkerPath).href).then(
+          (m: { check?: Checker; checkIllustration?: Checker }) => m.check ?? m.checkIllustration,
+        )
       : undefined;
 
     const skillPath = path.join(styleDir, "skill/SKILL.md");
@@ -595,7 +596,12 @@ async function writeSkill(
     dir: string;
     kitFiles: { name: string; code: string }[];
     skill?: { md: string; name: string };
-    items: { slug: string; files: { name: string; code: string }[]; subject?: Subject }[];
+    items: {
+      slug: string;
+      files: { name: string; code: string }[];
+      subject?: Subject;
+      contract?: Contract;
+    }[];
   },
   tokensCssText: string,
 ): Promise<ManifestStyle["skill"]> {
@@ -622,12 +628,15 @@ async function writeSkill(
   files["references/catalog.md"] = [
     `# ${style.name} catalog`,
     "",
-    "Subjects already drawn. Reuse their composition before inventing a new one.",
+    style.kind === "illustrations"
+      ? "Subjects already drawn. Reuse their composition before inventing a new one."
+      : "Components already built. Install or adapt these before writing a new one; new components follow the same contract shape.",
     "",
-    ...source.items.map(
-      (item) =>
-        `- **${item.subject?.name ?? item.slug}** (\`examples/${item.slug}.tsx\`): ${item.subject?.description ?? ""}`,
-    ),
+    ...source.items.map((item) => {
+      const name = item.subject?.name ?? item.contract?.name ?? item.slug;
+      const description = item.subject?.description ?? item.contract?.description ?? "";
+      return `- **${name}** (\`examples/${item.slug}.tsx\`): ${description}`;
+    }),
     "",
   ].join("\n");
 

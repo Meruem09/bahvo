@@ -1,0 +1,7 @@
+{
+  "description": "A quiet, precise button: near-black primary, hairline secondary, and an orange focus ring.",
+  "files": [{ "path": "button.tsx", "target": "@ui/minimalist/button.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active", "disabled", "loading"]
+}

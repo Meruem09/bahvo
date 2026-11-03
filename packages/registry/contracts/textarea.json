@@ -1,0 +1,40 @@
+{
+  "slug": "textarea",
+  "name": "Textarea",
+  "category": "forms",
+  "description": "A multi-line text field with a label, an optional hint, and an error message.",
+  "anatomy": ["label", "field", "hint or error message", "character count (optional)"],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Visible label, connected to the field."
+    },
+    {
+      "name": "hint",
+      "type": "string",
+      "description": "Helper text, connected with aria-describedby."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error message. Marks the field invalid and replaces the hint."
+    },
+    {
+      "name": "maxLength",
+      "type": "number",
+      "description": "Shows a live character count when set."
+    },
+    {
+      "name": "...props",
+      "type": "TextareaHTMLAttributes<HTMLTextAreaElement>",
+      "description": "All native attributes of the underlying element."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible", "disabled", "invalid"],
+  "a11y": [
+    "The label is a real <label> tied to the textarea.",
+    "Hint, error and count are linked with aria-describedby; an error sets aria-invalid.",
+    "The focus indicator has at least 3:1 contrast against the surface."
+  ]
+}

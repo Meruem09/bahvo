@@ -1,0 +1,7 @@
+{
+  "description": "A warm-white surface with a hairline border, an optional header and a divided footer.",
+  "files": [{ "path": "card.tsx", "target": "@ui/minimalist/card.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

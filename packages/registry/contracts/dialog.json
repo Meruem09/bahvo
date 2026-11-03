@@ -1,0 +1,46 @@
+{
+  "slug": "dialog",
+  "name": "Dialog",
+  "category": "overlay",
+  "description": "A modal window that asks for a decision or a short input, over a dimmed page.",
+  "anatomy": ["backdrop", "panel", "title", "description", "content", "actions", "close button"],
+  "props": [
+    {
+      "name": "open",
+      "type": "boolean",
+      "description": "Whether the dialog is shown. Controlled."
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "description": "Called when the dialog asks to close: Escape, the close button, or a backdrop click."
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Heading that names the dialog."
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "description": "Supporting text under the title."
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "description": "Buttons at the bottom; put the primary action last."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "Body content between the description and the actions."
+    }
+  ],
+  "states": ["open", "focus-visible"],
+  "a11y": [
+    "Uses the native <dialog> element with showModal(), so focus is trapped and the page is inert.",
+    "aria-labelledby and aria-describedby point at the title and description.",
+    "Escape and the close button close it; focus returns to the element that opened it.",
+    "The close button has an accessible name."
+  ]
+}

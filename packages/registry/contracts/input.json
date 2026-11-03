@@ -1,0 +1,41 @@
+{
+  "slug": "input",
+  "name": "Input",
+  "category": "forms",
+  "description": "A single-line text field with a label, an optional hint, and an error message.",
+  "anatomy": ["label", "field", "leading icon (optional)", "hint or error message"],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Visible label, connected to the field."
+    },
+    {
+      "name": "hint",
+      "type": "string",
+      "description": "Helper text under the field, connected with aria-describedby."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error message. Marks the field invalid and replaces the hint."
+    },
+    {
+      "name": "icon",
+      "type": "ReactNode",
+      "description": "Optional leading icon inside the field. Decorative."
+    },
+    {
+      "name": "...props",
+      "type": "InputHTMLAttributes<HTMLInputElement>",
+      "description": "All native input attributes, including type, placeholder, disabled and required."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible", "disabled", "invalid"],
+  "a11y": [
+    "The label is a real <label> tied to the input; placeholder text never replaces it.",
+    "Hint and error are linked with aria-describedby; an error sets aria-invalid=\"true\".",
+    "The focus indicator has at least 3:1 contrast against the surface.",
+    "Error state is shown with text and border, not color alone."
+  ]
+}

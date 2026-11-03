@@ -1,0 +1,30 @@
+{
+  "slug": "checkbox",
+  "name": "Checkbox",
+  "category": "forms",
+  "description": "A checkbox with a label and optional description, built on the native input.",
+  "anatomy": ["box", "check mark", "label", "description (optional)"],
+  "props": [
+    {
+      "name": "label",
+      "type": "ReactNode",
+      "description": "Clickable label next to the box."
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "description": "Secondary text under the label."
+    },
+    {
+      "name": "...props",
+      "type": "InputHTMLAttributes<HTMLInputElement>",
+      "description": "All native attributes of the underlying element."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"],
+  "a11y": [
+    "Uses a native checkbox, so Space toggles it and its state is announced.",
+    "The whole label toggles the box; the description is linked with aria-describedby.",
+    "Checked state is shown by a check mark, not color alone."
+  ]
+}

@@ -31,6 +31,11 @@ const budgets: Budget[] = [
   { path: "/components", maxJs: 165 * KB, maxCss: 8 * KB, kind: "grid" },
   { path: "/styles/isometric/server", maxJs: 170 * KB, maxCss: 8 * KB, kind: "detail" },
   { path: "/preview/isometric/server", maxJs: 155 * KB, maxCss: 8 * KB, kind: "preview" },
+  { path: "/styles/minimalist", maxJs: 165 * KB, maxCss: 8 * KB, kind: "grid" },
+  { path: "/components/button", maxJs: 165 * KB, maxCss: 8 * KB, kind: "grid" },
+  { path: "/styles/minimalist/dialog", maxJs: 170 * KB, maxCss: 8 * KB, kind: "detail" },
+  // Dialog is the first preview with client JS: it must only add its own component.
+  { path: "/preview/minimalist/dialog", maxJs: 160 * KB, maxCss: 12 * KB, kind: "preview" },
 ];
 
 function startServer(): Promise<ChildProcess> {
@@ -102,8 +107,8 @@ try {
       );
     }
     const allCss = css.join("\n");
-    if (budget.kind !== "preview" && allCss.includes("--iso-")) {
-      failures.push(`${budget.path}: site CSS contains hosted-style tokens (--iso-*)`);
+    if (budget.kind !== "preview" && /--(?:iso|mn)-/.test(allCss)) {
+      failures.push(`${budget.path}: site CSS contains hosted-style tokens`);
     }
     if (budget.kind === "preview" && allCss.includes("--font-geist")) {
       failures.push(`${budget.path}: preview loaded the site's CSS`);

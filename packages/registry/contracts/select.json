@@ -1,0 +1,44 @@
+{
+  "slug": "select",
+  "name": "Select",
+  "category": "forms",
+  "description": "A native dropdown for choosing one option from a short list, with a label and messages.",
+  "anatomy": ["label", "field", "chevron", "hint or error message"],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Visible label, connected to the select."
+    },
+    {
+      "name": "options",
+      "type": "{ value: string; label: string; disabled?: boolean }[]",
+      "description": "The choices."
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "description": "A disabled first option shown before a choice is made."
+    },
+    {
+      "name": "hint",
+      "type": "string",
+      "description": "Helper text, connected with aria-describedby."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error message. Marks the field invalid."
+    },
+    {
+      "name": "...props",
+      "type": "SelectHTMLAttributes<HTMLSelectElement>",
+      "description": "All native attributes of the underlying element."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible", "disabled", "invalid"],
+  "a11y": [
+    "Uses the native <select>, so keyboard, screen readers and mobile pickers work as expected.",
+    "The label is a real <label>; hint and error are linked with aria-describedby."
+  ]
+}

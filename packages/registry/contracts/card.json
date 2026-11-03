@@ -1,0 +1,41 @@
+{
+  "slug": "card",
+  "name": "Card",
+  "category": "display",
+  "description": "A bounded surface that groups related content, with an optional header and footer.",
+  "anatomy": ["root", "title (optional)", "description (optional)", "content", "footer (optional)"],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "description": "Heading at the top of the card. Rendered as an h3."
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "description": "Supporting text under the title."
+    },
+    {
+      "name": "footer",
+      "type": "ReactNode",
+      "description": "Actions or meta at the bottom, separated from the content."
+    },
+    {
+      "name": "interactive",
+      "type": "boolean",
+      "default": "false",
+      "description": "Adds hover and focus styles for cards that act as a single link or button."
+    },
+    {
+      "name": "...props",
+      "type": "HTMLAttributes<HTMLDivElement>",
+      "description": "All native div attributes."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible"],
+  "a11y": [
+    "The title renders as an h3 so cards in a list form a readable outline.",
+    "An interactive card wraps one link or button; don't nest other interactive elements inside it.",
+    "Hover and focus styles never rely on color alone: the border changes too."
+  ]
+}
