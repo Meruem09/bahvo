@@ -1,0 +1,15 @@
+{
+  "style": "isometric",
+  "kind": "illustrations",
+  "output": "illustration.tsx",
+  "prompt": "Create an isometric illustration of {subject} for our product site, as a React component in `{output}` with a default export. Match the isometric illustration style this project already uses, in light and dark.",
+  "tasks": [
+    { "id": "cloud", "subject": "cloud storage: a cloud above a small stack of storage units" },
+    {
+      "id": "shield",
+      "subject": "security: a shield standing on a base plate, with a lock emblem"
+    },
+    { "id": "analytics", "subject": "an analytics dashboard: a panel with a bar chart and a stat" },
+    { "id": "chip", "subject": "an AI chip: a processor package with pins on a small board" }
+  ]
+}

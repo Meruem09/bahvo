@@ -6,7 +6,13 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**", "!**/next-env.d.ts", "!**/*.md"]
+    "includes": [
+      "**",
+      "!**/next-env.d.ts",
+      "!**/*.md",
+      "!packages/evals/fixtures",
+      "!pnpm-lock.yaml"
+    ]
   },
   "formatter": {
     "enabled": true,
