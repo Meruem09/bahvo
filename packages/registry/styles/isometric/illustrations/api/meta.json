@@ -1,0 +1,10 @@
+{
+  "description": "An endpoint panel with routes and a floating code chip.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/isometric/api.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

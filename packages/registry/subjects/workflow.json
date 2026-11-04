@@ -1,0 +1,8 @@
+{
+  "slug": "workflow",
+  "name": "Workflow",
+  "category": "integrations",
+  "description": "Steps connected in a row, with the active one running.",
+  "uses": ["Automation features", "Onboarding and process pages", "CI/CD and pipelines"],
+  "tags": ["workflow", "automation", "pipeline"]
+}

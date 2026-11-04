@@ -39,3 +39,18 @@ Patterns taken from the published set. Each line names the example that shows it
 
 - Main solid: 120–200 units wide. Slabs: 20–40 tall. Towers: up to 1.5× their width.
 - Canvas: 280–360 wide. Keep about 20 units of margin and nothing clipped.
+
+## Upright shapes
+
+- **Clouds:** lobes (circles) on a flat base, as one `Extrusion` outline in the left plane, 16 deep. Compute where lobes meet instead of guessing angles, so arcs join exactly (`cloud`). An icon on it goes on its front `Face`, in accent (`cloud`: the upload arrow).
+- **Shields and badges:** straight sides into two arcs that meet at a tip, each arc tangent to its side. Inset the same outline by 7 with concentric arcs for the bevel, drawn with `FacePath d={profilePath(...)}` (`shield`).
+- **Speech bubbles:** a rounded rectangle with a 3-point tail, in the right plane, 6 deep, floating near the speaker with a `float` motion (`team`).
+
+## People
+
+- A `Cylinder` body (radius 14, height 26) with a `Sphere` head (radius 10) 3 units above it, on a shared base plate. Draw them back to front. Mark the active person with an accent ring on the floor around their feet, not by coloring them (`team`).
+
+## Charts and pipelines
+
+- **Bar charts:** rounded `Box` bars (radius 3) in one row along x, drawn back to front; only the current bar uses `tone="accent"` (`chart`).
+- **Pipelines:** step tiles along x joined by ground cables. The cable into the running step is accent with a `flow` overlay, the running step carries a spinning dashed ring, a skipped step is `tone="outline"` with a dashed `Line` (`workflow`).

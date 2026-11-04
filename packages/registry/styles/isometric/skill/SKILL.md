@@ -71,6 +71,8 @@ export default function ServerIllustration(props: IllustrationProps) {
 | `Box` | Boxes, slabs, rounded blocks. `tone`: `solid` (default), `glass` (layers), `outline` (dashed ghost), `accent` (soft orange). `hidden` draws back edges dashed. `at` is the min x, y, z corner. |
 | `Plate` | Thin plates: layers, sheets, screens, cards. At least 4 thick, or the two outlines merge. |
 | `Cylinder` | Databases, nodes, pucks, badges. `center` is the base center; one even side tone. |
+| `Extrusion` | An upright shape with thickness: clouds, shields, speech bubbles. `outline` is lines and exact arcs in a face's coordinates, traced clockwise; it draws only the sides, back edges and depth lines that show. `profilePath(outline)` redraws an outline (or an inset of it) on the face. |
+| `Sphere` | Heads, balls. Its outline is a circle 1.22·r wide. |
 | `Footprint` | One flat outline in a plane: ground footprints, pads, landing zones. `color`/`fill` for an accent pad. |
 | `Grid` | The faint ground grid. Keep it inside the canvas. |
 | `Line`, `Path3` | Dashed guides (default) and solid cables (`dashed={false}`) between world points. |

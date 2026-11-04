@@ -1,0 +1,10 @@
+{
+  "description": "A shield with a lock, floating over a round base.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/isometric/shield.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

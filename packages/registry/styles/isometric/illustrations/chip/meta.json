@@ -1,0 +1,10 @@
+{
+  "description": "A processor with an AI mark on a circuit board.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/isometric/chip.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

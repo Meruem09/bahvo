@@ -1,0 +1,10 @@
+{
+  "description": "A cloud floating above a storage unit.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/isometric/cloud.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

@@ -1,0 +1,12 @@
+{
+  "slug": "shield",
+  "name": "Security shield",
+  "category": "infrastructure",
+  "description": "A shield with a lock, floating over a round base.",
+  "uses": [
+    "Security and compliance pages",
+    "Authentication features",
+    "Trust and privacy sections"
+  ],
+  "tags": ["security", "privacy", "auth"]
+}

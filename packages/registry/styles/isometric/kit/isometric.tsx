@@ -381,6 +381,217 @@ export function Cylinder({
   );
 }
 
+/**
+ * A sphere, e.g. a head or a ball. The projection scales every length by
+ * √2·cos30, so its outline is a circle of radius 1.22·r.
+ */
+export function Sphere({
+  center,
+  r,
+  tone = "solid",
+  stroke = ink.line,
+}: {
+  center: Vec3;
+  r: number;
+  tone?: Tone;
+  stroke?: string;
+}) {
+  const [x, y] = project(center);
+  const fill = { solid: ink.top, glass: ink.glass, outline: "none", accent: ink.accentSoft }[tone];
+  return (
+    <circle
+      cx={round(x)}
+      cy={round(y)}
+      r={round(ARC_RX * r)}
+      fill={fill}
+      stroke={tone === "accent" ? ink.accent : stroke}
+      strokeDasharray={tone === "outline" ? DASH : undefined}
+      {...hairline}
+    />
+  );
+}
+
+/* ---------- Extruded profiles ------------------------------------------ */
+
+/**
+ * One piece of a profile outline, in a face's local coordinates (x right,
+ * y down, as for <Face>). A piece starts where the previous one ends.
+ * - `{ to }`: a straight edge to `to`.
+ * - `{ center, r, from, to }`: an arc of a circle between two angles in
+ *   degrees (0 = right, 90 = down). from < to bulges out (clockwise on
+ *   screen); from > to cuts a notch in.
+ */
+export type ProfilePiece = { to: Vec2 } | { center: Vec2; r: number; from: number; to: number };
+
+type Seg =
+  | { kind: "line"; a: Vec2; b: Vec2 }
+  | { kind: "arc"; c: Vec2; r: number; from: number; to: number };
+
+const rad = (deg: number) => (deg * Math.PI) / 180;
+const add = (a: Vec2, b: Vec2): Vec2 => [a[0] + b[0], a[1] + b[1]];
+const onCircle = (c: Vec2, r: number, deg: number): Vec2 => [
+  c[0] + r * Math.cos(rad(deg)),
+  c[1] + r * Math.sin(rad(deg)),
+];
+const segStart = (s: Seg) => (s.kind === "line" ? s.a : onCircle(s.c, s.r, s.from));
+const segEnd = (s: Seg) => (s.kind === "line" ? s.b : onCircle(s.c, s.r, s.to));
+const same = (a: Vec2, b: Vec2) => Math.hypot(a[0] - b[0], a[1] - b[1]) < 0.01;
+const local = ([x, y]: Vec2) => `${round(x)} ${round(y)}`;
+
+/** Unit tangent in the direction of travel, at the start or the end of a segment. */
+function tangent(s: Seg, atEnd: boolean): Vec2 {
+  if (s.kind === "line") {
+    const [dx, dy] = [s.b[0] - s.a[0], s.b[1] - s.a[1]];
+    const length = Math.hypot(dx, dy) || 1;
+    return [dx / length, dy / length];
+  }
+  const a = rad(atEnd ? s.to : s.from);
+  const dir = Math.sign(s.to - s.from);
+  return [-Math.sin(a) * dir, Math.cos(a) * dir];
+}
+
+function segments(outline: ProfilePiece[]): Seg[] {
+  const end = (p: ProfilePiece) => ("center" in p ? onCircle(p.center, p.r, p.to) : p.to);
+  return outline.flatMap((p, i): Seg[] => {
+    const prev = end(outline[(i - 1 + outline.length) % outline.length] as ProfilePiece);
+    if (!("center" in p)) return [{ kind: "line", a: prev, b: p.to }];
+    const arc: Seg = { kind: "arc", c: p.center, r: p.r, from: p.from, to: p.to };
+    const start = segStart(arc);
+    return same(prev, start) ? [arc] : [{ kind: "line", a: prev, b: start }, arc];
+  });
+}
+
+/**
+ * The parts of a segment that face the viewer: its outward normal points the
+ * way the back copy is offset. Arcs split where the normal turns away.
+ */
+function facing(s: Seg, o: Vec2): Seg[] {
+  const toward = (n: Vec2) => n[0] * o[0] + n[1] * o[1] > 1e-9;
+  if (s.kind === "line") {
+    const [tx, ty] = tangent(s, false);
+    return toward([ty, -tx]) ? [s] : [];
+  }
+  const phi = (Math.atan2(o[1], o[0]) * 180) / Math.PI;
+  const dir = Math.sign(s.to - s.from);
+  const lo = Math.min(s.from, s.to);
+  const hi = Math.max(s.from, s.to);
+  const cuts = [lo];
+  for (let k = Math.ceil((lo - phi - 90) / 180); phi + 90 + 180 * k < hi; k++) {
+    if (phi + 90 + 180 * k > lo) cuts.push(phi + 90 + 180 * k);
+  }
+  cuts.push(hi);
+  const parts: Seg[] = [];
+  for (let i = 0; i < cuts.length - 1; i++) {
+    const [a, b] = [cuts[i] as number, cuts[i + 1] as number];
+    const mid = rad((a + b) / 2);
+    if (toward([Math.cos(mid) * dir, Math.sin(mid) * dir])) {
+      parts.push(dir > 0 ? { ...s, from: a, to: b } : { ...s, from: b, to: a });
+    }
+  }
+  return dir > 0 ? parts : parts.reverse();
+}
+
+/** Path command from the current point along a segment (or back along it). */
+function follow(s: Seg, reverse = false) {
+  if (s.kind === "line") return `L ${local(reverse ? s.a : s.b)}`;
+  const [from, to] = reverse ? [s.to, s.from] : [s.from, s.to];
+  const large = Math.abs(to - from) > 180 ? 1 : 0;
+  return `A ${round(s.r)} ${round(s.r)} 0 ${large} ${to > from ? 1 : 0} ${local(onCircle(s.c, s.r, to))}`;
+}
+
+/** A profile outline as path data, e.g. to draw an inset of it on a face with <FacePath>. */
+export function profilePath(outline: ProfilePiece[]) {
+  const segs = segments(outline);
+  return `M ${local(segStart(segs[0] as Seg))} ${segs.map((s) => follow(s)).join(" ")} Z`;
+}
+
+const shift = (s: Seg, o: Vec2): Seg =>
+  s.kind === "line" ? { ...s, a: add(s.a, o), b: add(s.b, o) } : { ...s, c: add(s.c, o) };
+
+export interface ExtrusionProps {
+  /** The face the profile stands in: "left" faces down-left, "right" faces down-right. */
+  plane: "left" | "right";
+  /** World position of the profile's local origin, as for <Face>. */
+  at: Vec3;
+  /** A closed outline traced clockwise on screen, made of lines and exact arcs. */
+  outline: ProfilePiece[];
+  /** How far the profile extends back, away from the viewer. */
+  depth: number;
+  tone?: Tone;
+  stroke?: string;
+}
+
+/**
+ * A flat shape with thickness standing upright: a cloud, a shield, a speech
+ * bubble. Draws the side band that faces the viewer, the visible back edge,
+ * edges along the depth only where they show (silhouette tangents and
+ * creases), then the front face. Curves stay exact arcs.
+ */
+export function Extrusion({
+  plane,
+  at,
+  outline,
+  depth,
+  tone = "solid",
+  stroke = ink.line,
+}: ExtrusionProps) {
+  // The back copy, in the face's own coordinates, sits up and away from the viewer.
+  const o: Vec2 = plane === "left" ? [depth, -depth] : [-depth, -depth];
+  const segs = segments(outline);
+  const parts = segs.flatMap((s) => facing(s, o));
+
+  const smooth = (a: Seg, b: Seg) => {
+    const [t1, t2] = [tangent(a, true), tangent(b, false)];
+    return same(segEnd(a), segStart(b)) && t1[0] * t2[0] + t1[1] * t2[1] > 0.9998;
+  };
+  const edges = new Map<string, Vec2>();
+  parts.forEach((part, i) => {
+    const prev = parts[(i - 1 + parts.length) % parts.length] as Seg;
+    const next = parts[(i + 1) % parts.length] as Seg;
+    if (parts.length === 1 || !smooth(prev, part)) edges.set(local(segStart(part)), segStart(part));
+    if (parts.length === 1 || !smooth(part, next)) edges.set(local(segEnd(part)), segEnd(part));
+  });
+
+  const fills: Record<Tone, [string, string]> = {
+    solid: [ink.top, plane === "left" ? ink.left : ink.right],
+    glass: [ink.glass, ink.glass],
+    outline: ["none", "none"],
+    accent: [ink.accentSoft, ink.accentSoft],
+  };
+  const [bandFill, frontFill] = fills[tone];
+  const lineColor = tone === "accent" ? ink.accent : stroke;
+  const dash = tone === "outline" ? DASH : undefined;
+  const opaque = tone === "solid" || tone === "accent";
+  const front = profilePath(outline);
+
+  return (
+    <Face plane={plane} at={at}>
+      {parts.map((part) => (
+        <path
+          key={`band-${local(segStart(part))}`}
+          d={`M ${local(segStart(part))} ${follow(part)} L ${local(add(segEnd(part), o))} ${follow(shift(part, o), true)} Z`}
+          fill={bandFill}
+          stroke={opaque ? bandFill : undefined}
+          {...(opaque ? hairline : {})}
+        />
+      ))}
+      <g stroke={lineColor} strokeDasharray={dash} fill="none">
+        {parts.map((part) => (
+          <path
+            key={`back-${local(segStart(part))}`}
+            d={`M ${local(add(segStart(part), o))} ${follow(shift(part, o))}`}
+            {...hairline}
+          />
+        ))}
+        {[...edges].map(([key, p]) => (
+          <path key={`edge-${key}`} d={`M ${local(p)} L ${local(add(p, o))}`} {...hairline} />
+        ))}
+      </g>
+      <path d={front} fill={frontFill} stroke={lineColor} strokeDasharray={dash} {...hairline} />
+    </Face>
+  );
+}
+
 /** A flat outline in the plane z: a footprint, pad or landing zone. One line, never doubled. */
 export function Footprint({
   at,

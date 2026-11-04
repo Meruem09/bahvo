@@ -1,0 +1,8 @@
+{
+  "slug": "team",
+  "name": "Team",
+  "category": "business",
+  "description": "Three people on a shared base, one of them active.",
+  "uses": ["Team and collaboration features", "About and careers pages", "Seats and permissions"],
+  "tags": ["team", "people", "collaboration"]
+}

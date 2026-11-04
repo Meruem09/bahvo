@@ -1,0 +1,8 @@
+{
+  "slug": "api",
+  "name": "API",
+  "category": "integrations",
+  "description": "An endpoint panel with routes and a floating code chip.",
+  "uses": ["API reference and docs", "Developer landing pages", "Integration features"],
+  "tags": ["api", "developer", "endpoint"]
+}

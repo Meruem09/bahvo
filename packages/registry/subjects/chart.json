@@ -1,0 +1,8 @@
+{
+  "slug": "chart",
+  "name": "Analytics chart",
+  "category": "data",
+  "description": "A panel of rising bars with a floating stat card.",
+  "uses": ["Analytics and reporting features", "Dashboards", "Growth and metrics sections"],
+  "tags": ["analytics", "chart", "metrics"]
+}

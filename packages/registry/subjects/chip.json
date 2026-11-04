@@ -1,0 +1,8 @@
+{
+  "slug": "chip",
+  "name": "AI chip",
+  "category": "devices",
+  "description": "A processor with an AI mark on a circuit board.",
+  "uses": ["AI features", "Performance and compute pages", "Hardware and infrastructure"],
+  "tags": ["ai", "chip", "compute"]
+}

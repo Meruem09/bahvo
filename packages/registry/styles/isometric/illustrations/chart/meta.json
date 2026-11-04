@@ -1,0 +1,10 @@
+{
+  "description": "A panel of rising bars with a floating stat card.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/isometric/chart.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

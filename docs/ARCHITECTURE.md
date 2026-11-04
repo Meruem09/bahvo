@@ -129,9 +129,18 @@ Raise a budget deliberately in the same pull request that needs it, never just t
 
 0. **Walking skeleton (done):** monorepo, registry schema and build, isolated previews, thumbnails, code tabs, CLI, budgets.
 1. **Isometric illustrations (done):** illustration kind, drawing kit, 8 subjects in light and dark, checker, agent skill, `bahvo skill add`, white/gray/orange site theme.
-2. **Minimalist components (built):** the first component style, 14 of the 30 V1 components with shared contracts: Button, Card, Input, Sidebar, Dialog, Textarea, Checkbox, Switch, Select, Badge, Avatar, Alert, Progress, Tabs; plus a skill and a checker. `/components/[component]` is back.
+2. **Minimalist components (done):** the first component style, all 30 V1 components with shared contracts, plus a skill and a checker. `/components/[component]` is back.
+   - Forms: Button, Input, Textarea, Select, Checkbox, Radio group, Switch, Slider, Segmented control.
+   - Overlay: Dialog, Sheet, Popover, Dropdown menu, Tooltip.
+   - Feedback: Alert, Toast, Progress, Skeleton, Empty state, Badge.
+   - Display and navigation: Card, Avatar, Table, Accordion, Kbd, Tabs, Sidebar, Navbar, Breadcrumbs, Pagination.
+   - Overlays render their panel statically in demos (or start open) so thumbnails show them.
+   - Eval tasks must never be published components, so the suite swapped Segmented and Toast for OTP and Stepper when those shipped.
 3. **Skill evals (harness built):** `packages/evals`. Held-out task suites per style; each task runs in a clean sandbox outside the repo, with and without the skill; answers are scored for rendering and the style's checker (0–100), screenshotted light and dark, and optionally judged blind and pairwise by a vision model against the published examples. `pnpm --filter @bahvo/evals eval --style <style> [--judge]`; `--agent replay:<file>` tests the pipeline for free. Real runs need the Claude Code CLI and write `results/<style>/latest.json`, the score to show on style pages.
-4. **More illustration subjects** (cloud, API, security shield, chart, team, AI chip, workflow) and a second illustration style.
+4. **More illustration subjects (subjects done):** Isometric now has 15 subjects. The new seven are Cloud storage, API, Security shield, Analytics chart, Team, AI chip and Workflow.
+   - The kit gained `Extrusion` (upright shapes with thickness: clouds, shields, speech bubbles, all exact arcs) and `Sphere`.
+   - The eval suite's held-out tasks moved to subjects that aren't published: mail, payments, calendar, search.
+   - Next: a second illustration style that draws the same subjects.
 5. **Registry hardening:** axe a11y checks, visual regression on thumbnails.
 6. **Gallery:** filters (nuqs), virtualized grids, Orama search, token swatches on style pages.
-7. **More component styles** and the remaining 16 Minimalist components (Radio, Slider, Tooltip, Dropdown, Toast, Table, Pagination, Breadcrumbs, Navbar, …).
+7. **More component styles**, each implementing the same 30 contracts.

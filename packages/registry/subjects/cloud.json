@@ -1,0 +1,8 @@
+{
+  "slug": "cloud",
+  "name": "Cloud storage",
+  "category": "infrastructure",
+  "description": "A cloud floating above a storage unit.",
+  "uses": ["Hosting and storage pages", "Backup and sync features", "Cloud plans and pricing"],
+  "tags": ["cloud", "storage", "sync"]
+}

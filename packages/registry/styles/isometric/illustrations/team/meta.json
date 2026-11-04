@@ -1,0 +1,10 @@
+{
+  "description": "Three people on a shared base, one of them active.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/isometric/team.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

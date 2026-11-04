@@ -1,0 +1,10 @@
+{
+  "description": "Steps connected in a row, with the active one running.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/isometric/workflow.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}
