@@ -1,0 +1,16 @@
+{
+  "slug": "pixel",
+  "name": "Pixel",
+  "kind": "illustrations",
+  "tagline": "Crisp pixel-art illustrations in warm grays, with one orange touch.",
+  "description": "Chunky pixel art for product sites and docs: objects drawn on a small grid, each with a one-cell warm outline, white tops and light fronts lit from the top-left, and a soft ground shadow. Orange marks one thing per drawing, and motion snaps whole cells. Every illustration ships in light and dark, built from a small drawing kit that agents can use to draw new ones in the same family.",
+  "tags": ["pixel", "retro", "8-bit", "playful"],
+  "accent": "#f76b15",
+  "status": "beta",
+  "fonts": [],
+  "kit": [{ "path": "kit/pixel.tsx", "target": "@lib/pixel.tsx" }],
+  "stage": {
+    "light": "var(--px-stage)",
+    "dark": "var(--px-stage)"
+  }
+}

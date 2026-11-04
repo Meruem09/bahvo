@@ -1,0 +1,10 @@
+{
+  "description": "Three people, the one in front in orange, with a speech bubble.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/pixel/team.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

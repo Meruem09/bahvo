@@ -1,0 +1,10 @@
+{
+  "description": "Three steps in a row with the running one active, and a skipped branch.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/pixel/workflow.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

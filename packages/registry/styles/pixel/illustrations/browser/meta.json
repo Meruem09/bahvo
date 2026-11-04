@@ -1,0 +1,10 @@
+{
+  "description": "A browser window with a page, an orange button and a floating code chip.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/pixel/browser.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

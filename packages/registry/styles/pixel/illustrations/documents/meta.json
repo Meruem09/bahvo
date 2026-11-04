@@ -1,0 +1,10 @@
+{
+  "description": "A stack of paper with a highlighted sheet lifted off the top.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/pixel/documents.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

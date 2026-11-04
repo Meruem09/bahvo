@@ -1,0 +1,10 @@
+{
+  "description": "A cloud with an upload arrow, floating above a storage unit.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/pixel/cloud.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

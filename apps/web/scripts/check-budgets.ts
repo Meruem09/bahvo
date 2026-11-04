@@ -36,6 +36,9 @@ const budgets: Budget[] = [
   { path: "/styles/minimalist/dialog", maxJs: 170 * KB, maxCss: 8 * KB, kind: "detail" },
   // Dialog is the first preview with client JS: it must only add its own component.
   { path: "/preview/minimalist/dialog", maxJs: 160 * KB, maxCss: 12 * KB, kind: "preview" },
+  { path: "/styles/pixel", maxJs: 165 * KB, maxCss: 8 * KB, kind: "grid" },
+  { path: "/styles/pixel/server", maxJs: 170 * KB, maxCss: 8 * KB, kind: "detail" },
+  { path: "/preview/pixel/server", maxJs: 155 * KB, maxCss: 8 * KB, kind: "preview" },
 ];
 
 function startServer(): Promise<ChildProcess> {
@@ -107,10 +110,12 @@ try {
       );
     }
     const allCss = css.join("\n");
-    if (budget.kind !== "preview" && /--(?:iso|mn)-/.test(allCss)) {
+    if (budget.kind !== "preview" && /--(?:iso|mn|px)-/.test(allCss)) {
       failures.push(`${budget.path}: site CSS contains hosted-style tokens`);
     }
-    if (budget.kind === "preview" && allCss.includes("--font-geist")) {
+    // `--accent-text` is defined only by the site's own CSS. (Not `--font-geist`: Minimalist
+    // previews legitimately load Geist.)
+    if (budget.kind === "preview" && allCss.includes("--accent-text")) {
       failures.push(`${budget.path}: preview loaded the site's CSS`);
     }
     await context.close();

@@ -1,0 +1,10 @@
+{
+  "description": "A hub with a sparkle, cabled to three nodes, one of them active.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/pixel/hub.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

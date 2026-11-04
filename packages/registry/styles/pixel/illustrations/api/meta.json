@@ -1,0 +1,10 @@
+{
+  "description": "An endpoint panel with method pills and a floating braces chip.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/pixel/api.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

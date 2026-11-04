@@ -1,0 +1,10 @@
+{
+  "description": "An office tower on a plaza, with one lit window.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/pixel/building.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

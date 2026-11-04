@@ -9,7 +9,7 @@ This is how bahvo is built so it stays fast with tens of thousands of components
 | `components`    | UI components with one API in every style       | `contracts/<component>.json` (props, states, a11y)           | none yet      |
 | `illustrations` | SVG artwork as React components, light and dark | `subjects/<subject>.json` (what is drawn, where it's useful) | **Isometric** |
 
-An illustration style also ships a **kit** (drawing primitives every item imports, published as a `registry:lib` item, including `<Motion>` for one or two tiny ambient animations whose CSS ships inside the SVG and stops for `prefers-reduced-motion`, `animated={false}` or a `[data-iso-motion="off"]` ancestor, which is how the preview's Motion switch works; thumbnails always render still), a **checker** (`skill/scripts/check.mjs`, run by the registry build and by agents), and an **agent skill** (`skill/SKILL.md` + references). The whole site uses the same palette as Isometric: white and gray, with orange as a touch, in light and dark.
+An illustration style also ships a **kit** (drawing primitives every item imports, published as a `registry:lib` item, including `<Motion>` for one or two tiny ambient animations whose CSS ships inside the SVG and stops for `prefers-reduced-motion`, `animated={false}` or a `[data-motion="off"]` ancestor, which is how the preview's Motion switch works; thumbnails always render still), a **checker** (`skill/scripts/check.mjs`, run by the registry build and by agents), and an **agent skill** (`skill/SKILL.md` + references). The whole site uses the same palette as Isometric: white and gray, with orange as a touch, in light and dark.
 
 ## The three rules
 
@@ -140,7 +140,10 @@ Raise a budget deliberately in the same pull request that needs it, never just t
 4. **More illustration subjects (subjects done):** Isometric now has 15 subjects. The new seven are Cloud storage, API, Security shield, Analytics chart, Team, AI chip and Workflow.
    - The kit gained `Extrusion` (upright shapes with thickness: clouds, shields, speech bubbles, all exact arcs) and `Sphere`.
    - The eval suite's held-out tasks moved to subjects that aren't published: mail, payments, calendar, search.
-   - Next: a second illustration style that draws the same subjects.
+   - **Pixel (done)** is the second illustration style. It draws all 15 subjects as chunky cells on a 56 × 40 grid (10px a cell at the 560px preview).
+   - Its kit is a `Canvas`: masks (rect, circle, ellipse, union, inset...) painted in color roles, with `shape()` and `block()` adding the house outline and top-left bevel, and stepped motion on layers.
+   - Its checker, skill and eval suite share the held-out subjects with Isometric.
+   - The site's motion switch is now the neutral `data-motion` attribute, honored by both kits.
 5. **Registry hardening:** axe a11y checks, visual regression on thumbnails.
 6. **Gallery:** filters (nuqs), virtualized grids, Orama search, token swatches on style pages.
 7. **More component styles**, each implementing the same 30 contracts.

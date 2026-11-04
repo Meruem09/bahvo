@@ -1,0 +1,10 @@
+{
+  "description": "A two-unit rack server with drive slots and a live LED.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/pixel/server.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

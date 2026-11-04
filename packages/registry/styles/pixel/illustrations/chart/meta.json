@@ -1,0 +1,10 @@
+{
+  "description": "Rising bars on a panel, the latest one orange, with a growth arrow.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/pixel/chart.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

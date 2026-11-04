@@ -1,0 +1,10 @@
+{
+  "description": "A shield with an orange lock, floating over a base.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/pixel/shield.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

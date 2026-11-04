@@ -1,0 +1,10 @@
+{
+  "description": "Three stacked plates, the top one floating with an orange mark.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/pixel/layers.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

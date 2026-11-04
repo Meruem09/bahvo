@@ -1,0 +1,10 @@
+{
+  "description": "A chip with a glowing sparkle on a board with pins and traces.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/pixel/chip.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

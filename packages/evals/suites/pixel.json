@@ -1,0 +1,24 @@
+{
+  "style": "pixel",
+  "kind": "illustrations",
+  "output": "illustration.tsx",
+  "prompt": "Create a pixel-art illustration of {subject} for our product site, as a React component in `{output}` with a default export. Match the pixel illustration style this project already uses, in light and dark.",
+  "tasks": [
+    {
+      "id": "mail",
+      "subject": "email: an envelope floating above an inbox tray"
+    },
+    {
+      "id": "payments",
+      "subject": "payments: a card reader with a card inserted"
+    },
+    {
+      "id": "calendar",
+      "subject": "scheduling: a calendar block with one highlighted day"
+    },
+    {
+      "id": "search",
+      "subject": "search: a magnifying glass over a stack of result cards"
+    }
+  ]
+}

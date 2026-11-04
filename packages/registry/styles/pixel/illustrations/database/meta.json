@@ -1,0 +1,10 @@
+{
+  "description": "Three stacked database tiers with a live LED.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/pixel/database.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}

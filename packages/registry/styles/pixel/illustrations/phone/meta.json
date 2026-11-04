@@ -1,0 +1,10 @@
+{
+  "description": "A phone showing an app, with a floating notification badge.",
+  "files": [
+    {
+      "path": "illustration.tsx",
+      "target": "@components/pixel/phone.tsx"
+    }
+  ],
+  "demo": "illustration.tsx"
+}
