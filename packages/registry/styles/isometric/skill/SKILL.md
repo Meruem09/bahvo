@@ -34,7 +34,7 @@ Every illustration gets one or two tiny ambient motions, as a touch:
 - Wrap only the part that would naturally move in `<Motion kind=…>`: the floating chip or sheet (`float`), the live LED or antenna tip (`blink`), the lit window (`pulse`), a dashed ring on a face (`spin`), data along the active cable (`flow`), a ring from the core dot (`ping`).
 - `flow` and `ping` are motion-only: draw an extra shape inside them (a cable copy in `ink.top`, a ring copy of the dot). They're hidden whenever motion is off, so the still drawing is unchanged.
 - At most 2 motions. Never animate the whole subject. Offset two motions with `delay`.
-- The kit ships the CSS inside the SVG and turns motion off for `prefers-reduced-motion`, for `animated={false}`, and under any `[data-iso-motion="off"]` ancestor (use that for a page-level toggle).
+- The kit ships the CSS inside the SVG and turns motion off for `prefers-reduced-motion`, for `animated={false}`, and under any `[data-motion="off"]` ancestor (use that for a page-level toggle).
 
 ## Workflow
 

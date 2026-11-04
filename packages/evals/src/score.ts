@@ -133,7 +133,7 @@ export async function score(
   const shots = { light: `${options.shotBase}.light.png`, dark: `${options.shotBase}.dark.png` };
   for (const theme of ["light", "dark"] as const) {
     await page.setContent(
-      `<!doctype html><html class="${theme}" data-iso-motion="off"><head>${fonts}<style>${css}</style>` +
+      `<!doctype html><html class="${theme}" data-motion="off"><head>${fonts}<style>${css}</style>` +
         "<style>body>svg{width:min(560px,82vw);height:auto}</style></head>" +
         `<body style="margin:0;min-height:100vh;display:grid;place-items:center;background:${options.info.stage[theme]}">` +
         `${rendered.markup}</body></html>`,

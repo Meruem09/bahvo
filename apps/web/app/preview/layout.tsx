@@ -15,7 +15,7 @@ const bridge = `(() => {
   const set = (theme) => root.classList.toggle("dark", theme === "dark");
   set(media.matches ? "dark" : "light");
   // Ambient motion follows the site's saved toggle before first paint, then the parent's messages.
-  const motion = (on) => root.setAttribute("data-iso-motion", on ? "on" : "off");
+  const motion = (on) => root.setAttribute("data-motion", on ? "on" : "off");
   try {
     motion(localStorage.getItem("bahvo:motion") !== "off");
   } catch {

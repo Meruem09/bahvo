@@ -60,7 +60,7 @@ if (pending.length > 0) {
     const body = item.svg ? item.svg.light.code : (item.htmlExport?.markup.code ?? "");
     for (const theme of ["light", "dark"] as const) {
       await page.setContent(
-        `<!doctype html><html class="${theme}" data-iso-motion="off"><head>${fontsFor(item.style)}<style>${css}</style>` +
+        `<!doctype html><html class="${theme}" data-motion="off"><head>${fontsFor(item.style)}<style>${css}</style>` +
           "<style>body>svg{width:min(560px,82vw);height:auto}</style></head>" +
           `<body style="margin:0;min-height:100vh;display:grid;place-items:center;background:${item.stage[theme]}">` +
           `${theme === "dark" && item.svg ? item.svg.dark.code : body}</body></html>`,

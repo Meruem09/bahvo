@@ -112,7 +112,7 @@ export function Iso({
 /**
  * Small ambient motion, shipped inside the SVG so components, copied code and
  * downloaded files all animate. Motion stops for `prefers-reduced-motion`, for
- * `animated={false}`, and anywhere under `[data-iso-motion="off"]` (how a page
+ * `animated={false}`, and anywhere under `[data-motion="off"]` (how a page
  * offers a motion toggle). Keep it to one or two motions per drawing, on the
  * active or floating part, never on the whole subject.
  *
@@ -143,8 +143,8 @@ const MOTION_CSS = `
 @keyframes iso-spin{to{transform:rotate(360deg)}}
 @keyframes iso-flow{to{stroke-dashoffset:-12}}
 @keyframes iso-ping{0%{transform:scale(1);opacity:.8}70%,100%{transform:scale(2.4);opacity:0}}
-[data-iso-motion="off"] .iso-animated *{animation:none!important}
-[data-iso-motion="off"] .iso-m-flow,[data-iso-motion="off"] .iso-m-ping{display:none!important}
+[data-motion="off"] .iso-animated *{animation:none!important}
+[data-motion="off"] .iso-m-flow,[data-motion="off"] .iso-m-ping{display:none!important}
 @media (prefers-reduced-motion:reduce){.iso-animated *{animation:none!important}.iso-m-flow,.iso-m-ping{display:none!important}}
 `;
 
