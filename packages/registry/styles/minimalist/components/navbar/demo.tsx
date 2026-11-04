@@ -34,7 +34,7 @@ export default function NavbarDemo() {
             </button>
             <button
               type="button"
-              aria-label="Account"
+              aria-label="KS, account"
               className={`inline-flex size-8 items-center justify-center rounded-full border border-mn-line bg-mn-subtle text-xs font-medium text-mn-fg transition-colors hover:border-mn-line-strong ${focusRing}`}
             >
               KS

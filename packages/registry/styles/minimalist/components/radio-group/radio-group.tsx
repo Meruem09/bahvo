@@ -49,8 +49,8 @@ export function RadioGroup({
         const inputId = `${groupName}-${option.value}`;
         const descriptionId = `${inputId}-description`;
         return (
-          <div key={option.value} className="flex items-start gap-2.5 has-disabled:opacity-50">
-            <span className="relative mt-0.5 inline-flex size-4 shrink-0">
+          <div key={option.value} className="group/radio flex items-start gap-2.5">
+            <span className="relative mt-0.5 inline-flex size-4 shrink-0 group-has-disabled/radio:opacity-50">
               <input
                 id={inputId}
                 type="radio"
@@ -71,7 +71,10 @@ export function RadioGroup({
               />
             </span>
             <span className="flex flex-col gap-0.5">
-              <label htmlFor={inputId} className="cursor-pointer text-sm font-medium text-mn-fg">
+              <label
+                htmlFor={inputId}
+                className="cursor-pointer text-sm font-medium text-mn-fg group-has-disabled/radio:cursor-not-allowed group-has-disabled/radio:text-mn-muted"
+              >
                 {option.label}
               </label>
               {option.description && (

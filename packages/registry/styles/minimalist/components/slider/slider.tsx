@@ -60,19 +60,20 @@ export function Slider({
 
   return (
     <div
-      className={["flex flex-col gap-2 font-mn has-disabled:opacity-50", className]
-        .filter(Boolean)
-        .join(" ")}
+      className={["group/slider flex flex-col gap-2 font-mn", className].filter(Boolean).join(" ")}
     >
       <div className="flex items-baseline justify-between gap-4">
-        <label htmlFor={inputId} className="text-[13px] font-medium text-mn-fg">
+        <label
+          htmlFor={inputId}
+          className="text-[13px] font-medium text-mn-fg group-has-disabled/slider:text-mn-muted"
+        >
           {label}
         </label>
         <output htmlFor={inputId} className="text-[13px] text-mn-muted tabular-nums">
           {shown}
         </output>
       </div>
-      <div className="relative flex h-5 items-center">
+      <div className="relative flex h-5 items-center group-has-disabled/slider:opacity-50">
         <span aria-hidden="true" className="absolute inset-x-0 h-1 rounded-full bg-mn-line" />
         <span
           aria-hidden="true"

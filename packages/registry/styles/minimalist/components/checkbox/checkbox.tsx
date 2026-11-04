@@ -18,11 +18,11 @@ export function Checkbox({ label, description, id, className, ...props }: Checkb
 
   return (
     <div
-      className={["flex items-start gap-2.5 font-mn has-disabled:opacity-50", className]
+      className={["group/checkbox flex items-start gap-2.5 font-mn", className]
         .filter(Boolean)
         .join(" ")}
     >
-      <span className="relative mt-0.5 inline-flex size-4 shrink-0">
+      <span className="relative mt-0.5 inline-flex size-4 shrink-0 group-has-disabled/checkbox:opacity-50">
         <input
           id={inputId}
           type="checkbox"
@@ -46,7 +46,10 @@ export function Checkbox({ label, description, id, className, ...props }: Checkb
         </svg>
       </span>
       <span className="flex flex-col gap-0.5">
-        <label htmlFor={inputId} className="cursor-pointer text-sm font-medium text-mn-fg">
+        <label
+          htmlFor={inputId}
+          className="cursor-pointer text-sm font-medium text-mn-fg group-has-disabled/checkbox:cursor-not-allowed group-has-disabled/checkbox:text-mn-muted"
+        >
           {label}
         </label>
         {description && (

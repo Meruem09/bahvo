@@ -144,6 +144,8 @@ Raise a budget deliberately in the same pull request that needs it, never just t
    - Its kit is a `Canvas`: masks (rect, circle, ellipse, union, inset...) painted in color roles, with `shape()` and `block()` adding the house outline and top-left bevel, and stepped motion on layers.
    - Its checker, skill and eval suite share the held-out subjects with Isometric.
    - The site's motion switch is now the neutral `data-motion` attribute, honored by both kits.
-5. **Registry hardening:** axe a11y checks, visual regression on thumbnails.
+5. **Registry hardening (done):** every item renders on one shared stage (`scripts/stage.ts`), the same page thumbnails use.
+   - **`pnpm a11y`** runs axe-core on every item in light and dark against WCAG 2.2 A/AA, and fails CI on any violation. The first run found 12: Minimalist's muted gray was 4.33:1 on subtle surfaces (now `#716a65`, ≥4.77:1 everywhere), disabled rows faded their descriptions to 2:1, and a demo button's name didn't include its visible text.
+   - **`pnpm visual`** compares every render with a baseline and writes `visual/report/index.html` (before, after, diff). It flags changes that came only from shared code, not the item's own. Baselines are per machine because text renders differently per OS: locally `pnpm visual --update`, and in CI the renders of the last green main run, with the report uploaded as an artifact.
 6. **Gallery:** filters (nuqs), virtualized grids, Orama search, token swatches on style pages.
 7. **More component styles**, each implementing the same 30 contracts.

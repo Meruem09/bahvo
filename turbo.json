@@ -33,6 +33,14 @@
     "budgets": {
       "dependsOn": ["build"],
       "cache": false
+    },
+    "a11y": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "visual": {
+      "dependsOn": ["build"],
+      "cache": false
     }
   }
 }

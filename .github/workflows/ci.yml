@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+  # Reads the visual baseline artifact from the last green main run.
+  actions: read
+
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -26,5 +31,30 @@ jobs:
       - run: pnpm typecheck
       # Thumbnails first: they land in apps/web/public, which the site build ships.
       - run: pnpm thumbs
+      - run: pnpm a11y
+      # Renders are compared with those of the last green main run (text renders
+      # differently per OS, so CI keeps its own baseline). Changes are reported,
+      # not failed: open the visual-report artifact to review them.
+      - name: Download the visual baseline
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          run=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow ci.yml --branch main --status success --limit 1 --json databaseId --jq '.[0].databaseId // empty')
+          if [ -n "$run" ]; then
+            gh run download "$run" --repo "$GITHUB_REPOSITORY" --name visual-baseline --dir packages/registry/visual/baseline || echo "Run $run has no visual baseline yet."
+          else
+            echo "No green main run yet."
+          fi
+      - run: pnpm --filter @bahvo/registry visual --report-only
+      - uses: actions/upload-artifact@v7
+        with:
+          name: visual-report
+          path: packages/registry/visual/report
+          if-no-files-found: ignore
+      - if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-baseline
+          path: packages/registry/visual/current
       - run: pnpm build
       - run: pnpm budgets
