@@ -1,0 +1,12 @@
+{
+  "description": "A menu button with grouped items, shortcuts, a danger item and full keyboard support.",
+  "files": [
+    {
+      "path": "dropdown-menu.tsx",
+      "target": "@ui/minimalist/dropdown-menu.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "open", "disabled"]
+}

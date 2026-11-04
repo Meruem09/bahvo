@@ -1,0 +1,34 @@
+{
+  "slug": "navbar",
+  "name": "Navbar",
+  "category": "navigation",
+  "description": "The top bar of an app, with the brand, main links and actions.",
+  "anatomy": ["bar", "brand", "links", "current indicator", "actions"],
+  "props": [
+    {
+      "name": "brand",
+      "type": "ReactNode",
+      "description": "Logo and name, at the start."
+    },
+    {
+      "name": "links",
+      "type": "{ label: string; href: string; current?: boolean }[]",
+      "description": "Main navigation."
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "description": "Buttons, search or the account menu, at the end."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name for the navigation landmark. Default \"Main\"."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible"],
+  "a11y": [
+    "A <header> with a named <nav>; the current link has aria-current=\"page\".",
+    "The current link is marked by weight and an indicator, not color alone."
+  ]
+}

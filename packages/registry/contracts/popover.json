@@ -1,0 +1,54 @@
+{
+  "slug": "popover",
+  "name": "Popover",
+  "category": "overlay",
+  "description": "A small non-modal panel anchored to a button, for a short task like sharing.",
+  "anatomy": ["trigger", "panel", "title", "description (optional)", "close button", "body"],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Trigger button text."
+    },
+    {
+      "name": "icon",
+      "type": "ReactNode",
+      "description": "Icon shown before the trigger text."
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Panel title; names the dialog."
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "description": "Supporting text; describes the dialog."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "The panel body."
+    },
+    {
+      "name": "open / onOpenChange",
+      "type": "boolean / (open: boolean) => void",
+      "description": "Controlled state, so the body can close it."
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "description": "Starts open, when uncontrolled."
+    },
+    {
+      "name": "align",
+      "type": "\"start\" | \"end\"",
+      "description": "Aligns the panel to the trigger's start or end edge. Default start."
+    }
+  ],
+  "states": ["default", "focus-visible", "open"],
+  "a11y": [
+    "A non-modal role=\"dialog\" named by its title; the trigger has aria-expanded and aria-controls.",
+    "Opening moves focus into the panel; Escape closes it and returns focus; outside clicks and tabbing away close it."
+  ]
+}

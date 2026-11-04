@@ -1,0 +1,50 @@
+{
+  "slug": "radio-group",
+  "name": "Radio group",
+  "category": "forms",
+  "description": "A set of native radio buttons for choosing exactly one option, with a legend.",
+  "anatomy": ["legend", "radio", "selected dot", "label", "description (optional)"],
+  "props": [
+    {
+      "name": "legend",
+      "type": "ReactNode",
+      "description": "Visible name of the group, rendered as a <legend>."
+    },
+    {
+      "name": "options",
+      "type": "{ value: string; label: ReactNode; description?: ReactNode; disabled?: boolean }[]",
+      "description": "The choices."
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "description": "The selected value, for a controlled group."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "description": "The value selected first, for an uncontrolled group."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "description": "Called with the new value when the selection changes."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Form field name. Generated when omitted."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disables every option."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"],
+  "a11y": [
+    "Native radios in a <fieldset> with a <legend>, so arrow keys move the selection and the group is announced.",
+    "Each option has a real <label>; descriptions are linked with aria-describedby.",
+    "The selected option is shown by a filled circle, not color alone."
+  ]
+}

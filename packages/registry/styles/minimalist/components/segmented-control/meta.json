@@ -1,0 +1,12 @@
+{
+  "description": "A radiogroup of segments on a subtle track; the selected one is raised.",
+  "files": [
+    {
+      "path": "segmented-control.tsx",
+      "target": "@ui/minimalist/segmented-control.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"]
+}

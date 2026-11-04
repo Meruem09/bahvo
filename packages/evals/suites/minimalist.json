@@ -5,12 +5,12 @@
   "prompt": "Create a {subject} as a React + Tailwind component in `{output}`, matching this project's Minimalist UI style in light and dark. Export the component by name, and default-export a demo that shows its states.",
   "tasks": [
     {
-      "id": "segmented",
-      "subject": "segmented control for switching between Day, Week and Month views, with keyboard support"
+      "id": "otp",
+      "subject": "one-time code input with six digit boxes that supports paste, with filled and error states"
     },
     {
-      "id": "toast",
-      "subject": "toast notification with a title, description, an action and a dismiss button"
+      "id": "stepper",
+      "subject": "onboarding stepper with completed, current and upcoming steps"
     },
     {
       "id": "pricing",

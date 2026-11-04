@@ -1,0 +1,12 @@
+{
+  "description": "A 56px top bar whose current link's orange underline replaces the bottom hairline.",
+  "files": [
+    {
+      "path": "navbar.tsx",
+      "target": "@ui/minimalist/navbar.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

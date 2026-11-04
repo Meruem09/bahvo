@@ -1,0 +1,12 @@
+{
+  "description": "Native radios with a near-black selected fill, labels and descriptions.",
+  "files": [
+    {
+      "path": "radio-group.tsx",
+      "target": "@ui/minimalist/radio-group.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"]
+}

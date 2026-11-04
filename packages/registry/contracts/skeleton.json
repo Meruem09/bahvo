@@ -1,0 +1,24 @@
+{
+  "slug": "skeleton",
+  "name": "Skeleton",
+  "category": "feedback",
+  "description": "Placeholder shapes that hold the layout while content loads.",
+  "anatomy": ["group", "line", "block", "circle"],
+  "props": [
+    {
+      "name": "shape",
+      "type": "\"line\" | \"block\" | \"circle\"",
+      "description": "Text line, rectangle or circle. Size it with className. Default block."
+    },
+    {
+      "name": "SkeletonGroup label",
+      "type": "string",
+      "description": "What is loading, announced once for the whole group."
+    }
+  ],
+  "states": ["default", "loading"],
+  "a11y": [
+    "Shapes are aria-hidden; SkeletonGroup is a role=\"status\" with aria-busy and a text label.",
+    "The pulse respects prefers-reduced-motion."
+  ]
+}

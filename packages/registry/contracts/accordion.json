@@ -1,0 +1,29 @@
+{
+  "slug": "accordion",
+  "name": "Accordion",
+  "category": "display",
+  "description": "A stack of headings that expand to show their content.",
+  "anatomy": ["item", "trigger", "chevron", "content"],
+  "props": [
+    {
+      "name": "items",
+      "type": "{ id: string; title: ReactNode; content: ReactNode }[]",
+      "description": "The sections."
+    },
+    {
+      "name": "multiple",
+      "type": "boolean",
+      "description": "Lets several sections stay open. Default false: opening one closes the others."
+    },
+    {
+      "name": "defaultOpen",
+      "type": "string[]",
+      "description": "Ids of the sections open at first."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible", "open"],
+  "a11y": [
+    "Native <details> and <summary>: keyboard, screen readers and find-in-page work without script.",
+    "Exclusive mode uses the details name attribute; the chevron is aria-hidden."
+  ]
+}

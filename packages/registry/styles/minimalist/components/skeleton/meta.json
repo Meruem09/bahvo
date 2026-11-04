@@ -1,0 +1,12 @@
+{
+  "description": "Quiet pulsing shapes for lines, blocks and avatars, announced once per group.",
+  "files": [
+    {
+      "path": "skeleton.tsx",
+      "target": "@ui/minimalist/skeleton.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "loading"]
+}

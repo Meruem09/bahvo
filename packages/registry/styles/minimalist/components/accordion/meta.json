@@ -1,0 +1,12 @@
+{
+  "description": "Native details elements between hairlines, exclusive by default, with a turning chevron.",
+  "files": [
+    {
+      "path": "accordion.tsx",
+      "target": "@ui/minimalist/accordion.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "open"]
+}

@@ -1,0 +1,12 @@
+{
+  "description": "A non-modal dialog panel under its trigger, with a title, description and close button.",
+  "files": [
+    {
+      "path": "popover.tsx",
+      "target": "@ui/minimalist/popover.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "focus-visible", "open"]
+}

@@ -1,0 +1,12 @@
+{
+  "description": "Muted links with slash separators, ending in the current page.",
+  "files": [
+    {
+      "path": "breadcrumbs.tsx",
+      "target": "@ui/minimalist/breadcrumbs.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

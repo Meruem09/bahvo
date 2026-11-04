@@ -1,0 +1,24 @@
+{
+  "slug": "breadcrumbs",
+  "name": "Breadcrumbs",
+  "category": "navigation",
+  "description": "Shows where the current page sits in the hierarchy, with links back up.",
+  "anatomy": ["list", "link", "separator", "current page"],
+  "props": [
+    {
+      "name": "items",
+      "type": "{ label: string; href?: string; icon?: ReactNode }[]",
+      "description": "From the root to the current page, which is last."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name for the navigation landmark. Default \"Breadcrumb\"."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible"],
+  "a11y": [
+    "A <nav> with an ordered list; the last item has aria-current=\"page\".",
+    "Separators are aria-hidden so they are not read between items."
+  ]
+}

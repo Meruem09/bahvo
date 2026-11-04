@@ -1,0 +1,49 @@
+{
+  "slug": "tooltip",
+  "name": "Tooltip",
+  "category": "overlay",
+  "description": "A short label or hint that appears on hover and keyboard focus.",
+  "anatomy": ["trigger", "bubble", "shortcut (optional)"],
+  "props": [
+    {
+      "name": "content",
+      "type": "ReactNode",
+      "description": "The tooltip text."
+    },
+    {
+      "name": "children",
+      "type": "ReactElement",
+      "description": "The trigger. It receives the event handlers and aria attributes."
+    },
+    {
+      "name": "shortcut",
+      "type": "string",
+      "description": "A keyboard shortcut shown after the text."
+    },
+    {
+      "name": "side",
+      "type": "\"top\" | \"bottom\"",
+      "description": "Where the bubble appears. Default top."
+    },
+    {
+      "name": "asLabel",
+      "type": "boolean",
+      "description": "Use the tooltip as the trigger's name (icon-only buttons) instead of its description."
+    },
+    {
+      "name": "delay",
+      "type": "number",
+      "description": "Hover delay in ms. Keyboard focus shows it at once. Default 300."
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "description": "Starts visible."
+    }
+  ],
+  "states": ["default", "open"],
+  "a11y": [
+    "role=\"tooltip\", linked with aria-describedby, or aria-labelledby for icon-only triggers.",
+    "Shows on hover and on keyboard focus (not on mouse focus), hides on blur, pointer leave and Escape."
+  ]
+}

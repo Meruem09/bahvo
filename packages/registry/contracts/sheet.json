@@ -1,0 +1,53 @@
+{
+  "slug": "sheet",
+  "name": "Sheet",
+  "category": "overlay",
+  "description": "A modal panel that slides in from the right edge for details or editing.",
+  "anatomy": [
+    "overlay",
+    "panel",
+    "header",
+    "title",
+    "description (optional)",
+    "close button",
+    "body",
+    "footer actions"
+  ],
+  "props": [
+    {
+      "name": "open",
+      "type": "boolean",
+      "description": "Whether the sheet is open."
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "description": "Called when it should open or close (Escape, overlay click, close button)."
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Sheet title; names the dialog."
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "description": "Supporting text under the title."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "The scrollable body."
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "description": "Buttons in the footer."
+    }
+  ],
+  "states": ["default", "open"],
+  "a11y": [
+    "Native <dialog> opened with showModal(): focus is trapped, the page is inert and Escape closes it.",
+    "Named by its title with aria-labelledby; focus returns to the trigger when it closes."
+  ]
+}

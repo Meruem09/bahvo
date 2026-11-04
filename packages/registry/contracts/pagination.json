@@ -1,0 +1,39 @@
+{
+  "slug": "pagination",
+  "name": "Pagination",
+  "category": "navigation",
+  "description": "Moves between pages of a long list, with the current page marked.",
+  "anatomy": ["previous", "page", "current page", "gap", "next"],
+  "props": [
+    {
+      "name": "page",
+      "type": "number",
+      "description": "The current page, from 1."
+    },
+    {
+      "name": "pageCount",
+      "type": "number",
+      "description": "The number of pages."
+    },
+    {
+      "name": "href",
+      "type": "(page: number) => string",
+      "description": "Builds a link for each page (links mode)."
+    },
+    {
+      "name": "onPageChange",
+      "type": "(page: number) => void",
+      "description": "Called with the page instead (buttons mode)."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name for the navigation landmark. Default \"Pagination\"."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible", "disabled"],
+  "a11y": [
+    "A <nav> landmark; the current page has aria-current=\"page\" and every page an aria-label.",
+    "Previous and Next are disabled at the ends; the gaps are hidden from assistive tech."
+  ]
+}

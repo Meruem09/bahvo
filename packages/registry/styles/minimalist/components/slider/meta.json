@@ -1,0 +1,12 @@
+{
+  "description": "A native range input with a near-black filled track and a focus ring on the thumb.",
+  "files": [
+    {
+      "path": "slider.tsx",
+      "target": "@ui/minimalist/slider.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active", "disabled"]
+}

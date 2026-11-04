@@ -1,0 +1,12 @@
+{
+  "description": "Previous, numbered pages with gaps, and next; the current page carries the orange mark.",
+  "files": [
+    {
+      "path": "pagination.tsx",
+      "target": "@ui/minimalist/pagination.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "disabled"]
+}

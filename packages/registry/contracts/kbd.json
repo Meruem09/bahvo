@@ -1,0 +1,21 @@
+{
+  "slug": "kbd",
+  "name": "Kbd",
+  "category": "display",
+  "description": "Shows a key or key combination for a keyboard shortcut.",
+  "anatomy": ["key", "combination"],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "A single key."
+    },
+    {
+      "name": "keys",
+      "type": "string[]",
+      "description": "Several keys of one combination, each in its own key cap."
+    }
+  ],
+  "states": ["default"],
+  "a11y": ["Rendered as <kbd>; a combination nests one <kbd> per key, as HTML specifies."]
+}

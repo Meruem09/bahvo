@@ -1,0 +1,39 @@
+{
+  "slug": "empty-state",
+  "name": "Empty state",
+  "category": "feedback",
+  "description": "Explains why a view is empty and offers the next step.",
+  "anatomy": ["icon tile (optional)", "title", "description (optional)", "actions (optional)"],
+  "props": [
+    {
+      "name": "icon",
+      "type": "ReactNode",
+      "description": "An icon in a small tile."
+    },
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "description": "What is missing."
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "description": "Why, and how to fill it."
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "description": "One or two buttons."
+    },
+    {
+      "name": "bordered",
+      "type": "boolean",
+      "description": "Draws the dashed outline of an empty slot. Default true."
+    }
+  ],
+  "states": ["default"],
+  "a11y": [
+    "The title is a heading so the state is reachable by heading navigation.",
+    "The icon is aria-hidden."
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "slug": "dropdown-menu",
+  "name": "Dropdown menu",
+  "category": "overlay",
+  "description": "A button that opens a list of actions, grouped and separated.",
+  "anatomy": [
+    "trigger",
+    "menu",
+    "group label (optional)",
+    "item",
+    "shortcut (optional)",
+    "separator"
+  ],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Trigger text, and its accessible name when icon replaces it."
+    },
+    {
+      "name": "icon",
+      "type": "ReactNode",
+      "description": "Shows an icon-only trigger instead of the text."
+    },
+    {
+      "name": "groups",
+      "type": "{ label?: string; items: { label: string; icon?: ReactNode; shortcut?: string; danger?: boolean; disabled?: boolean; onSelect?: () => void }[] }[]",
+      "description": "Groups of items, separated by hairlines."
+    },
+    {
+      "name": "align",
+      "type": "\"start\" | \"end\"",
+      "description": "Aligns the menu to the trigger's start or end edge. Default start."
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "description": "Starts open."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible", "open", "disabled"],
+  "a11y": [
+    "Menu button pattern: aria-haspopup, aria-expanded and aria-controls on the trigger; role=\"menu\" and menuitem.",
+    "Arrow keys, Home and End move between items; Escape closes and returns focus; Tab and outside clicks close it."
+  ]
+}

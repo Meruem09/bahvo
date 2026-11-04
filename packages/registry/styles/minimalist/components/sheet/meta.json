@@ -1,0 +1,12 @@
+{
+  "description": "A native modal dialog docked to the right edge, with a header, scrolling body and footer.",
+  "files": [
+    {
+      "path": "sheet.tsx",
+      "target": "@ui/minimalist/sheet.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "open"]
+}

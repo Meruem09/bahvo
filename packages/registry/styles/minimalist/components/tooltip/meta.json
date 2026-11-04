@@ -1,0 +1,12 @@
+{
+  "description": "An inverse bubble with an optional shortcut, shown on hover and keyboard focus.",
+  "files": [
+    {
+      "path": "tooltip.tsx",
+      "target": "@ui/minimalist/tooltip.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "open"]
+}

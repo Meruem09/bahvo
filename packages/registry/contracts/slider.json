@@ -1,0 +1,54 @@
+{
+  "slug": "slider",
+  "name": "Slider",
+  "category": "forms",
+  "description": "Picks a number from a range by dragging or with the arrow keys, with the value shown.",
+  "anatomy": ["label", "value", "track", "filled range", "thumb", "hint (optional)"],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Visible label, connected to the input."
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "description": "The current value, for a controlled slider."
+    },
+    {
+      "name": "defaultValue",
+      "type": "number",
+      "description": "The starting value. Defaults to min."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: number) => void",
+      "description": "Called with the new value while dragging or stepping."
+    },
+    {
+      "name": "min / max / step",
+      "type": "number",
+      "description": "The range and its increment. Default 0, 100 and 1."
+    },
+    {
+      "name": "format",
+      "type": "(value: number) => string",
+      "description": "Formats the shown value and its aria-valuetext."
+    },
+    {
+      "name": "hint",
+      "type": "string",
+      "description": "Helper text, connected with aria-describedby."
+    },
+    {
+      "name": "...props",
+      "type": "InputHTMLAttributes<HTMLInputElement>",
+      "description": "All other native attributes of the range input."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible", "active", "disabled"],
+  "a11y": [
+    "Built on <input type=\"range\">: arrow keys, Page Up/Down, Home and End work natively.",
+    "The label is a real <label>, the value an <output> for the input, and format() also sets aria-valuetext."
+  ]
+}

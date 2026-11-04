@@ -51,6 +51,8 @@ if (pending.length > 0) {
   const page = await browser.newPage({
     viewport: { width: 720, height: 450 },
     deviceScaleFactor: 2,
+    // motion-safe: pulses and spinners hold still, so a capture never lands mid-fade.
+    reducedMotion: "reduce",
   });
   for (const item of pending) {
     const css = await readFile(path.join(webPublic, item.cssUrl), "utf8");

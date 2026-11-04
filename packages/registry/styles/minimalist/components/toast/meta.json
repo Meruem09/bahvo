@@ -1,0 +1,12 @@
+{
+  "description": "Corner notifications with an action, dismiss, a live spinner and pausing timers.",
+  "files": [
+    {
+      "path": "toast.tsx",
+      "target": "@ui/minimalist/toast.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

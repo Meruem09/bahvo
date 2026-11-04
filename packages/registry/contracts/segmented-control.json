@@ -1,0 +1,49 @@
+{
+  "slug": "segmented-control",
+  "name": "Segmented control",
+  "category": "forms",
+  "description": "A compact row of mutually exclusive options, such as switching between views.",
+  "anatomy": ["track", "segment", "selected segment"],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name for the group."
+    },
+    {
+      "name": "options",
+      "type": "{ value: string; label: string; disabled?: boolean }[]",
+      "description": "The segments."
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "description": "The selected value, for a controlled control."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "description": "The value selected first. Defaults to the first option."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "description": "Called with the new value."
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "description": "32 or 36px tall. Default md."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Form field name. Generated when omitted."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"],
+  "a11y": [
+    "Native radios inside labels, in a role=\"radiogroup\" with a name: arrow keys move the selection.",
+    "The selected segment is raised with a border and shadow, not shown by color alone."
+  ]
+}

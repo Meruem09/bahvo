@@ -68,9 +68,7 @@ export function Switch({
         <span
           aria-hidden="true"
           className={`size-3.5 rounded-full transition-[translate,background-color] duration-150 ${
-            on
-              ? "translate-x-[17px] bg-mn-inverse"
-              : "translate-x-[2px] bg-mn-muted"
+            on ? "translate-x-[17px] bg-mn-inverse" : "translate-x-[2px] bg-mn-muted"
           }`}
         />
       </button>

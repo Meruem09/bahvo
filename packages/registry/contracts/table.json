@@ -1,0 +1,39 @@
+{
+  "slug": "table",
+  "name": "Table",
+  "category": "display",
+  "description": "Rows of structured data with aligned columns and optional sorting.",
+  "anatomy": ["container", "caption", "header row", "sort button (optional)", "row", "cell"],
+  "props": [
+    {
+      "name": "columns",
+      "type": "{ key: string; header: ReactNode; cell: (row) => ReactNode; align?: \"start\" | \"end\"; sortable?: boolean; className?: string }[]",
+      "description": "Column definitions."
+    },
+    {
+      "name": "rows",
+      "type": "Row[]",
+      "description": "The data."
+    },
+    {
+      "name": "rowKey",
+      "type": "(row: Row) => string",
+      "description": "A stable key per row."
+    },
+    {
+      "name": "caption",
+      "type": "ReactNode",
+      "description": "Names the table for assistive tech (visually hidden)."
+    },
+    {
+      "name": "sort / onSortChange",
+      "type": "{ key: string; direction: \"ascending\" | \"descending\" }",
+      "description": "Controlled sorting; sortable headers become buttons."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible"],
+  "a11y": [
+    "A real <table> with a caption, <th scope=\"col\"> headers and aria-sort on the sorted column.",
+    "Sortable headers are buttons; numbers are right-aligned with tabular figures."
+  ]
+}

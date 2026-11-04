@@ -1,0 +1,57 @@
+{
+  "slug": "toast",
+  "name": "Toast",
+  "category": "feedback",
+  "description": "A brief notification in the corner that confirms an action or reports progress.",
+  "anatomy": [
+    "viewport",
+    "toast",
+    "icon or spinner (optional)",
+    "title",
+    "description (optional)",
+    "action (optional)",
+    "dismiss button"
+  ],
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "What happened."
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "One line of detail."
+    },
+    {
+      "name": "action",
+      "type": "{ label: string; onClick: () => void }",
+      "description": "One follow-up action, such as Undo."
+    },
+    {
+      "name": "variant",
+      "type": "\"neutral\" | \"danger\"",
+      "description": "Danger adds an alert icon and color. Default neutral."
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Shows a spinner for work in progress."
+    },
+    {
+      "name": "duration",
+      "type": "number",
+      "description": "Auto-dismiss delay in ms, paused while hovered or focused. Infinity keeps it. Default 5000."
+    },
+    {
+      "name": "useToasts()",
+      "type": "{ toasts, toast(data), dismiss(id) }",
+      "description": "State for a ToastViewport, which renders them in the corner."
+    }
+  ],
+  "states": ["default", "hover", "focus-visible"],
+  "a11y": [
+    "The viewport is a labelled region with aria-live=\"polite\", present before any toast, so new toasts are announced.",
+    "Timers pause while a toast is hovered or focused; the dismiss button has an accessible name."
+  ]
+}

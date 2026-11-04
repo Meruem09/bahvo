@@ -1,0 +1,12 @@
+{
+  "description": "Small hairline key caps, alone or as a combination.",
+  "files": [
+    {
+      "path": "kbd.tsx",
+      "target": "@ui/minimalist/kbd.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

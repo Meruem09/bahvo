@@ -1,0 +1,12 @@
+{
+  "description": "A hairline table in a card with right-aligned numbers and sortable headers.",
+  "files": [
+    {
+      "path": "table.tsx",
+      "target": "@ui/minimalist/table.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

@@ -1,0 +1,12 @@
+{
+  "description": "A centered icon tile, title, description and actions inside a dashed empty slot.",
+  "files": [
+    {
+      "path": "empty-state.tsx",
+      "target": "@ui/minimalist/empty-state.tsx"
+    }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}
