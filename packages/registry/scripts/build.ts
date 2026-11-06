@@ -34,6 +34,7 @@ import {
   type ManifestItem,
   type ManifestStyle,
   type ManifestSubject,
+  type SearchEntry,
   type StyleMeta,
   type Subject,
   styleMetaSchema,
@@ -320,7 +321,7 @@ async function build() {
 
   // ---- Generate -----------------------------------------------------------
   await rm(generatedDir, { recursive: true, force: true });
-  for (const dir of ["r", "css", "svg", "skills"]) {
+  for (const dir of ["r", "css", "svg", "skills", "search"]) {
     await rm(path.join(webPublic, dir), { recursive: true, force: true });
   }
 
@@ -346,6 +347,7 @@ async function build() {
 
   const manifest: Manifest = {
     generatedAt: new Date().toISOString(),
+    searchUrl: "",
     styles: [],
     subjects: [],
     items: [],
@@ -361,7 +363,11 @@ async function build() {
     const css = tokensCss(tokens);
     const tokensUrl = `${publicUrl}/r/${style.slug}/tokens.json`;
     const kitUrl = `${publicUrl}/r/${style.slug}/kit.json`;
-    const manifestStyle: ManifestStyle = { ...style, items: [], tokensUrl };
+    const isColor = (value: string) => /^(?:#|rgba?\(|hsla?\(|oklch\()/.test(value);
+    const colors = Object.entries(tokens.light)
+      .filter(([, value]) => isColor(value))
+      .map(([name, light]) => ({ name, light, dark: tokens.dark[name] ?? light }));
+    const manifestStyle: ManifestStyle = { ...style, items: [], tokensUrl, colors };
 
     const tokensItem = {
       $schema: schemaUrl,
@@ -551,6 +557,40 @@ async function build() {
     manifest.styles.push(manifestStyle);
   }
   manifest.subjects = [...subjectIndex.values()].sort((a, b) => a.name.localeCompare(b.name));
+
+  // Search index: one small JSON for styles, subjects and items, loaded only
+  // when someone opens search. Named by content hash, so it can be cached forever.
+  const styleNames = new Map(manifest.styles.map((s) => [s.slug, s.name]));
+  const search: SearchEntry[] = [
+    ...manifest.styles.map((s) => ({
+      id: `style:${s.slug}`,
+      type: "style" as const,
+      title: s.name,
+      subtitle: s.tagline,
+      keywords: [s.kind, ...s.tags].join(" "),
+      href: `/styles/${s.slug}`,
+    })),
+    ...manifest.subjects.map((s) => ({
+      id: `${s.kind}:${s.slug}`,
+      type: s.kind === "components" ? ("component" as const) : ("illustration" as const),
+      title: s.name,
+      subtitle: s.description,
+      keywords: [s.category, ...s.styles.map((slug) => styleNames.get(slug) ?? slug)].join(" "),
+      href: `/${s.kind}/${s.slug}`,
+    })),
+    ...manifest.items.map((i) => ({
+      id: i.id,
+      type: "item" as const,
+      title: i.name,
+      subtitle: `${styleNames.get(i.style) ?? i.style} ${i.kind === "components" ? "component" : "illustration"}`,
+      keywords: [i.category, i.style, i.slug].join(" "),
+      href: `/styles/${i.style}/${i.slug}`,
+    })),
+  ];
+  const searchJson = JSON.stringify(search);
+  const searchHash = createHash("sha256").update(searchJson).digest("hex").slice(0, 10);
+  manifest.searchUrl = `/search/index.${searchHash}.json`;
+  await write(path.join(webPublic, manifest.searchUrl), searchJson);
 
   highlighter.dispose();
 

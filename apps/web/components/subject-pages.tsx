@@ -1,6 +1,7 @@
 import type { ItemKind } from "@bahvo/registry";
 import { notFound } from "next/navigation";
 import { ItemCard } from "@/components/cards";
+import { Gallery } from "@/components/gallery";
 import { getItemsForSubject, getStyle, getSubject, getSubjects } from "@/lib/registry";
 
 const copy = {
@@ -33,17 +34,21 @@ export function SubjectIndex({ kind }: { kind: ItemKind }) {
           {text.empty}
         </p>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {subjects
-            .flatMap((subject) =>
-              getItemsForSubject(kind, subject.slug)
-                .slice(0, 1)
-                .map((item) => ({ item, label: subject.name })),
-            )
-            .map(({ item, label }, i) => (
-              <ItemCard key={item.id} item={item} label={label} priority={i < 3} />
-            ))}
-        </div>
+        <Gallery
+          id={kind}
+          label={kind}
+          facets={[{ key: "category", label: "Category" }]}
+          entries={subjects.flatMap((subject, i) =>
+            getItemsForSubject(kind, subject.slug)
+              .slice(0, 1)
+              .map((item) => ({
+                key: subject.slug,
+                facets: { category: subject.category },
+                text: `${subject.name} ${subject.description} ${subject.category}`,
+                card: <ItemCard item={item} label={subject.name} priority={i < 3} />,
+              })),
+          )}
+        />
       )}
     </div>
   );

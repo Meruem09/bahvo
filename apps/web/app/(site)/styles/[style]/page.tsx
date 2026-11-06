@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ItemCard } from "@/components/cards";
 import { CopyButton } from "@/components/copy-button";
+import { Gallery } from "@/components/gallery";
 import { getItemsForStyle, getStyle, manifest } from "@/lib/registry";
 
 export function generateStaticParams() {
@@ -64,15 +65,52 @@ async function Style({ params }: Pick<PageProps<"/styles/[style]">, "params">) {
       </header>
 
       <section className="space-y-4">
-        <h2 className="text-sm font-medium text-muted">
-          {noun} ({items.length})
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((item, i) => (
-            <ItemCard key={item.id} item={item} label={item.name} priority={i < 3} />
-          ))}
-        </div>
+        <h2 className="text-sm font-medium text-muted">{noun}</h2>
+        <Gallery
+          id={`style-${style.slug}`}
+          label={noun.toLowerCase()}
+          facets={[{ key: "category", label: "Category" }]}
+          entries={items.map((item, i) => ({
+            key: item.id,
+            facets: { category: item.category },
+            text: `${item.name} ${item.description} ${item.category}`,
+            card: <ItemCard item={item} label={item.name} priority={i < 3} />,
+          }))}
+        />
       </section>
+
+      {style.colors.length > 0 && (
+        <section className="space-y-4">
+          <div className="space-y-1">
+            <h2 className="text-sm font-medium text-muted">Color tokens</h2>
+            <p className="text-xs text-muted">
+              Each swatch shows the light value, then the dark one.
+            </p>
+          </div>
+          <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {style.colors.map((color) => (
+              <li
+                key={color.name}
+                className="flex items-center gap-3 rounded-xl border border-line bg-card p-2.5"
+              >
+                <span
+                  aria-hidden="true"
+                  className="flex shrink-0 overflow-hidden rounded-lg border border-line"
+                >
+                  <span className="size-8" style={{ background: color.light }} />
+                  <span className="size-8" style={{ background: color.dark }} />
+                </span>
+                <span className="min-w-0">
+                  <code className="block truncate font-mono text-xs">{color.name}</code>
+                  <span className="block truncate font-mono text-[11px] text-muted">
+                    {color.light} · {color.dark}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="grid gap-8 lg:grid-cols-2">
         {style.skill && (

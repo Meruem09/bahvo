@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { StyleCard } from "@/components/cards";
+import { Gallery } from "@/components/gallery";
 import { manifest } from "@/lib/registry";
 
 export const metadata: Metadata = { title: "Styles" };
@@ -14,16 +15,23 @@ export default function StylesPage() {
           skill.
         </p>
       </header>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {manifest.styles.map((style, i) => (
-          <StyleCard
-            key={style.slug}
-            style={style}
-            cover={manifest.items.find((item) => item.id === style.items[0])}
-            priority={i < 3}
-          />
-        ))}
-      </div>
+      <Gallery
+        id="styles"
+        label="styles"
+        facets={[{ key: "kind", label: "Kind" }]}
+        entries={manifest.styles.map((style, i) => ({
+          key: style.slug,
+          facets: { kind: style.kind },
+          text: `${style.name} ${style.tagline} ${style.tags.join(" ")}`,
+          card: (
+            <StyleCard
+              style={style}
+              cover={manifest.items.find((item) => item.id === style.items[0])}
+              priority={i < 3}
+            />
+          ),
+        }))}
+      />
     </div>
   );
 }

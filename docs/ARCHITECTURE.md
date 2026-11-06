@@ -147,5 +147,9 @@ Raise a budget deliberately in the same pull request that needs it, never just t
 5. **Registry hardening (done):** every item renders on one shared stage (`scripts/stage.ts`), the same page thumbnails use.
    - **`pnpm a11y`** runs axe-core on every item in light and dark against WCAG 2.2 A/AA, and fails CI on any violation. The first run found 12: Minimalist's muted gray was 4.33:1 on subtle surfaces (now `#716a65`, ≥4.77:1 everywhere), disabled rows faded their descriptions to 2:1, and a demo button's name didn't include its visible text.
    - **`pnpm visual`** compares every render with a baseline and writes `visual/report/index.html` (before, after, diff). It flags changes that came only from shared code, not the item's own. Baselines are per machine because text renders differently per OS: locally `pnpm visual --update`, and in CI the renders of the last green main run, with the report uploaded as an artifact.
-6. **Gallery:** filters (nuqs), virtualized grids, Orama search, token swatches on style pages.
+6. **Gallery (built):** every page stays static.
+   - **Filters:** `/styles`, `/components`, `/illustrations` and each style page filter by facet and text, kept in the URL with nuqs. Cards render once on the server with `data-*` facets; a small client bar reads the URL and writes one CSS rule that hides what doesn't match (attribute selectors, including substring match for text), so filtering never re-renders the grid or ships cards as JavaScript.
+   - **Grids:** `content-visibility: auto` and lazy thumbnails let the browser skip off-screen cards, which is all the virtualization a static grid of thousands needs.
+   - **Search:** a ⌘K / `/` dialog over styles, subjects and items. The registry build writes a content-hashed index (`/search/index.<hash>.json`), and Orama plus the index load only on first open.
+   - **Swatches:** each style page shows its color tokens, light and dark.
 7. **More component styles**, each implementing the same 30 contracts.

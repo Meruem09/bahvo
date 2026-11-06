@@ -2,6 +2,8 @@ import "@/styles/globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { Search } from "@/components/search";
+import { manifest } from "@/lib/registry";
 
 const sans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
@@ -28,9 +30,10 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
               </Link>
             ))}
           </div>
+          <Search url={manifest.searchUrl} />
           <a
             href="https://github.com/Meruem09/bahvo"
-            className="ml-auto hidden shrink-0 text-muted hover:text-fg sm:block"
+            className="hidden shrink-0 text-muted hover:text-fg sm:block"
             rel="noreferrer"
           >
             GitHub

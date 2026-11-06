@@ -163,6 +163,8 @@ export interface ManifestStyle extends StyleMeta {
   items: string[];
   /** shadcn registry URL for the style's tokens. */
   tokensUrl: string;
+  /** The style's color tokens with their light and dark values, for swatches. */
+  colors: { name: string; light: string; dark: string }[];
   /** Agent skill, when the style ships one. */
   skill?: { name: string; url: string; install: string };
 }
@@ -177,8 +179,20 @@ export interface ManifestSubject {
   styles: string[];
 }
 
+/** One searchable thing on the site: a style, a subject across styles, or one item. */
+export interface SearchEntry {
+  id: string;
+  type: "style" | "component" | "illustration" | "item";
+  title: string;
+  subtitle: string;
+  keywords: string;
+  href: string;
+}
+
 export interface Manifest {
   generatedAt: string;
+  /** Site-relative URL of the search index (SearchEntry[]), named by content hash. */
+  searchUrl: string;
   styles: ManifestStyle[];
   subjects: ManifestSubject[];
   items: ManifestItem[];
