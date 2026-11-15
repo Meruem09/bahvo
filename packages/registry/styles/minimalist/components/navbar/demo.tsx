@@ -5,7 +5,7 @@ const focusRing =
 
 export default function NavbarDemo() {
   return (
-    <div className="w-[680px] max-w-full overflow-hidden rounded-mn-lg border border-mn-line bg-mn-bg font-mn">
+    <div className="w-[520px] max-w-full overflow-hidden rounded-mn-lg border border-mn-line bg-mn-bg font-mn">
       <Navbar
         brand={
           <a href="#home" className={`flex items-center gap-2 rounded-mn-sm ${focusRing}`}>
@@ -21,25 +21,16 @@ export default function NavbarDemo() {
         links={[
           { label: "Overview", href: "#overview", current: true },
           { label: "Deployments", href: "#deployments" },
-          { label: "Analytics", href: "#analytics" },
           { label: "Settings", href: "#settings" },
         ]}
         actions={
-          <>
-            <button
-              type="button"
-              className={`inline-flex h-8 items-center rounded-mn px-3 text-[13px] font-medium text-mn-fg transition-colors hover:bg-mn-subtle ${focusRing}`}
-            >
-              Feedback
-            </button>
-            <button
-              type="button"
-              aria-label="KS, account"
-              className={`inline-flex size-8 items-center justify-center rounded-full border border-mn-line bg-mn-subtle text-xs font-medium text-mn-fg transition-colors hover:border-mn-line-strong ${focusRing}`}
-            >
-              KS
-            </button>
-          </>
+          <button
+            type="button"
+            aria-label="KS, account"
+            className={`inline-flex size-8 items-center justify-center rounded-full border border-mn-line bg-mn-subtle text-xs font-medium text-mn-fg transition-colors hover:border-mn-line-strong ${focusRing}`}
+          >
+            KS
+          </button>
         }
       />
       <div aria-hidden="true" className="flex flex-col gap-3 p-5">

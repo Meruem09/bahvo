@@ -24,7 +24,7 @@ const LIVE_ROW = 22;
 const c = new Canvas(56, 40).shadow(28, 35.5, 25).block(4, 18, 48, 16, { top: 10 });
 for (const [y, from, to] of LEFT) c.line(to, y, from, y, "mid").set(to - 1, y, "shade");
 for (const [y, from, to] of RIGHT) c.line(from, y, to, y, "mid").set(to + 1, y, "shade");
-c.line(41, LIVE_ROW, 47, LIVE_ROW, "accent").set(48, LIVE_ROW, "accentDark");
+c.line(41, LIVE_ROW, 47, LIVE_ROW, "line").set(48, LIVE_ROW, "line");
 // The chip, with pins along its front and sides.
 c.block(16, 7, 23, 20, { top: 10 });
 for (let x = 18; x <= 36; x += 3) c.set(x, 27, "line");

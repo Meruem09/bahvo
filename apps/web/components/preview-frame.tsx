@@ -3,7 +3,7 @@
 import { cn } from "@bahvo/ui/cn";
 import { useEffect, useRef, useState } from "react";
 
-type Theme = "light" | "dark";
+type Theme = "system" | "light" | "dark";
 
 /** Saved motion preference, shared with the preview iframe (same origin). */
 const MOTION_KEY = "bahvo:motion";
@@ -26,10 +26,19 @@ function send(frame: HTMLIFrameElement | null, message: object) {
  * scrolls, switches theme on request so both can be checked, and turns the
  * illustration's ambient motion on or off (remembered across pages).
  */
-export function PreviewFrame({ src, title }: { src: string; title: string }) {
+export function PreviewFrame({
+  src,
+  title,
+  download,
+}: {
+  src: string;
+  title: string;
+  /** Standalone SVGs: one download per theme, whatever the preview shows. */
+  download?: { light: string; dark: string; name: string };
+}) {
   const ref = useRef<HTMLIFrameElement>(null);
   const [height, setHeight] = useState(360);
-  const [theme, setTheme] = useState<Theme | null>(null);
+  const [theme, setTheme] = useState<Theme>("system");
   const [motion, setMotion] = useState(true);
 
   useEffect(() => {
@@ -65,19 +74,69 @@ export function PreviewFrame({ src, title }: { src: string; title: string }) {
 
   return (
     <div className="overflow-hidden rounded-xl border border-line bg-subtle">
-      <div className="flex items-center gap-1 border-b border-line bg-card px-2 py-1.5">
+      {/* Every control is 34px tall in a 44px bar, so the inset is 5px on all sides. */}
+      <div className="flex h-11 items-center gap-2 border-b border-line bg-card px-[5px]">
+        <fieldset className="flex rounded-[7px] border border-line bg-subtle p-0.5">
+          <legend className="sr-only">Preview theme</legend>
+          {(["system", "light", "dark"] as const).map((option) => (
+            <button
+              key={option}
+              type="button"
+              aria-pressed={theme === option}
+              onClick={() => choose(option)}
+              className="h-7 rounded-[4px] border border-transparent px-2.5 text-[13px] text-muted capitalize transition-colors hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent aria-pressed:border-line aria-pressed:bg-card aria-pressed:text-fg aria-pressed:shadow-[0_1px_2px_rgb(0_0_0/0.06)]"
+            >
+              {option}
+            </button>
+          ))}
+        </fieldset>
+        {download && (
+          <>
+            <div className="ml-auto flex items-center">
+              <span className="flex h-[34px] divide-x divide-line overflow-hidden rounded-[7px] border border-line bg-card">
+                {(["light", "dark"] as const).map((variant) => (
+                  <a
+                    key={variant}
+                    href={download[variant]}
+                    download={`${download.name}-${variant}.svg`}
+                    aria-label={`Download ${variant} SVG`}
+                    className="flex items-center gap-1.5 px-2.5 text-[13px] text-fg transition-colors hover:bg-subtle focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
+                  >
+                    <svg
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                      className="size-3.5 text-muted"
+                    >
+                      <path d="M8 2.75v7.5M4.75 7 8 10.25 11.25 7M3 13.25h10" />
+                    </svg>
+                    {variant === "light" ? "Light SVG" : "Dark SVG"}
+                  </a>
+                ))}
+              </span>
+            </div>
+            <span aria-hidden="true" className="h-5 w-px bg-line" />
+          </>
+        )}
         <button
           type="button"
           role="switch"
           aria-checked={motion}
           onClick={toggleMotion}
-          className="mr-auto flex items-center gap-2 rounded-md px-2.5 py-1 text-xs text-muted transition-colors hover:text-fg"
+          className={cn(
+            "flex h-[34px] items-center gap-2 rounded-[7px] border border-line bg-card px-2.5 text-[13px] text-muted transition-colors hover:bg-subtle hover:text-fg focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent",
+            !download && "ml-auto",
+          )}
         >
           <span
             aria-hidden="true"
             className={cn(
               "relative h-3.5 w-6 rounded-full border transition-colors",
-              motion ? "border-accent bg-accent" : "border-line bg-subtle",
+              motion ? "border-fg bg-fg" : "border-line bg-subtle",
             )}
           >
             <span
@@ -88,21 +147,11 @@ export function PreviewFrame({ src, title }: { src: string; title: string }) {
             />
           </span>
           Motion
+          {/* The state in words too, so the switch reads the same in every system. */}
+          <span aria-hidden="true" className="w-[22px] text-left text-muted">
+            {motion ? "On" : "Off"}
+          </span>
         </button>
-        {(["light", "dark"] as const).map((option) => (
-          <button
-            key={option}
-            type="button"
-            aria-pressed={theme === option}
-            onClick={() => choose(option)}
-            className={cn(
-              "rounded-md px-2.5 py-1 text-xs capitalize transition-colors",
-              theme === option ? "bg-subtle text-fg" : "text-muted hover:text-fg",
-            )}
-          >
-            {option}
-          </button>
-        ))}
       </div>
       {/* The border lives on the wrapper so the iframe's content box is exactly `height`. */}
       <iframe
@@ -112,7 +161,7 @@ export function PreviewFrame({ src, title }: { src: string; title: string }) {
         loading="lazy"
         onLoad={(event) => {
           send(event.currentTarget, { type: "bahvo:hello" });
-          if (theme) send(event.currentTarget, { type: "bahvo:theme", theme });
+          send(event.currentTarget, { type: "bahvo:theme", theme });
           send(event.currentTarget, { type: "bahvo:motion", on: motion });
         }}
         style={{ height }}

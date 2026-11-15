@@ -65,7 +65,13 @@ export function SheetPanel({
           </button>
         )}
       </div>
-      <div className="flex-1 overflow-y-auto px-5 py-4 text-sm">{children}</div>
+      <div
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrolling body must be reachable by keyboard to scroll it when its content has nothing focusable.
+        tabIndex={0}
+        className="flex-1 overflow-y-auto px-5 py-4 text-sm focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-mn-accent"
+      >
+        {children}
+      </div>
       {actions && (
         <div className="flex justify-end gap-2 border-t border-mn-line bg-mn-subtle px-5 py-3">
           {actions}

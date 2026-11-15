@@ -12,8 +12,11 @@ export const metadata: Metadata = { robots: { index: false, follow: false } };
 const bridge = `(() => {
   const root = document.documentElement;
   const media = matchMedia("(prefers-color-scheme: dark)");
-  const set = (theme) => root.classList.toggle("dark", theme === "dark");
-  set(media.matches ? "dark" : "light");
+  // "system" follows the OS; "light" or "dark" pins the theme until "system" comes back.
+  let chosen = "system";
+  const apply = () =>
+    root.classList.toggle("dark", chosen === "system" ? media.matches : chosen === "dark");
+  apply();
   // Ambient motion follows the site's saved toggle before first paint, then the parent's messages.
   const motion = (on) => root.setAttribute("data-motion", on ? "on" : "off");
   try {
@@ -21,10 +24,13 @@ const bridge = `(() => {
   } catch {
     motion(true);
   }
-  media.addEventListener("change", (e) => set(e.matches ? "dark" : "light"));
+  media.addEventListener("change", apply);
   let post = () => {};
   addEventListener("message", (e) => {
-    if (e.data && e.data.type === "bahvo:theme") set(e.data.theme);
+    if (e.data && e.data.type === "bahvo:theme") {
+      chosen = e.data.theme;
+      apply();
+    }
     if (e.data && e.data.type === "bahvo:motion") motion(e.data.on !== false);
     // The parent may hydrate after this page loaded; it says hello to get the height.
     if (e.data && e.data.type === "bahvo:hello") post();

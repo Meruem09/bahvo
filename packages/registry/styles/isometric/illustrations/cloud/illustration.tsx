@@ -61,20 +61,14 @@ export function CloudIllustration(props: IllustrationProps) {
   return (
     <Iso title="Cloud storage" canvas={[340, 290]} origin={[170, 184]} {...props}>
       <Grid from={[-90, -90]} to={[90, 90]} step={18} />
-      {TIERS.map((z, tier) => (
+      {TIERS.map((z) => (
         <g key={z}>
           <Box at={[-60, -60, z]} size={[120, 120, TIER_H]} radius={8} />
           <Face plane="left" at={[-60, 60, z + TIER_H]}>
             <FaceRect x={12} y={7} width={56} height={8} radius={4} />
-            {LEDS.map((x, i) =>
-              tier === 1 && i === 0 ? (
-                <Motion key={x} kind="blink">
-                  <FaceCircle cx={x} cy={11} r={1.8} fill={ink.accent} color="none" />
-                </Motion>
-              ) : (
-                <FaceCircle key={x} cx={x} cy={11} r={1.8} fill={ink.detail} color="none" />
-              ),
-            )}
+            {LEDS.map((x) => (
+              <FaceCircle key={x} cx={x} cy={11} r={1.8} fill={ink.detail} color="none" />
+            ))}
           </Face>
           <Face plane="right" at={[60, 60, z + TIER_H]}>
             {VENTS.map((x) => (

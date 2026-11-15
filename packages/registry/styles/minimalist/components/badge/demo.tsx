@@ -14,11 +14,7 @@ const services = [
   {
     name: "worker",
     region: "sin",
-    badge: (
-      <Badge variant="danger" dot>
-        Failed
-      </Badge>
-    ),
+    badge: <Badge variant="danger">Failed</Badge>,
   },
   { name: "docs", region: "fra", badge: <Badge variant="outline">Paused</Badge> },
 ];
@@ -32,9 +28,7 @@ export default function BadgeDemo() {
           Live
         </Badge>
         <Badge variant="outline">Outline</Badge>
-        <Badge variant="danger" dot>
-          Error
-        </Badge>
+        <Badge variant="danger">Error</Badge>
       </div>
       <ul className="divide-y divide-mn-line rounded-mn-lg border border-mn-line bg-mn-surface text-sm">
         {services.map((service) => (

@@ -5,7 +5,7 @@ const action =
 
 export default function AlertDemo() {
   return (
-    <div className="flex w-[520px] max-w-full flex-col gap-3">
+    <div className="flex w-[440px] max-w-full flex-col gap-3">
       <Alert title="Your trial ends in 5 days">
         Add a payment method to keep your projects running.
       </Alert>

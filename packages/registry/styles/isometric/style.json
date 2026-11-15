@@ -8,7 +8,13 @@
   "accent": "#f76b15",
   "status": "beta",
   "fonts": [],
-  "kit": [{ "path": "kit/isometric.tsx", "target": "@lib/isometric.tsx" }],
+  "kit": [
+    {
+      "path": "kit/isometric.tsx",
+      "target": "@lib/isometric.tsx"
+    }
+  ],
+  "cover": "hub",
   "stage": {
     "light": "var(--iso-stage)",
     "dark": "var(--iso-stage)"

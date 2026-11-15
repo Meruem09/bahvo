@@ -19,11 +19,11 @@ export function CodeTabs({ tabs }: { tabs: CodeTab[] }) {
 
   return (
     <div className="overflow-hidden rounded-xl border border-line bg-card">
-      <div className="flex items-center gap-1 border-b border-line px-2">
+      <div className="flex h-11 items-center gap-1 border-b border-line pr-2 pl-1">
         <div
           role="tablist"
           aria-label="Code"
-          className="flex min-w-0 flex-1 gap-1 overflow-x-auto overflow-y-hidden"
+          className="flex min-w-0 flex-1 gap-1 self-stretch overflow-x-auto overflow-y-hidden"
         >
           {tabs.map((tab) => (
             <button
@@ -35,7 +35,7 @@ export function CodeTabs({ tabs }: { tabs: CodeTab[] }) {
               aria-controls={`panel-${tab.id}`}
               onClick={() => setActive(tab.id)}
               className={cn(
-                "-mb-px shrink-0 border-b-2 px-3 py-2.5 text-sm whitespace-nowrap transition-colors",
+                "flex h-11 shrink-0 items-center border-b-2 px-3 text-sm whitespace-nowrap transition-colors",
                 tab.id === current?.id
                   ? "border-accent text-fg"
                   : "border-transparent text-muted hover:text-fg",

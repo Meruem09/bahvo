@@ -13,7 +13,7 @@ export default function PaginationDemo() {
   const last = Math.min(page * perPage, total);
 
   return (
-    <div className="flex w-[640px] max-w-full flex-wrap items-center justify-between gap-4 font-mn">
+    <div className="flex w-[520px] max-w-full flex-wrap items-center justify-between gap-4 font-mn">
       <p className="text-[13px] text-mn-muted tabular-nums" aria-live="polite">
         {first}–{last} of {total} deployments
       </p>

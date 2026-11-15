@@ -19,8 +19,9 @@ export function Thumb({
   priority?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
+  const vector = thumbs.light.endsWith(".svg");
   return (
-    <div className="relative aspect-[16/10] overflow-hidden bg-subtle">
+    <div className={`relative aspect-[16/10] overflow-hidden ${vector ? "bg-bg" : "bg-subtle"}`}>
       {failed ? (
         <span className="absolute inset-0 grid place-items-center text-xs text-muted">{alt}</span>
       ) : (
@@ -35,7 +36,7 @@ export function Thumb({
             fetchPriority={priority ? "high" : "auto"}
             decoding="async"
             onError={() => setFailed(true)}
-            className="size-full object-cover"
+            className={vector ? "size-full object-contain p-[3%]" : "size-full object-cover"}
           />
         </picture>
       )}

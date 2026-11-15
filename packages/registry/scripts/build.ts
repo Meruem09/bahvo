@@ -44,7 +44,7 @@ import {
 } from "../src/schema";
 
 /** Bump to invalidate every item hash (thumbnails, CSS) after a pipeline change. */
-const PIPELINE_VERSION = "2";
+const PIPELINE_VERSION = "7";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const generatedDir = path.join(root, "src/generated");
@@ -129,6 +129,55 @@ async function compileCss(dir: string, tokens: string) {
   return { pretty, minified: code.toString() };
 }
 
+/**
+ * Code colors from the site palette only: ink for code, muted gray for
+ * comments, punctuation and attributes, a warm gray for strings, and the one
+ * orange for keywords.
+ */
+function codeTheme(mode: "light" | "dark") {
+  const c =
+    mode === "light"
+      ? { fg: "#1c1917", muted: "#716a65", string: "#57504a", accent: "#c2410c" }
+      : { fg: "#f5f3f0", muted: "#b3ada7", string: "#d6d1cb", accent: "#ff8f52" };
+  return {
+    name: `bahvo-${mode}`,
+    type: mode,
+    colors: { "editor.foreground": c.fg, "editor.background": "#00000000" },
+    tokenColors: [
+      { settings: { foreground: c.fg } },
+      {
+        scope: ["comment", "punctuation.definition.comment"],
+        settings: { foreground: c.muted, fontStyle: "italic" },
+      },
+      {
+        scope: [
+          "keyword",
+          "storage",
+          "storage.type",
+          "storage.modifier",
+          "keyword.control",
+          "keyword.operator.new",
+          "keyword.operator.expression",
+          "variable.language.this",
+        ],
+        settings: { foreground: c.accent },
+      },
+      {
+        scope: ["string", "string.quoted", "string.template", "punctuation.definition.string"],
+        settings: { foreground: c.string },
+      },
+      {
+        scope: ["punctuation", "meta.brace", "keyword.operator", "punctuation.definition.tag"],
+        settings: { foreground: c.muted },
+      },
+      {
+        scope: ["entity.other.attribute-name", "support.type.property-name"],
+        settings: { foreground: c.muted },
+      },
+    ],
+  };
+}
+
 /** Replaces `var(--name, fallback)` with the theme's token value, for standalone SVG. */
 function bakeColors(svg: string, vars: Record<string, string>) {
   return svg.replace(
@@ -136,6 +185,22 @@ function bakeColors(svg: string, vars: Record<string, string>) {
     (_, name: string, fallback?: string) => {
       return vars[name] ?? fallback?.trim() ?? "currentColor";
     },
+  );
+}
+
+/** The width and height of an SVG drawn on a `0 0 w h` viewBox. */
+function canvasOf(svg: string): [number, number] {
+  const match = /viewBox="0 0 ([\d.]+) ([\d.]+)"/.exec(svg);
+  if (!match) throw new Error("An illustration's root <svg> needs a 0 0 w h viewBox.");
+  return [Number(match[1]), Number(match[2])];
+}
+
+/** Centers a drawing in a larger w×h viewBox, so a style's thumbnails share one scale. */
+function frameSvg(svg: string, [width, height]: [number, number]) {
+  const [w, h] = canvasOf(svg);
+  return svg.replace(
+    /viewBox="0 0 [\d.]+ [\d.]+"/,
+    `viewBox="${(w - width) / 2} ${(h - height) / 2} ${width} ${height}"`,
   );
 }
 
@@ -314,6 +379,9 @@ async function build() {
         demoCode: await readFile(demoPath, "utf8"),
       });
     }
+    if (style.cover && !source.items.some((item) => item.slug === style.cover)) {
+      errors.push(`styles/${styleSlug}/style.json: cover "${style.cover}" is not one of its items`);
+    }
     sources.push(source);
   }
 
@@ -326,7 +394,7 @@ async function build() {
   }
 
   const highlighter = await createHighlighter({
-    themes: ["github-light", "github-dark"],
+    themes: [codeTheme("light"), codeTheme("dark")],
     langs: ["tsx", "html"],
   });
   // Generated CSS and SVG are long, and token-level highlighting would make
@@ -340,7 +408,7 @@ async function build() {
         ? `<pre class="shiki"><code>${escapeHtml(code)}</code></pre>`
         : highlighter.codeToHtml(code, {
             lang: language,
-            themes: { light: "github-light", dark: "github-dark" },
+            themes: { light: "bahvo-light", dark: "bahvo-dark" },
             defaultColor: false,
           }),
   });
@@ -411,10 +479,32 @@ async function build() {
     const kitHash = kitFiles.map((f) => f.code).join("\0");
     const isIllustration = style.kind === "illustrations";
 
+    // Illustration thumbnails are the still drawing, set in a shared frame: the
+    // style's widest canvas by its median height. Most drawings then show at one
+    // scale, large enough to read; only the few taller ones are fitted smaller.
+    const stills = new Map<string, string>();
+    const frames = new Map<string, [number, number]>();
+    if (isIllustration) {
+      const sizes: [string, number, number][] = [];
+      for (const item of items) {
+        const { default: Still } = (await import(pathToFileURL(item.demoPath).href)) as {
+          default: ComponentType<{ animated?: boolean }>;
+        };
+        const still = renderToStaticMarkup(createElement(Still, { animated: false }));
+        stills.set(item.slug, still);
+        sizes.push([item.slug, ...canvasOf(still)]);
+      }
+      const width = Math.max(...sizes.map(([, w]) => w));
+      const heights = sizes.map(([, , h]) => h).sort((a, b) => a - b);
+      const median = heights[Math.floor(heights.length / 2)] ?? 0;
+      for (const [slug, , h] of sizes) frames.set(slug, [width, Math.max(h, median)]);
+    }
+
     for (const item of items) {
       const id = `${style.slug}/${item.slug}`;
       const hash = createHash("sha256")
         .update(PIPELINE_VERSION)
+        .update(frames.get(item.slug)?.join("x") ?? "")
         .update(styleJson)
         .update(tokensJson)
         .update(kitHash)
@@ -469,6 +559,17 @@ async function build() {
 
       let svg: ItemDetail["svg"];
       if (isIllustration) {
+        // Grid thumbnails are the still drawing as SVG: hairlines stay 1px and
+        // pixel cells stay hard-edged at any card size, unlike a scaled raster.
+        const still = frameSvg(stills.get(item.slug) ?? "", frames.get(item.slug) ?? [0, 0]);
+        await write(
+          path.join(webPublic, `/thumbs/${id}.${hash}.light.svg`),
+          bakeColors(still, tokens.light),
+        );
+        await write(
+          path.join(webPublic, `/thumbs/${id}.${hash}.dark.svg`),
+          bakeColors(still, tokens.dark),
+        );
         const light = bakeColors(markup, tokens.light);
         const dark = bakeColors(markup, tokens.dark);
         const lightUrl = `/svg/${id}.${hash}.light.svg`;
@@ -493,8 +594,8 @@ async function build() {
         description: item.meta.description,
         hash,
         thumbs: {
-          light: `/thumbs/${id}.${hash}.light.webp`,
-          dark: `/thumbs/${id}.${hash}.dark.webp`,
+          light: `/thumbs/${id}.${hash}.light.${isIllustration ? "svg" : "webp"}`,
+          dark: `/thumbs/${id}.${hash}.dark.${isIllustration ? "svg" : "webp"}`,
         },
       };
       const detail: ItemDetail = {
@@ -566,23 +667,32 @@ async function build() {
       id: `style:${s.slug}`,
       type: "style" as const,
       title: s.name,
+      scope: "",
+      kind: "Style",
       subtitle: s.tagline,
       keywords: [s.kind, ...s.tags].join(" "),
       href: `/styles/${s.slug}`,
     })),
-    ...manifest.subjects.map((s) => ({
-      id: `${s.kind}:${s.slug}`,
-      type: s.kind === "components" ? ("component" as const) : ("illustration" as const),
-      title: s.name,
-      subtitle: s.description,
-      keywords: [s.category, ...s.styles.map((slug) => styleNames.get(slug) ?? slug)].join(" "),
-      href: `/${s.kind}/${s.slug}`,
-    })),
+    ...manifest.subjects.map((s) => {
+      const styles = s.styles.map((slug) => styleNames.get(slug) ?? slug);
+      return {
+        id: `${s.kind}:${s.slug}`,
+        type: s.kind === "components" ? ("component" as const) : ("illustration" as const),
+        title: s.name,
+        scope: "All styles",
+        kind: "Compare",
+        subtitle: `The same ${s.kind === "components" ? "component" : "illustration"} in ${styles.join(" and ")}, side by side`,
+        keywords: [s.category, s.description, ...styles].join(" "),
+        href: `/${s.kind}/${s.slug}`,
+      };
+    }),
     ...manifest.items.map((i) => ({
       id: i.id,
       type: "item" as const,
       title: i.name,
-      subtitle: `${styleNames.get(i.style) ?? i.style} ${i.kind === "components" ? "component" : "illustration"}`,
+      scope: styleNames.get(i.style) ?? i.style,
+      kind: i.kind === "components" ? "Component" : "Illustration",
+      subtitle: i.description,
       keywords: [i.category, i.style, i.slug].join(" "),
       href: `/styles/${i.style}/${i.slug}`,
     })),

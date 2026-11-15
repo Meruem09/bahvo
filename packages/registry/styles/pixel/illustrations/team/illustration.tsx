@@ -20,7 +20,7 @@ function person(cx: number, top: number, shirt: Role = "light") {
 
 // Two behind, the one on the right speaking, then one in front.
 person(16, 8);
-person(40, 8, "accent");
+person(40, 8);
 person(28, 13);
 c.layer("float", (l) => {
   l.shape(rect(42, 1, 13, 6, 2), { fill: "white" });

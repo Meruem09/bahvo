@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { StyleCard } from "@/components/cards";
 import { Gallery } from "@/components/gallery";
-import { manifest } from "@/lib/registry";
+import { getCover, manifest } from "@/lib/registry";
 
 export const metadata: Metadata = { title: "Styles" };
 
@@ -23,14 +23,13 @@ export default function StylesPage() {
           key: style.slug,
           facets: { kind: style.kind },
           text: `${style.name} ${style.tagline} ${style.tags.join(" ")}`,
-          card: (
-            <StyleCard
-              style={style}
-              cover={manifest.items.find((item) => item.id === style.items[0])}
-              priority={i < 3}
-            />
-          ),
+          card: <StyleCard style={style} cover={getCover(style)} priority={i < 3} />,
         }))}
+        after={
+          <p className="pt-2 text-sm text-muted sm:col-span-2 lg:col-span-3">
+            More styles are on the way: Glassmorphism, Floral and Gamified are next.
+          </p>
+        }
       />
     </div>
   );

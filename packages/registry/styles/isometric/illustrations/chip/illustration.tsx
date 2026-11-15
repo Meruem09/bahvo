@@ -23,7 +23,7 @@ const HI = LO + CHIP;
 const PINS = [0, 1, 2, 3, 4, 5].map((k) => LO + (CHIP - 60) / 2 + 12 * k);
 const PIN = 8;
 
-/** Traces from a pin out to a via: [pin end, via]. The accent one is live. */
+/** Traces from a pin out to a via: [pin end, via]. Light runs along the live one in motion. */
 const TRACES: [Vec2, Vec2][] = [
   [
     [PINS[2] as number, LO - PIN],
@@ -83,12 +83,12 @@ export function ChipIllustration(props: IllustrationProps) {
             <FaceCircle cx={via[0]} cy={via[1]} r={2.4} />
           </g>
         ))}
-        <FaceLine from={LIVE[0]} to={LIVE[1]} color={ink.accent} />
+        <FaceLine from={LIVE[0]} to={LIVE[1]} />
         {/* Motion-only: light ticks travel along the live trace. */}
         <Motion kind="flow">
           <FaceLine from={LIVE[0]} to={LIVE[1]} color={ink.top} />
         </Motion>
-        <FaceCircle cx={LIVE[1][0]} cy={LIVE[1][1]} r={2.4} color={ink.accent} />
+        <FaceCircle cx={LIVE[1][0]} cy={LIVE[1][1]} r={2.4} />
       </Face>
       <Box at={[LO - half, LO - half, BOARD_H]} size={[CHIP, CHIP, CHIP_H]} radius={6} />
       <Face plane="top" at={[LO - half, LO - half, BOARD_H + CHIP_H]}>

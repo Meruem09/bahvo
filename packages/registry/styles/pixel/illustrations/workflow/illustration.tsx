@@ -26,10 +26,9 @@ function arrow(canvas: Canvas, from: number, tip: number, role: Role) {
   canvas.line(tip - 2, 14, tip - 1, 15, role).line(tip - 2, 18, tip - 1, 17, role);
 }
 
-// Arrows between steps: the one into the running step pulses orange.
+// Arrows between steps; the running step's core is the one orange mark.
 arrow(c, 15, 21, "line");
 arrow(c, 34, 40, "line");
-c.layer("pulse", (l) => arrow(l, 15, 21, "accent"));
 
 export function WorkflowIllustration(props: IllustrationProps) {
   return <Pixels title="Workflow" canvas={c} {...props} />;

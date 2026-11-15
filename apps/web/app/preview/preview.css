@@ -15,6 +15,6 @@
 /* Illustrations scale to the frame. */
 [data-bahvo-content] > svg {
   display: block;
-  width: min(560px, 82vw);
+  width: min(460px, 76vw);
   height: auto;
 }

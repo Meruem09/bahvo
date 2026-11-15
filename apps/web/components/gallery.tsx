@@ -21,12 +21,15 @@ export function Gallery({
   label,
   facets,
   entries,
+  after,
 }: {
   id: string;
   /** Plural noun for the count and the filter box, e.g. "components". */
   label: string;
   facets: { key: string; label: string }[];
   entries: GalleryEntry[];
+  /** A last grid cell outside the filters (hidden while any filter is on), e.g. "more soon". */
+  after?: ReactNode;
 }) {
   const options: Facet[] = facets.map((facet) => {
     const counts = new Map<string, number>();
@@ -59,6 +62,7 @@ export function Gallery({
             {entry.card}
           </div>
         ))}
+        {after}
       </div>
     </div>
   );

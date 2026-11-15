@@ -2,6 +2,7 @@ import { loadItem } from "@bahvo/registry";
 import { cacheLife, cacheTag } from "next/cache";
 
 export {
+  getCover,
   getItems,
   getItemsForStyle,
   getItemsForSubject,

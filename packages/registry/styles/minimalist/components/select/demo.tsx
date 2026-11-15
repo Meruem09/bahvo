@@ -9,7 +9,7 @@ const regions = [
 
 export default function SelectDemo() {
   return (
-    <div className="grid w-[560px] max-w-full grid-cols-1 gap-5 sm:grid-cols-2">
+    <div className="grid w-[500px] max-w-full grid-cols-1 gap-5 sm:grid-cols-2">
       <Select
         id="demo-region"
         label="Region"

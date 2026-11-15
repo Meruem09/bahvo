@@ -19,7 +19,7 @@ function Icon({ children }: { children: ReactNode }) {
 
 export default function DropdownMenuDemo() {
   return (
-    <div className="flex h-[340px] w-[440px] max-w-full items-start justify-between pt-2">
+    <div className="flex h-[300px] w-[440px] max-w-full items-start justify-between pt-2">
       <DropdownMenu
         label="Project"
         defaultOpen

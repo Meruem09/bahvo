@@ -14,14 +14,13 @@ const SPARKLE = [
 const NODE = { top: 3 };
 
 const c = new Canvas(56, 40).shadow(28, 29, 17);
-// Cables first, so the hub and nodes cover their ends. The right one is active.
-c.line(12, 25, 17, 25).line(39, 25, 43, 25, "accent").line(28, 28, 28, 32);
+// Cables first, so the hub and nodes cover their ends. The sparkle is the one orange mark.
+c.line(12, 25, 17, 25).line(39, 25, 43, 25).line(28, 28, 28, 32);
 c.block(3, 21, 9, 8, NODE).block(44, 21, 9, 8, NODE).block(24, 33, 9, 6, NODE);
 c.fill(rect(6, 22, 3, 2), "mid")
   .fill(rect(27, 34, 3, 2), "mid")
   .fill(rect(47, 22, 3, 2), "shade");
 c.block(18, 8, 21, 20, { top: 10 }).sprite(25, 10, SPARKLE);
-c.layer("blink", (l) => l.fill(rect(47, 22, 3, 2), "accent"));
 
 export function HubIllustration(props: IllustrationProps) {
   return <Pixels title="Integration hub" canvas={c} {...props} />;

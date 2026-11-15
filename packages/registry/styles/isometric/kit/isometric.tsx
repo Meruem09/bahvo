@@ -32,9 +32,9 @@ const toPoints = (pts: readonly Vec2[]) => pts.map(([x, y]) => `${round(x)},${ro
 
 export const ink = {
   /** Default outline for every solid. */
-  line: "var(--iso-line, #aca59e)",
+  line: "var(--iso-line, #8c857e)",
   /** Stronger outline for the subject's key edges. */
-  edge: "var(--iso-edge, #857e77)",
+  edge: "var(--iso-edge, #746d67)",
   top: "var(--iso-top, #ffffff)",
   left: "var(--iso-left, #faf9f7)",
   right: "var(--iso-right, #f2f0ec)",
@@ -44,7 +44,7 @@ export const ink = {
   dash: "var(--iso-dash, #d3cec8)",
   grid: "var(--iso-grid, #f0eeeb)",
   /** Outlines of small details drawn on faces: frames, vents, icons. */
-  detail: "var(--iso-detail, #cbc5be)",
+  detail: "var(--iso-detail, #b5aea7)",
   /** Soft fills on faces: text bars, blocks, inactive LEDs. */
   fill: "var(--iso-fill, #ece9e5)",
   text: "var(--iso-text, #a39c95)",

@@ -22,10 +22,10 @@ const SHIELD: Mask = (x, y) => {
 };
 // biome-ignore format: one sprite row per line, so the glyph shows in the source.
 const SHACKLE = [
-  ".dddd.",
-  "d....d",
-  "d....d",
-  "d....d",
+  ".oooo.",
+  "o....o",
+  "o....o",
+  "o....o",
 ];
 
 const c = new Canvas(56, 40).shadow(28, 38, 19);
@@ -36,8 +36,8 @@ c.layer("float", (l) => {
   l.shape(SHIELD, { fill: "white" });
   l.edge(inset(SHIELD, 2), "mid");
   l.sprite(25, 10, SHACKLE);
-  l.shape(rect(24, 14, 8, 6, 1), { fill: "accent", line: "accentDark" });
-  l.fill(rect(27, 16, 2, 2), "accentDark");
+  l.shape(rect(24, 14, 8, 6, 1), { fill: "shade", line: "line" });
+  l.fill(rect(27, 16, 2, 2), "accent");
 });
 
 export function ShieldIllustration(props: IllustrationProps) {

@@ -1,6 +1,6 @@
 import { itemLoaders } from "./generated/loaders";
 import manifestJson from "./generated/manifest.json";
-import type { ItemDetail, ItemKind, Manifest } from "./schema";
+import type { ItemDetail, ItemKind, Manifest, ManifestStyle } from "./schema";
 
 export * from "./schema";
 
@@ -25,6 +25,12 @@ export function getSubjects(kind: ItemKind) {
 
 export function getItemsForStyle(style: string) {
   return manifest.items.filter((item) => item.style === style);
+}
+
+/** The item a style's card shows: its chosen cover, or its first item. */
+export function getCover(style: ManifestStyle) {
+  const id = style.cover ? `${style.slug}/${style.cover}` : style.items[0];
+  return manifest.items.find((item) => item.id === id);
 }
 
 export function getItemsForSubject(kind: ItemKind, slug: string) {

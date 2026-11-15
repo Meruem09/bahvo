@@ -2,16 +2,24 @@
 
 import type { SearchEntry } from "@bahvo/registry";
 import { useRouter } from "next/navigation";
-import { type KeyboardEvent, useEffect, useId, useRef, useState } from "react";
+import { type KeyboardEvent, type ReactNode, useEffect, useId, useRef, useState } from "react";
 
 type Searcher = (term: string) => Promise<SearchEntry[]>;
 
-const LABELS: Record<SearchEntry["type"], string> = {
-  style: "Style",
-  component: "Component",
-  illustration: "Illustration",
-  item: "",
-};
+/** The title with the first match of the term underlined in orange. */
+function Highlight({ text, term }: { text: string; term: string }) {
+  const at = term ? text.toLowerCase().indexOf(term.toLowerCase()) : -1;
+  if (at < 0) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, at)}
+      <mark className="bg-transparent text-inherit underline decoration-accent decoration-[1.5px] underline-offset-[3px]">
+        {text.slice(at, at + term.length)}
+      </mark>
+      {text.slice(at + term.length)}
+    </>
+  );
+}
 
 /** Orama and the index load on first open, so pages never pay for search up front. */
 async function loadSearcher(url: string): Promise<Searcher> {
@@ -44,6 +52,37 @@ async function loadSearcher(url: string): Promise<Searcher> {
   };
 }
 
+const key = "rounded border border-line px-1 font-sans text-[11px]";
+
+/** One glyph per kind, in the same 16px slot as the input's search icon so text lines up. */
+const kindIcons: Record<string, ReactNode> = {
+  Style: (
+    <>
+      <path d="M8 2.75 13.25 5.5 8 8.25 2.75 5.5Z" />
+      <path d="m2.75 8.25 5.25 2.75 5.25-2.75M2.75 11 8 13.75 13.25 11" />
+    </>
+  ),
+  Component: (
+    <>
+      <rect x="2.25" y="3.25" width="11.5" height="9.5" rx="1.75" />
+      <path d="M2.25 6.25h11.5" />
+    </>
+  ),
+  Illustration: (
+    <>
+      <rect x="2.25" y="2.75" width="11.5" height="10.5" rx="1.75" />
+      <circle cx="6" cy="6.5" r="1.1" />
+      <path d="m2.75 12.25 3.5-3.5 2.5 2.5 1.5-1.5 3 3" />
+    </>
+  ),
+  Compare: (
+    <>
+      <rect x="1.75" y="3.75" width="5.5" height="8.5" rx="1.25" />
+      <rect x="8.75" y="3.75" width="5.5" height="8.5" rx="1.25" />
+    </>
+  ),
+};
+
 const isTyping = (target: EventTarget | null) =>
   target instanceof HTMLElement &&
   (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
@@ -56,6 +95,7 @@ export function Search({ url }: { url: string }) {
   const [results, setResults] = useState<SearchEntry[]>([]);
   const [active, setActive] = useState(0);
   const [mac, setMac] = useState(true);
+  const [ready, setReady] = useState(false);
   const router = useRouter();
   const id = useId();
 
@@ -93,6 +133,7 @@ export function Search({ url }: { url: string }) {
       .then((find) => find(term))
       .then((found) => {
         if (!current) return;
+        setReady(true);
         setResults(found);
         setActive(0);
       });
@@ -100,6 +141,9 @@ export function Search({ url }: { url: string }) {
       current = false;
     };
   }, [open, term]);
+
+  // A kind label only helps when the results mix kinds.
+  const mixed = new Set(results.map((entry) => entry.kind)).size > 1;
 
   function onKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key === "ArrowDown" || event.key === "ArrowUp") {
@@ -132,9 +176,7 @@ export function Search({ url }: { url: string }) {
           <path d="m10.25 10.25 3 3" />
         </svg>
         <span className="hidden sm:inline">Search</span>
-        <kbd className="hidden rounded border border-line px-1 font-sans text-[11px] sm:inline">
-          {mac ? "⌘K" : "Ctrl K"}
-        </kbd>
+        <kbd className={`hidden sm:inline ${key}`}>{mac ? "⌘K" : "Ctrl K"}</kbd>
       </button>
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: Escape already closes a native modal dialog; the click only adds backdrop dismissal. */}
       <dialog
@@ -149,7 +191,7 @@ export function Search({ url }: { url: string }) {
         }}
         className="mx-auto mt-[12vh] w-[min(560px,calc(100%-2rem))] overflow-hidden rounded-xl border border-line bg-card p-0 text-fg shadow-2xl backdrop:bg-black/30 backdrop:backdrop-blur-[2px]"
       >
-        <div className="flex items-center gap-2 border-b border-line px-3">
+        <div className="flex items-center gap-2 border-b border-line px-4">
           <svg
             viewBox="0 0 16 16"
             fill="none"
@@ -191,23 +233,57 @@ export function Search({ url }: { url: string }) {
               aria-selected={i === active}
               onClick={() => go(entry)}
               onMouseMove={() => setActive(i)}
-              className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm aria-selected:bg-subtle"
+              className="flex cursor-pointer gap-2 rounded-lg px-2.5 py-2 text-sm aria-selected:bg-fg/[0.07]"
             >
-              <span className="min-w-0 flex-1">
-                <span className="block truncate font-medium">{entry.title}</span>
-                <span className="block truncate text-xs text-muted">{entry.subtitle}</span>
+              <svg
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                className="mt-0.5 size-4 shrink-0 text-fg/60"
+              >
+                {kindIcons[entry.kind] ?? kindIcons.Component}
+              </svg>
+              <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                <span className="flex items-baseline gap-3">
+                  <span className="min-w-0 flex-1 truncate font-medium">
+                    {entry.scope && (
+                      <span className="font-normal text-muted">
+                        {entry.scope}
+                        <span aria-hidden="true" className="px-1.5 opacity-50">
+                          /
+                        </span>
+                      </span>
+                    )}
+                    <Highlight text={entry.title} term={term.trim()} />
+                  </span>
+                  {mixed && <span className="shrink-0 text-xs text-muted">{entry.kind}</span>}
+                </span>
+                <span className="truncate text-[13px] text-muted">{entry.subtitle}</span>
               </span>
-              {LABELS[entry.type] && (
-                <span className="shrink-0 text-xs text-muted">{LABELS[entry.type]}</span>
-              )}
             </div>
           ))}
         </div>
-        {open && term.trim() && results.length === 0 && (
-          <p className="px-3 pb-6 text-center text-sm text-muted">
+        {open && !ready && <p className="px-4 pb-4 text-sm text-muted">Loading…</p>}
+        {open && ready && term.trim() && results.length === 0 && (
+          <p className="px-4 pb-6 text-center text-sm text-muted">
             No results for “{term.trim()}”.
           </p>
         )}
+        <div className="flex items-center gap-4 border-t border-line px-4 py-2.5 text-xs text-muted">
+          <span>
+            <kbd className={key}>↑↓</kbd> to move
+          </span>
+          <span>
+            <kbd className={key}>↵</kbd> to open
+          </span>
+          <span>
+            <kbd className={key}>esc</kbd> to close
+          </span>
+        </div>
       </dialog>
     </>
   );

@@ -14,6 +14,7 @@
       "weights": [400, 500, 600]
     }
   ],
+  "cover": "button",
   "stage": {
     "light": "var(--mn-bg)",
     "dark": "var(--mn-bg)"

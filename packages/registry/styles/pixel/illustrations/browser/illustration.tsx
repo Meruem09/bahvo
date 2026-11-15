@@ -4,11 +4,11 @@ const WINDOW = rect(8, 6, 40, 28, 2);
 /** "</>" drawn cell by cell. */
 // biome-ignore format: one sprite row per line, so the glyph shows in the source.
 const CODE = [
-  "..a...a.a..",
-  ".a....a..a.",
-  "a....a....a",
-  ".a..a....a.",
-  "..a.a...a..",
+  "..o...o.o..",
+  ".o....o..o.",
+  "o....o....o",
+  ".o..o....o.",
+  "..o.o...o..",
 ];
 
 const c = new Canvas(56, 40).shadow(29, 36, 21);

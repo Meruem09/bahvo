@@ -2,7 +2,7 @@ import { Breadcrumbs } from "./breadcrumbs";
 
 export default function BreadcrumbsDemo() {
   return (
-    <div className="flex w-[420px] max-w-full flex-col gap-6 font-mn">
+    <div className="flex w-fit max-w-full flex-col gap-6 font-mn">
       <Breadcrumbs
         items={[
           {

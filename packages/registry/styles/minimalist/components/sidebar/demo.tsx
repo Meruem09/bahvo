@@ -37,7 +37,7 @@ function Icon({ name }: { name: keyof typeof icons }) {
 
 export default function SidebarDemo() {
   return (
-    <div className="flex h-[440px] w-[560px] max-w-full overflow-hidden rounded-mn-lg border border-mn-line bg-mn-surface">
+    <div className="flex h-[330px] w-[520px] max-w-full overflow-hidden rounded-mn-lg border border-mn-line bg-mn-surface">
       <Sidebar
         header={
           <div className="flex items-center gap-2.5 text-sm font-medium text-mn-fg">

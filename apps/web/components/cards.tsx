@@ -3,6 +3,11 @@ import { Badge } from "@bahvo/ui/badge";
 import Link from "next/link";
 import { Thumb } from "./thumb";
 
+const card =
+  "cv-auto group block overflow-hidden rounded-xl border border-line bg-card transition-[border-color,box-shadow,translate] duration-150 " +
+  "hover:-translate-y-px hover:border-fg/30 hover:shadow-[0_4px_16px_-8px_rgb(0_0_0/0.18)] " +
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+
 const kindLabel = (style: ManifestStyle) =>
   `${style.items.length} ${style.kind === "illustrations" ? "illustration" : "component"}${style.items.length === 1 ? "" : "s"}`;
 
@@ -16,10 +21,7 @@ export function StyleCard({
   priority?: boolean;
 }) {
   return (
-    <Link
-      href={`/styles/${style.slug}`}
-      className="cv-auto group block overflow-hidden rounded-xl border border-line bg-card transition-colors hover:border-fg/25"
-    >
+    <Link href={`/styles/${style.slug}`} className={card}>
       {cover ? (
         <Thumb thumbs={cover.thumbs} alt={`${style.name} preview`} priority={priority} />
       ) : (
@@ -27,13 +29,18 @@ export function StyleCard({
       )}
       <div className="space-y-1.5 border-t border-line p-4">
         <div className="flex items-center gap-2">
-          <h3 className="font-medium">{style.name}</h3>
-          <Badge className="ml-auto">{style.status}</Badge>
+          <h3 className="text-[15px] font-medium tracking-tight">{style.name}</h3>
+          <Badge className="ml-auto capitalize">{style.status}</Badge>
         </div>
         <p className="text-sm text-muted">{style.tagline}</p>
-        <p className="text-xs text-muted">
+        <p className="text-[13px] text-muted">
           {kindLabel(style)}
-          {style.skill && <span className="text-accent-text"> · agent skill</span>}
+          {style.skill && (
+            <>
+              <span aria-hidden="true"> · </span>
+              Agent skill
+            </>
+          )}
         </p>
       </div>
     </Link>
@@ -50,14 +57,11 @@ export function ItemCard({
   priority?: boolean;
 }) {
   return (
-    <Link
-      href={`/styles/${item.style}/${item.slug}`}
-      className="cv-auto group block overflow-hidden rounded-xl border border-line bg-card transition-colors hover:border-fg/25"
-    >
+    <Link href={`/styles/${item.style}/${item.slug}`} className={card}>
       <Thumb thumbs={item.thumbs} alt={label} priority={priority} />
-      <div className="flex items-center justify-between gap-2 border-t border-line p-3">
-        <span className="text-sm font-medium">{label}</span>
-        <span className="text-xs text-muted">{item.category}</span>
+      <div className="flex items-center justify-between gap-2 border-t border-line px-4 py-3">
+        <span className="text-[15px] font-medium tracking-tight">{label}</span>
+        <span className="text-[13px] text-muted capitalize">{item.category}</span>
       </div>
     </Link>
   );

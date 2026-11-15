@@ -2,7 +2,7 @@ import { Card } from "./card";
 
 export default function CardDemo() {
   return (
-    <div className="grid w-[600px] max-w-full grid-cols-1 gap-4 sm:grid-cols-2">
+    <div className="grid w-[520px] max-w-full grid-cols-1 gap-4 sm:grid-cols-2">
       <Card
         title="Monthly usage"
         description="Resets on November 30."

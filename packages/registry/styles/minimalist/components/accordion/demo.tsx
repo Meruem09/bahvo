@@ -3,7 +3,7 @@ import { Accordion } from "./accordion";
 export default function AccordionDemo() {
   return (
     <Accordion
-      className="w-[520px] max-w-full"
+      className="w-[440px] max-w-full"
       defaultOpen={["preview"]}
       items={[
         {

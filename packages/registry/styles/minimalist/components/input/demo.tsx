@@ -11,7 +11,7 @@ function SearchIcon() {
 
 export default function InputDemo() {
   return (
-    <div className="grid w-[560px] max-w-full grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2">
+    <div className="grid w-[500px] max-w-full grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2">
       <Input
         id="demo-email"
         label="Email"

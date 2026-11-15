@@ -1,5 +1,4 @@
 import type { ItemDetail } from "@bahvo/registry";
-import { Badge } from "@bahvo/ui/badge";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -8,6 +7,8 @@ import { CodeBlock } from "@/components/code-block";
 import { type CodeTab, CodeTabs } from "@/components/code-tabs";
 import { PreviewFrame } from "@/components/preview-frame";
 import { getItem, manifest } from "@/lib/registry";
+
+const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
 export function generateStaticParams() {
   return manifest.items.map((item) => ({ style: item.style, item: item.slug }));
@@ -45,7 +46,7 @@ function codeTabs(item: ItemDetail): CodeTab[] {
   const cli = [item.install.bahvo, "", "# or with the shadcn CLI", item.install.shadcn].join("\n");
   const tabs: CodeTab[] = item.react.map((file, i) => ({
     id: `react-${file.name}`,
-    label: i === 0 ? `React · ${file.name}` : file.name,
+    label: i === 0 ? `React · ${file.name}` : `Kit · ${file.name}`,
     copy: file.code,
     panel: <CodeBlock file={file} />,
   }));
@@ -93,46 +94,37 @@ async function Item({ params }: Pick<PageProps<"/styles/[style]/[item]">, "param
   return (
     <div className="space-y-10">
       <header className="space-y-3">
-        <nav className="text-sm text-muted">
-          <Link href="/styles" className="hover:text-fg">
-            Styles
-          </Link>{" "}
-          /{" "}
-          <Link href={`/styles/${item.style}`} className="hover:text-fg">
-            {item.styleName}
-          </Link>
+        <nav aria-label="Breadcrumb">
+          <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
+            <li>
+              <Link href={`/${item.kind}`} className="capitalize hover:text-fg">
+                {item.kind}
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <Link href={`/styles/${item.style}`} className="hover:text-fg">
+                {item.styleName}
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" className="text-fg">
+              {item.name}
+            </li>
+          </ol>
         </nav>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="space-y-2">
-            <h1 className="text-3xl font-semibold tracking-tight">
-              {item.styleName} {item.name}
-            </h1>
+            <h1 className="text-3xl font-semibold tracking-tight">{item.name}</h1>
             <p className="max-w-2xl text-muted">{item.description}</p>
           </div>
-          {item.svg && (
-            <div className="flex gap-2 text-sm">
-              <a
-                href={item.svg.lightUrl}
-                download={`${item.slug}-light.svg`}
-                className="rounded-md border border-line bg-card px-3 py-1.5 hover:bg-subtle"
-              >
-                Download light SVG
-              </a>
-              <a
-                href={item.svg.darkUrl}
-                download={`${item.slug}-dark.svg`}
-                className="rounded-md border border-line bg-card px-3 py-1.5 hover:bg-subtle"
-              >
-                Download dark SVG
-              </a>
-            </div>
-          )}
         </div>
       </header>
 
       <PreviewFrame
         src={`/preview/${item.style}/${item.slug}`}
         title={`${item.styleName} ${item.name} preview`}
+        download={item.svg && { light: item.svg.lightUrl, dark: item.svg.darkUrl, name: item.slug }}
       />
 
       <CodeTabs tabs={codeTabs(item)} />
@@ -152,11 +144,7 @@ async function Item({ params }: Pick<PageProps<"/styles/[style]/[item]">, "param
           </div>
           <div className="space-y-3">
             <h2 className="text-sm font-medium text-muted">Tags</h2>
-            <div className="flex flex-wrap gap-2">
-              {item.subject.tags.map((tag) => (
-                <Badge key={tag}>{tag}</Badge>
-              ))}
-            </div>
+            <p className="text-sm text-muted">{item.subject.tags.map(capitalize).join(" · ")}</p>
           </div>
         </section>
       )}
@@ -191,11 +179,7 @@ async function Item({ params }: Pick<PageProps<"/styles/[style]/[item]">, "param
           <div className="space-y-6">
             <div className="space-y-3">
               <h2 className="text-sm font-medium text-muted">States</h2>
-              <div className="flex flex-wrap gap-2">
-                {item.states.map((state) => (
-                  <Badge key={state}>{state}</Badge>
-                ))}
-              </div>
+              <p className="text-sm text-muted">{item.states.map(capitalize).join(" · ")}</p>
             </div>
             <div className="space-y-3">
               <h2 className="text-sm font-medium text-muted">Accessibility</h2>

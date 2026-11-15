@@ -51,7 +51,7 @@ function ago(minutes: number) {
 
 export default function TableDemo() {
   const [sort, setSort] = useState<TableSort>({ key: "age", direction: "ascending" });
-  const field = sort.key as "duration" | "age";
+  const field = sort.key as "age";
   const rows = [...deployments].sort(
     (a, b) => (a[field] - b[field]) * (sort.direction === "ascending" ? 1 : -1),
   );
@@ -59,7 +59,7 @@ export default function TableDemo() {
   return (
     <Table
       caption="Recent deployments"
-      className="w-[620px] max-w-full"
+      className="w-[520px] max-w-full"
       rows={rows}
       rowKey={(row) => row.id}
       sort={sort}
@@ -87,14 +87,6 @@ export default function TableDemo() {
               {statuses[row.status].label}
             </span>
           ),
-        },
-        {
-          key: "duration",
-          header: "Duration",
-          align: "end",
-          sortable: true,
-          cell: (row) =>
-            row.duration ? `${row.duration}s` : <span className="text-mn-muted">–</span>,
         },
         {
           key: "age",

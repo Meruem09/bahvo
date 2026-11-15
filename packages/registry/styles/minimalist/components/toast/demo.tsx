@@ -6,13 +6,9 @@ export default function ToastDemo() {
   const { toasts, toast, dismiss } = useToasts();
 
   return (
-    <div className="flex flex-col items-center gap-3 font-mn">
+    <div className="flex flex-col items-center gap-2 font-mn">
       {/* How toasts look; the button below sends real ones to the corner. */}
-      <Toast
-        loading
-        title="Deploying acme-web"
-        description="Building on 4 vCPUs. About 40 seconds left."
-      />
+      <Toast loading title="Deploying acme-web" />
       <Toast
         title="Project archived"
         description="acme-legacy is read-only now."
@@ -22,7 +18,7 @@ export default function ToastDemo() {
       <Toast
         variant="danger"
         title="Build failed"
-        description="Type error in app/billing/page.tsx on line 42."
+        description="Type error in billing/page.tsx."
         onDismiss={() => {}}
       />
       <button
@@ -34,7 +30,7 @@ export default function ToastDemo() {
             action: { label: "View", onClick: () => {} },
           })
         }
-        className="mt-3 inline-flex h-8 items-center rounded-mn bg-mn-fg px-3 text-[13px] font-medium text-mn-inverse transition-colors hover:bg-mn-fg/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mn-accent"
+        className="mt-2 inline-flex h-8 items-center rounded-mn bg-mn-fg px-3 text-[13px] font-medium text-mn-inverse transition-colors hover:bg-mn-fg/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mn-accent"
       >
         Show a toast
       </button>

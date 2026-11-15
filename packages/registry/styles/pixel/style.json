@@ -8,7 +8,13 @@
   "accent": "#f76b15",
   "status": "beta",
   "fonts": [],
-  "kit": [{ "path": "kit/pixel.tsx", "target": "@lib/pixel.tsx" }],
+  "kit": [
+    {
+      "path": "kit/pixel.tsx",
+      "target": "@lib/pixel.tsx"
+    }
+  ],
+  "cover": "chart",
   "stage": {
     "light": "var(--px-stage)",
     "dark": "var(--px-stage)"

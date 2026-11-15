@@ -105,6 +105,8 @@ export const styleMetaSchema = z.object({
   ),
   /** Shared library files every item of the style imports (e.g. a drawing kit). */
   kit: z.array(fileTarget).default([]),
+  /** The item that represents the style on cards; defaults to its first item. */
+  cover: slugSchema.optional(),
   /** Background the style's previews sit on (any CSS `background` value). */
   stage: z.object({ light: z.string().min(1), dark: z.string().min(1) }),
 });
@@ -184,6 +186,11 @@ export interface SearchEntry {
   id: string;
   type: "style" | "component" | "illustration" | "item";
   title: string;
+  /** The style an item belongs to; empty for styles and cross-style subjects. */
+  scope: string;
+  /** "Style", "Component" or "Illustration". */
+  kind: string;
+  /** One line of description. */
   subtitle: string;
   keywords: string;
   href: string;

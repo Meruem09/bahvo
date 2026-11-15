@@ -30,8 +30,9 @@ const title = (value: string) =>
 const cssString = (text: string) => text.replace(/[\\"]/g, "\\$&").replace(/[\n\r\f]/g, " ");
 
 const pill =
-  "inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-xs whitespace-nowrap transition-colors " +
-  "border-line text-muted hover:border-fg/25 hover:text-fg aria-pressed:border-fg aria-pressed:bg-fg aria-pressed:text-bg " +
+  "inline-flex h-8 items-center gap-1.5 rounded-full border px-2.5 text-[13px] whitespace-nowrap transition-colors " +
+  "border-line text-muted hover:border-fg/25 hover:text-fg " +
+  "aria-pressed:border-fg/30 aria-pressed:bg-fg/[0.08] aria-pressed:pl-2 aria-pressed:text-fg aria-pressed:before:size-1.5 aria-pressed:before:rounded-full aria-pressed:before:bg-accent " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:pointer-events-none";
 
 /** The bar itself: text filter, facet pills and the count. Inert until the URL is read. */
@@ -45,8 +46,8 @@ export function FilterBar({
 }: FilterBarProps) {
   const inert = !onChange;
   return (
-    <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
-      <div className="relative w-full lg:w-64">
+    <div className="flex flex-wrap items-center gap-3">
+      <div className="relative w-full sm:w-56">
         <svg
           viewBox="0 0 16 16"
           fill="none"
@@ -66,13 +67,13 @@ export function FilterBar({
           value={values.q ?? ""}
           disabled={inert}
           onChange={(event) => onChange?.("q", event.target.value)}
-          className="h-9 w-full rounded-lg border border-line bg-card pr-3 pl-9 text-sm outline-none placeholder:text-muted focus-visible:border-accent focus-visible:ring-3 focus-visible:ring-accent/20"
+          className="h-8 w-full rounded-full border border-line bg-card pr-3 pl-9 text-[13px] outline-none placeholder:text-muted focus-visible:border-accent focus-visible:ring-3 focus-visible:ring-accent/20"
         />
       </div>
       {facets
         .filter((facet) => facet.options.length > 1)
         .map((facet) => (
-          <fieldset key={facet.key} className="-mx-1 flex gap-1.5 overflow-x-auto px-1 py-0.5">
+          <fieldset key={facet.key} className="flex min-w-0 flex-1 flex-wrap gap-1.5">
             <legend className="sr-only">{facet.label}</legend>
             <button
               type="button"
@@ -100,7 +101,7 @@ export function FilterBar({
             ))}
           </fieldset>
         ))}
-      <p aria-live="polite" className="shrink-0 text-xs text-muted tabular-nums lg:ml-auto">
+      <p aria-live="polite" className="ml-auto shrink-0 text-[13px] text-muted tabular-nums">
         {shown === total ? `${total} ${label}` : `${shown} of ${total} ${label}`}
       </p>
     </div>
