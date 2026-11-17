@@ -1,0 +1,7 @@
+{
+  "description": "A chunky checkbox with a 2px edge that fills violet with a bold check, plus a label and a description.",
+  "files": [{ "path": "checkbox.tsx", "target": "@ui/gamified/checkbox.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"]
+}

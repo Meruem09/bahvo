@@ -1,0 +1,7 @@
+{
+  "description": "A chunky pill switch that turns violet when on, its knob a small white key on a ledge, with a violet focus ring.",
+  "files": [{ "path": "switch.tsx", "target": "@ui/gamified/switch.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"]
+}

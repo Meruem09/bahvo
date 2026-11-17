@@ -1,0 +1,7 @@
+{
+  "description": "Chunky round radios with a 2px edge that fill violet around a bold dot when picked, with labels and descriptions.",
+  "files": [{ "path": "radio-group.tsx", "target": "@ui/gamified/radio-group.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"]
+}

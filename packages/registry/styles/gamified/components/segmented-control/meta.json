@@ -1,0 +1,7 @@
+{
+  "description": "A sunk well of Fredoka segments where the selected one pops up as a raised violet key on a ledge.",
+  "files": [{ "path": "segmented-control.tsx", "target": "@ui/gamified/segmented-control.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"]
+}

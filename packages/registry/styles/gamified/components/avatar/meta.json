@@ -1,0 +1,7 @@
+{
+  "description": "Round player tokens with a chunky 2px edge, Fredoka initials on a violet tint and a green presence dot.",
+  "files": [{ "path": "avatar.tsx", "target": "@ui/gamified/avatar.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

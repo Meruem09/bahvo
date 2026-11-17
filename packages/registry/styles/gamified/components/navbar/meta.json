@@ -1,0 +1,7 @@
+{
+  "description": "A white top bar on a 2px edge whose links are Fredoka tabs; the current one sits on a violet tint over a chunky violet bar that covers the edge.",
+  "files": [{ "path": "navbar.tsx", "target": "@ui/gamified/navbar.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

@@ -1,0 +1,7 @@
+{
+  "description": "A native modal docked to the right edge: a chunky pane with a rounded leading edge, a Fredoka title, a small close key, a scrolling body and a footer well.",
+  "files": [{ "path": "sheet.tsx", "target": "@ui/gamified/sheet.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "open"]
+}

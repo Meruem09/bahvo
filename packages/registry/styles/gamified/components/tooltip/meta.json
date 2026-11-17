@@ -1,0 +1,7 @@
+{
+  "description": "A solid inverse bubble in bold text with an optional dimmed shortcut, popping in on hover and keyboard focus.",
+  "files": [{ "path": "tooltip.tsx", "target": "@ui/gamified/tooltip.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "open"]
+}

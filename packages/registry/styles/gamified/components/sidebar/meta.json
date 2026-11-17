@@ -1,0 +1,7 @@
+{
+  "description": "A white app rail on a 2px edge with Fredoka menu rows and round counts; the current page sits on a violet tint with a chunky violet bar.",
+  "files": [{ "path": "sidebar.tsx", "target": "@ui/gamified/sidebar.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active"]
+}

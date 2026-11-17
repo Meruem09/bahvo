@@ -1,0 +1,7 @@
+{
+  "description": "A thick pill bar with a shiny green XP fill, a bold label and value, and a gently pulsing indeterminate mode.",
+  "files": [{ "path": "progress.tsx", "target": "@ui/gamified/progress.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "loading"]
+}

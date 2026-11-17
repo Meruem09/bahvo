@@ -1,0 +1,7 @@
+{
+  "description": "A table in a chunky pane with a tinted Fredoka header row, 2px row dividers, right-aligned numbers and sortable headers with a violet arrow.",
+  "files": [{ "path": "table.tsx", "target": "@ui/gamified/table.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

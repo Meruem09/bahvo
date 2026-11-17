@@ -1,4 +1,4 @@
-import { Fraunces, Geist, Nunito_Sans, Plus_Jakarta_Sans } from "next/font/google";
+import { Fraunces, Fredoka, Geist, Nunito, Nunito_Sans, Plus_Jakarta_Sans } from "next/font/google";
 
 /**
  * Fonts for hosted styles, keyed by style slug. Imported only by the preview
@@ -36,8 +36,24 @@ const nunitoSans = Nunito_Sans({
   preload: false,
 });
 
+// Gamified sets titles, buttons and numbers in Fredoka and body text in Nunito.
+const fredoka = Fredoka({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  variable: "--font-fredoka",
+  preload: false,
+});
+
+const nunito = Nunito({
+  subsets: ["latin"],
+  weight: ["400", "600", "700", "800"],
+  variable: "--font-nunito",
+  preload: false,
+});
+
 export const previewFonts: Record<string, string> = {
   minimalist: geist.variable,
   glassmorphism: plusJakarta.variable,
   floral: `${fraunces.variable} ${nunitoSans.variable}`,
+  gamified: `${fredoka.variable} ${nunito.variable}`,
 };

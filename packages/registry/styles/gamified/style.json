@@ -1,0 +1,27 @@
+{
+  "slug": "gamified",
+  "name": "Gamified",
+  "kind": "components",
+  "tagline": "Chunky pressable controls, a violet action color and gold rewards.",
+  "description": "A playful, tactile component style. Panes and controls have thick 2px edges and a hard bottom ledge, so buttons press down when clicked like keys on a game pad. Titles, buttons and numbers are set in Fredoka, body text in Nunito. Violet carries actions, selection and focus; gold marks rewards, live states and the current item; green fills progress like an XP bar. Every component ships light and a deep-violet dark, with every interactive state, built on native elements.",
+  "tags": ["gamified", "playful", "chunky", "tactile", "colorful"],
+  "accent": "#5a3cf0",
+  "status": "beta",
+  "fonts": [
+    {
+      "family": "Fredoka",
+      "variable": "--font-fredoka",
+      "weights": [500, 600]
+    },
+    {
+      "family": "Nunito",
+      "variable": "--font-nunito",
+      "weights": [400, 600, 700, 800]
+    }
+  ],
+  "cover": "button",
+  "stage": {
+    "light": "var(--gm-stage)",
+    "dark": "var(--gm-stage)"
+  }
+}

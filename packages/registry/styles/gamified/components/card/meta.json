@@ -1,0 +1,7 @@
+{
+  "description": "A chunky pane on a hard ledge with a Fredoka title; interactive cards press down like keys.",
+  "files": [{ "path": "card.tsx", "target": "@ui/gamified/card.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

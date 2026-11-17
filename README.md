@@ -10,7 +10,7 @@ bahvo is a community-built library of UI design styles. Pick a style (Isometric,
 
 bahvo will be open source.
 
-> **Status:** pre-V1. Five styles are live, each in light and dark with an agent skill (`npx bahvo skill add <style>`): **Isometric** and **Pixel** (15 illustrations each, with drawing kits), and **Minimalist**, **Glassmorphism** and **Floral** (all 30 components each). See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how it's built.
+> **Status:** pre-V1. Six styles are live, each in light and dark with an agent skill (`npx bahvo skill add <style>`): **Isometric** and **Pixel** (15 illustrations each, with drawing kits), and **Minimalist**, **Glassmorphism**, **Floral** and **Gamified** (all 30 components each). See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how it's built.
 
 ## Getting started
 

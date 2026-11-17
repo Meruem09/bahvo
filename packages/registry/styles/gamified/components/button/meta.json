@@ -1,0 +1,7 @@
+{
+  "description": "A chunky key that presses down: a violet primary with a shine and a ledge, a white secondary key and a violet focus ring.",
+  "files": [{ "path": "button.tsx", "target": "@ui/gamified/button.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active", "disabled", "loading"]
+}

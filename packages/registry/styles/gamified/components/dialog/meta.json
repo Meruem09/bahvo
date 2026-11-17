@@ -1,0 +1,7 @@
+{
+  "description": "A native modal on a chunky pane with a Fredoka title, a small close key and a footer well.",
+  "files": [{ "path": "dialog.tsx", "target": "@ui/gamified/dialog.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["open", "focus-visible"]
+}

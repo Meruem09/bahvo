@@ -1,0 +1,7 @@
+{
+  "description": "A non-modal chunky pane on a ledge under a white key that stays pressed while it is open, with a Fredoka title and a small close key.",
+  "files": [{ "path": "popover.tsx", "target": "@ui/gamified/popover.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "focus-visible", "open"]
+}

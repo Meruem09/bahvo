@@ -1,0 +1,7 @@
+{
+  "description": "A chunky message pane whose 2px edge and ledge take the tone's color, with a Fredoka title, an icon on a violet disc for news and a red warning sign for failures.",
+  "files": [{ "path": "alert.tsx", "target": "@ui/gamified/alert.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

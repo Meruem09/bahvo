@@ -27,7 +27,7 @@ export default function StylesPage() {
         }))}
         after={
           <p className="pt-2 text-sm text-muted sm:col-span-2 lg:col-span-3">
-            More styles are on the way: Gamified is next.
+            More styles are on the way.
           </p>
         }
       />

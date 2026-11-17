@@ -1,0 +1,7 @@
+{
+  "description": "A chunky pane of native details rows with Fredoka summaries, exclusive by default, and a chevron in a round well that turns violet when open.",
+  "files": [{ "path": "accordion.tsx", "target": "@ui/gamified/accordion.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "open"]
+}

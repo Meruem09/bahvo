@@ -1,0 +1,7 @@
+{
+  "description": "An empty slot with a dashed chunky outline, a raised icon key, a Fredoka title and keys that press down.",
+  "files": [{ "path": "empty-state.tsx", "target": "@ui/gamified/empty-state.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

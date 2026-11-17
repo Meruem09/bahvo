@@ -1,0 +1,7 @@
+{
+  "description": "A sunk native select with a 2px edge, a bold chevron, a violet focus ring and an error with an icon.",
+  "files": [{ "path": "select.tsx", "target": "@ui/gamified/select.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "disabled", "invalid"]
+}

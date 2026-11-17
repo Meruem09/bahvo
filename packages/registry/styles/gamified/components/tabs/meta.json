@@ -1,0 +1,7 @@
+{
+  "description": "Game-menu tabs where the selected one sits on a violet tint over a chunky violet bar, with full keyboard support.",
+  "files": [{ "path": "tabs.tsx", "target": "@ui/gamified/tabs.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active", "disabled"]
+}

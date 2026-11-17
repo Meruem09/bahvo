@@ -1,0 +1,7 @@
+{
+  "description": "Quiet Nunito links that get a soft well on hover, with slash separators, ending in the current page in bold.",
+  "files": [{ "path": "breadcrumbs.tsx", "target": "@ui/gamified/breadcrumbs.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

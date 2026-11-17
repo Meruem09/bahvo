@@ -1,0 +1,7 @@
+{
+  "description": "A sunk field with a 2px edge and an inner shade, a bold label, a violet focus ring and an error with an icon.",
+  "files": [{ "path": "input.tsx", "target": "@ui/gamified/input.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "disabled", "invalid"]
+}

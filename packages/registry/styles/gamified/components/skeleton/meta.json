@@ -1,0 +1,7 @@
+{
+  "description": "Flat, softly pulsing lavender shapes for lines, blocks and avatars, announced once per group.",
+  "files": [{ "path": "skeleton.tsx", "target": "@ui/gamified/skeleton.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "loading"]
+}

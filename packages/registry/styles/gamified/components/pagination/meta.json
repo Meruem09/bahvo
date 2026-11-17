@@ -1,0 +1,7 @@
+{
+  "description": "Small white keys that press down, with gaps and Fredoka numbers; the current page is a raised violet key.",
+  "files": [{ "path": "pagination.tsx", "target": "@ui/gamified/pagination.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "disabled"]
+}

@@ -1,0 +1,24 @@
+{
+  "style": "gamified",
+  "kind": "components",
+  "output": "component.tsx",
+  "prompt": "Create a {subject} as a React + Tailwind component in `{output}`, matching this project's Gamified UI style in light and dark. Export the component by name, and default-export a demo that shows its states.",
+  "tasks": [
+    {
+      "id": "streak",
+      "subject": "daily streak card with the current streak, a row of seven day markers (done, today, upcoming) and a keep-going button"
+    },
+    {
+      "id": "leaderboard",
+      "subject": "leaderboard list of five players with rank, avatar, name and points, where the current player's row is highlighted"
+    },
+    {
+      "id": "quiz-answer",
+      "subject": "quiz question with four answer choices and a check button, showing the selected, correct and wrong states"
+    },
+    {
+      "id": "reward",
+      "subject": "level-up reward modal panel with the new level, an XP bar, a reward item and a claim button"
+    }
+  ]
+}

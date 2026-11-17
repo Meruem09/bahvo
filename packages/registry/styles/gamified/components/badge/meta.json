@@ -1,0 +1,7 @@
+{
+  "description": "Fredoka pill badges: a soft neutral, a gold live badge with a pulsing dot, a chunky outline and a red danger tint.",
+  "files": [{ "path": "badge.tsx", "target": "@ui/gamified/badge.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

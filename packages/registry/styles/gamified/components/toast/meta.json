@@ -1,0 +1,7 @@
+{
+  "description": "Chunky corner notifications on a ledge with Fredoka titles, a violet spinner, a small action key, a dismiss key and pausing timers.",
+  "files": [{ "path": "toast.tsx", "target": "@ui/gamified/toast.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

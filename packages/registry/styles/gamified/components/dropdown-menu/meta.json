@@ -1,0 +1,7 @@
+{
+  "description": "A white key that stays pressed while its chunky menu is open, with grouped items, shortcuts, a red danger item and full keyboard support.",
+  "files": [{ "path": "dropdown-menu.tsx", "target": "@ui/gamified/dropdown-menu.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "open", "disabled"]
+}

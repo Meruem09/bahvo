@@ -1,0 +1,7 @@
+{
+  "description": "A sunk multi-line field with a 2px edge, a bold label, a violet focus ring, an error with an icon and a live character count.",
+  "files": [{ "path": "textarea.tsx", "target": "@ui/gamified/textarea.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "disabled", "invalid"]
+}

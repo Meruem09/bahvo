@@ -1,0 +1,7 @@
+{
+  "description": "A native range on a thick track with a green XP fill and a chunky white thumb on a ledge that turns violet on hover and focus.",
+  "files": [{ "path": "slider.tsx", "target": "@ui/gamified/slider.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active", "disabled"]
+}

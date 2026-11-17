@@ -1,0 +1,7 @@
+{
+  "description": "Chunky game-pad key caps in Fredoka on a small hard ledge, alone or as a combination.",
+  "files": [{ "path": "kbd.tsx", "target": "@ui/gamified/kbd.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}
