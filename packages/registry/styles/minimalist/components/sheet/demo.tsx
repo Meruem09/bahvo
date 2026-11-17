@@ -61,7 +61,7 @@ export default function SheetDemo() {
   );
 
   return (
-    <div className="flex flex-col items-center gap-5 font-mn">
+    <div className="flex flex-col items-center gap-4 font-mn">
       {/* How the sheet looks over a page; the button below opens the real modal. */}
       <div className="relative h-[280px] w-[520px] max-w-full overflow-hidden rounded-mn-lg border border-mn-line bg-mn-bg">
         <div aria-hidden="true" className="flex flex-col gap-3 p-5">
