@@ -1,0 +1,7 @@
+{
+  "description": "Tabs on a hairline where the selected tab sits on a sage leaf with an orchid underline, with full keyboard support.",
+  "files": [{ "path": "tabs.tsx", "target": "@ui/floral/tabs.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active", "disabled"]
+}

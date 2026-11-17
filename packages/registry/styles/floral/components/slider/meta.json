@@ -1,0 +1,7 @@
+{
+  "description": "A native range input with a moss fill on a warm paper track and a cream knob that takes an orchid ring on focus.",
+  "files": [{ "path": "slider.tsx", "target": "@ui/floral/slider.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active", "disabled"]
+}

@@ -1,0 +1,7 @@
+{
+  "description": "A native modal sheet of cream paper docked flush to the right edge, with a Fraunces title, warm hairlines between header, scrolling body and footer, and a moss primary action.",
+  "files": [{ "path": "sheet.tsx", "target": "@ui/floral/sheet.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "open"]
+}

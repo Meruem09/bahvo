@@ -1,0 +1,7 @@
+{
+  "description": "A pill menu button that opens a 12px cream paper menu with grouped items, hairline separators, shortcuts, a red danger item and full keyboard support.",
+  "files": [{ "path": "dropdown-menu.tsx", "target": "@ui/floral/dropdown-menu.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "open", "disabled"]
+}

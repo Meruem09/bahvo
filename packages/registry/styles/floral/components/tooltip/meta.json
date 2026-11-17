@@ -1,0 +1,7 @@
+{
+  "description": "A small moss bubble with cream text and an optional shortcut, shown on hover and keyboard focus.",
+  "files": [{ "path": "tooltip.tsx", "target": "@ui/floral/tooltip.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "open"]
+}

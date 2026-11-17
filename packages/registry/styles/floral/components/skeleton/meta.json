@@ -1,0 +1,7 @@
+{
+  "description": "Flat warm paper shapes for lines, blocks and avatars that pulse softly, announced once per group.",
+  "files": [{ "path": "skeleton.tsx", "target": "@ui/floral/skeleton.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "loading"]
+}

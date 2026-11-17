@@ -1,0 +1,61 @@
+"use client";
+
+import { useState } from "react";
+import { Dialog, DialogPanel } from "./dialog";
+
+const button =
+  "inline-flex h-8 items-center justify-center rounded-full px-3.5 font-fl text-[13px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fl-accent active:translate-y-px";
+
+const paper = "border border-fl-line-strong bg-fl-surface text-fl-fg hover:bg-fl-subtle";
+
+const content = {
+  title: "Delete project?",
+  description:
+    "This removes Acme Web, its 214 deployments and all preview URLs. You can't undo it.",
+};
+
+export default function DialogDemo() {
+  const [open, setOpen] = useState(false);
+  const actions = (
+    <>
+      <button type="button" onClick={() => setOpen(false)} className={`${button} ${paper}`}>
+        Cancel
+      </button>
+      <button
+        type="button"
+        onClick={() => setOpen(false)}
+        className={`${button} bg-fl-danger text-fl-on-primary hover:bg-fl-danger/90`}
+      >
+        Delete project
+      </button>
+    </>
+  );
+
+  return (
+    <div className="flex flex-col items-center gap-5 font-fl">
+      {/* How the open dialog looks over a page; the button below opens the real modal. */}
+      <div className="relative grid w-[520px] max-w-full place-items-center overflow-hidden rounded-fl-lg border border-fl-line bg-fl-bg px-6 py-8">
+        {/* The page behind, as text-free rows, so nothing reads as clipped around the dialog. */}
+        <div aria-hidden="true" className="absolute inset-0 flex flex-col gap-3 p-5">
+          <div className="h-3 w-24 rounded-full bg-fl-line" />
+          {["web", "docs", "api"].map((name) => (
+            <div
+              key={name}
+              className="flex h-11 items-center gap-3 rounded-fl border border-fl-line bg-fl-surface px-3"
+            >
+              <div className="h-2.5 w-28 rounded-full bg-fl-subtle" />
+            </div>
+          ))}
+        </div>
+        <div aria-hidden="true" className="absolute inset-0 bg-fl-overlay" />
+        <div inert className="relative">
+          <DialogPanel {...content} actions={actions} onClose={() => setOpen(false)} />
+        </div>
+      </div>
+      <button type="button" onClick={() => setOpen(true)} className={`${button} ${paper}`}>
+        Open the live dialog
+      </button>
+      <Dialog open={open} onOpenChange={setOpen} {...content} actions={actions} />
+    </div>
+  );
+}

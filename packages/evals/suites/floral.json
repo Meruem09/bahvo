@@ -1,0 +1,24 @@
+{
+  "style": "floral",
+  "kind": "components",
+  "output": "component.tsx",
+  "prompt": "Create a {subject} as a React + Tailwind component in `{output}`, matching this project's Floral UI style in light and dark. Export the component by name, and default-export a demo that shows its states.",
+  "tasks": [
+    {
+      "id": "newsletter",
+      "subject": "newsletter sign-up card with an email field, a subscribe button, and success and error states"
+    },
+    {
+      "id": "testimonial",
+      "subject": "customer testimonial card with a quote, the author's avatar, name and role, and a star rating"
+    },
+    {
+      "id": "date-picker",
+      "subject": "month calendar for picking a date, with today, the selected day, disabled past days and previous and next month buttons"
+    },
+    {
+      "id": "plan-picker",
+      "subject": "plan picker with three selectable plan cards (monthly prices, a recommended badge on one) and a continue button"
+    }
+  ]
+}

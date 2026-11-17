@@ -1,0 +1,7 @@
+{
+  "description": "Corner notifications on leaf-cut paper panes with Fraunces titles, a pill action, a round dismiss button, an orchid bloom while work runs and pausing timers.",
+  "files": [{ "path": "toast.tsx", "target": "@ui/floral/toast.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

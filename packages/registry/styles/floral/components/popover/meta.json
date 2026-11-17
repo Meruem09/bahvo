@@ -1,0 +1,7 @@
+{
+  "description": "A non-modal leaf-cut paper pane under a pill trigger, with a Fraunces title, a muted description and a round close button.",
+  "files": [{ "path": "popover.tsx", "target": "@ui/floral/popover.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "focus-visible", "open"]
+}

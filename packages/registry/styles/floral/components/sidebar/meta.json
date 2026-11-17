@@ -1,0 +1,7 @@
+{
+  "description": "App navigation on cream paper with Fraunces small-caps groups and counts, where the current page sits on a sage leaf beside a short orchid bar.",
+  "files": [{ "path": "sidebar.tsx", "target": "@ui/floral/sidebar.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active"]
+}

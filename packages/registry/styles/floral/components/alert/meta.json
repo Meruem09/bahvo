@@ -1,0 +1,7 @@
+{
+  "description": "Leaf-cut paper alerts with a Fraunces title: plain paper for news, an orchid-tinted pane for what's new and a red-edged pane for problems.",
+  "files": [{ "path": "alert.tsx", "target": "@ui/floral/alert.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

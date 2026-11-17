@@ -1,0 +1,7 @@
+{
+  "description": "Native radios as round paper circles that fill moss with a cream center when chosen, with semibold labels and descriptions.",
+  "files": [{ "path": "radio-group.tsx", "target": "@ui/floral/radio-group.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"]
+}

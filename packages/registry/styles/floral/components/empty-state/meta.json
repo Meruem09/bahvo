@@ -1,0 +1,7 @@
+{
+  "description": "A dashed leaf-cut slot with an icon on a sage tile, a Fraunces title and the next step as pill actions.",
+  "files": [{ "path": "empty-state.tsx", "target": "@ui/floral/empty-state.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

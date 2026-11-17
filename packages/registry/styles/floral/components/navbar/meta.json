@@ -1,0 +1,7 @@
+{
+  "description": "A cream paper top bar on a warm hairline with a Fraunces brand, where the current link sits on a sage leaf with an orchid underline.",
+  "files": [{ "path": "navbar.tsx", "target": "@ui/floral/navbar.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

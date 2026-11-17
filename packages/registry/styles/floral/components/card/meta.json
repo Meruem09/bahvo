@@ -1,0 +1,7 @@
+{
+  "description": "A leaf-cut paper pane with a Fraunces title, a warm hairline footer and one soft shadow.",
+  "files": [{ "path": "card.tsx", "target": "@ui/floral/card.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

@@ -1,0 +1,7 @@
+{
+  "description": "Quiet muted links with a soft paper hover and slash separators, ending in the current page in semibold ink.",
+  "files": [{ "path": "breadcrumbs.tsx", "target": "@ui/floral/breadcrumbs.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

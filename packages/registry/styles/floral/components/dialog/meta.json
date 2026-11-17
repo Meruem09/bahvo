@@ -1,0 +1,7 @@
+{
+  "description": "A native modal on leaf-cut paper with a Fraunces title, a round close button and a hairline footer.",
+  "files": [{ "path": "dialog.tsx", "target": "@ui/floral/dialog.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["open", "focus-visible"]
+}

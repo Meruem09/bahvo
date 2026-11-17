@@ -1,0 +1,27 @@
+{
+  "slug": "floral",
+  "name": "Floral",
+  "kind": "components",
+  "tagline": "Cream paper, leaf-cut corners and moss green, with an orchid bloom.",
+  "description": "A soft botanical component style. Panes are warm cream paper with leaf-cut corners (two round, two tight), fine warm hairlines and one soft shadow, set over a watercolor-petal backdrop. Titles are set in Fraunces, a soft old-style serif, and body text in Nunito Sans. Moss green carries primary actions and checked controls, and orchid marks only focus, the current item and live states. Every component ships light and a night-garden dark, with every interactive state, built on native elements.",
+  "tags": ["floral", "organic", "botanical", "serif", "soft"],
+  "accent": "#a3427b",
+  "status": "beta",
+  "fonts": [
+    {
+      "family": "Fraunces",
+      "variable": "--font-fraunces",
+      "weights": [500, 600]
+    },
+    {
+      "family": "Nunito Sans",
+      "variable": "--font-nunito-sans",
+      "weights": [400, 600, 700]
+    }
+  ],
+  "cover": "card",
+  "stage": {
+    "light": "var(--fl-stage)",
+    "dark": "var(--fl-stage)"
+  }
+}

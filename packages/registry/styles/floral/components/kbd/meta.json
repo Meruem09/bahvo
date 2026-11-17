@@ -1,0 +1,7 @@
+{
+  "description": "Small cream paper key caps with a warm edge and one soft shadow, alone or as a combination.",
+  "files": [{ "path": "kbd.tsx", "target": "@ui/floral/kbd.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

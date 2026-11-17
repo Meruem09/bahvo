@@ -42,6 +42,9 @@ const budgets: Budget[] = [
   { path: "/styles/glassmorphism", maxJs: 165 * KB, maxCss: 8 * KB, kind: "grid" },
   { path: "/styles/glassmorphism/dialog", maxJs: 170 * KB, maxCss: 8 * KB, kind: "detail" },
   { path: "/preview/glassmorphism/dialog", maxJs: 160 * KB, maxCss: 12 * KB, kind: "preview" },
+  { path: "/styles/floral", maxJs: 165 * KB, maxCss: 8 * KB, kind: "grid" },
+  { path: "/styles/floral/dialog", maxJs: 170 * KB, maxCss: 8 * KB, kind: "detail" },
+  { path: "/preview/floral/dialog", maxJs: 160 * KB, maxCss: 12 * KB, kind: "preview" },
 ];
 
 function startServer(): Promise<ChildProcess> {
@@ -113,7 +116,7 @@ try {
       );
     }
     const allCss = css.join("\n");
-    if (budget.kind !== "preview" && /--(?:iso|mn|px|gl)-/.test(allCss)) {
+    if (budget.kind !== "preview" && /--(?:iso|mn|px|gl|fl)-/.test(allCss)) {
       failures.push(`${budget.path}: site CSS contains hosted-style tokens`);
     }
     // `--accent-text` is defined only by the site's own CSS. (Not `--font-geist`: Minimalist

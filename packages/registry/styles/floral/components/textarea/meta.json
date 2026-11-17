@@ -1,0 +1,7 @@
+{
+  "description": "A cream paper multi-line field with a warm hairline, an orchid focus ring, red error text and a live character count.",
+  "files": [{ "path": "textarea.tsx", "target": "@ui/floral/textarea.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "disabled", "invalid"]
+}

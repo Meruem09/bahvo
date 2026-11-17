@@ -1,0 +1,7 @@
+{
+  "description": "A native select on cream paper with a warm hairline, a soft chevron, an orchid focus ring and a red error message.",
+  "files": [{ "path": "select.tsx", "target": "@ui/floral/select.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "disabled", "invalid"]
+}

@@ -1,0 +1,7 @@
+{
+  "description": "Round avatars with a photo or Fraunces initials on a sage leaf, three sizes and an orchid presence dot.",
+  "files": [{ "path": "avatar.tsx", "target": "@ui/floral/avatar.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

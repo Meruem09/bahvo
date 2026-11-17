@@ -1,0 +1,7 @@
+{
+  "description": "Native details rows on a leaf-cut paper pane between warm hairlines, exclusive by default, with a chevron that turns inside a round paper hover.",
+  "files": [{ "path": "accordion.tsx", "target": "@ui/floral/accordion.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "open"]
+}

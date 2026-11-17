@@ -1,0 +1,7 @@
+{
+  "description": "Small pill labels: warm paper neutral, live with a pulsing orchid petal, a hairline outline and a soft red danger.",
+  "files": [{ "path": "badge.tsx", "target": "@ui/floral/badge.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

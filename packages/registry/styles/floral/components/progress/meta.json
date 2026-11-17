@@ -1,0 +1,7 @@
+{
+  "description": "A thin orchid progress bar on a warm paper track, with a label, a value and a softly pulsing indeterminate mode.",
+  "files": [{ "path": "progress.tsx", "target": "@ui/floral/progress.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "loading"]
+}

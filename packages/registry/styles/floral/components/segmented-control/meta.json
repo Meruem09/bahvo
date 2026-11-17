@@ -1,0 +1,7 @@
+{
+  "description": "A pill track of segments on warm paper where the selected one is a raised cream pill, with an orchid focus ring.",
+  "files": [{ "path": "segmented-control.tsx", "target": "@ui/floral/segmented-control.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"]
+}

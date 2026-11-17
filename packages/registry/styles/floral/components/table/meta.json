@@ -1,0 +1,7 @@
+{
+  "description": "A table in a leaf-cut paper pane with warm hairline rows, a soft paper hover, right-aligned numbers and pill sort buttons.",
+  "files": [{ "path": "table.tsx", "target": "@ui/floral/table.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

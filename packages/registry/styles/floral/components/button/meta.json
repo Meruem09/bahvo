@@ -1,0 +1,7 @@
+{
+  "description": "A pill button: moss primary, cream paper secondary, a six-petal bloom while loading and an orchid focus ring.",
+  "files": [{ "path": "button.tsx", "target": "@ui/floral/button.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active", "disabled", "loading"]
+}

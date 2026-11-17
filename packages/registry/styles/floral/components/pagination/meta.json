@@ -1,0 +1,7 @@
+{
+  "description": "Pill-shaped Previous, numbered pages with gaps, and Next; the current page sits on a sage leaf with an orchid underline.",
+  "files": [{ "path": "pagination.tsx", "target": "@ui/floral/pagination.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "disabled"]
+}

@@ -1,0 +1,7 @@
+{
+  "description": "A native checkbox cut like a tiny leaf that fills moss with a cream check, with a semibold label and a description.",
+  "files": [{ "path": "checkbox.tsx", "target": "@ui/floral/checkbox.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"]
+}

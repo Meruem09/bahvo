@@ -1,4 +1,4 @@
-import { Geist, Plus_Jakarta_Sans } from "next/font/google";
+import { Fraunces, Geist, Nunito_Sans, Plus_Jakarta_Sans } from "next/font/google";
 
 /**
  * Fonts for hosted styles, keyed by style slug. Imported only by the preview
@@ -21,7 +21,23 @@ const plusJakarta = Plus_Jakarta_Sans({
   preload: false,
 });
 
+// Floral sets titles in Fraunces and everything else in Nunito Sans.
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  variable: "--font-fraunces",
+  preload: false,
+});
+
+const nunitoSans = Nunito_Sans({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-nunito-sans",
+  preload: false,
+});
+
 export const previewFonts: Record<string, string> = {
   minimalist: geist.variable,
   glassmorphism: plusJakarta.variable,
+  floral: `${fraunces.variable} ${nunitoSans.variable}`,
 };

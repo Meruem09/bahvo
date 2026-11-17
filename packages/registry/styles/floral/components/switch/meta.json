@@ -1,0 +1,7 @@
+{
+  "description": "A pill switch on a warm paper track that turns moss when on, with a cream paper knob and an orchid focus ring.",
+  "files": [{ "path": "switch.tsx", "target": "@ui/floral/switch.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"]
+}
