@@ -48,7 +48,7 @@ export function Button({
       {loading ? (
         <span
           aria-hidden="true"
-          className="size-3.5 animate-spin rounded-full border-[1.5px] border-current border-r-transparent"
+          className="size-3.5 rounded-full motion-safe:animate-spin border-[1.5px] border-current border-r-transparent"
         />
       ) : (
         icon && (
