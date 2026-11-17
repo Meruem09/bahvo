@@ -1,0 +1,7 @@
+{
+  "description": "A frosted glass on/off switch that fills near-black when on, with a soft orange focus ring.",
+  "files": [{ "path": "switch.tsx", "target": "@ui/glassmorphism/switch.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"]
+}

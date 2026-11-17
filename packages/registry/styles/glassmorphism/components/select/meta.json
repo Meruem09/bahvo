@@ -1,0 +1,7 @@
+{
+  "description": "A native select in a frosted glass field, with a muted chevron, hint and error text, and a soft orange focus ring.",
+  "files": [{ "path": "select.tsx", "target": "@ui/glassmorphism/select.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "disabled", "invalid"]
+}

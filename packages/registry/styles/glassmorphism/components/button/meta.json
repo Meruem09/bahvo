@@ -1,0 +1,7 @@
+{
+  "description": "A frosted glass button: a smoked near-black primary, a translucent secondary with a bright rim, and an orange focus ring.",
+  "files": [{ "path": "button.tsx", "target": "@ui/glassmorphism/button.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active", "disabled", "loading"]
+}

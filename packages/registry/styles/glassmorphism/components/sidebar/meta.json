@@ -1,0 +1,7 @@
+{
+  "description": "App navigation on a frosted glass pane, with grouped links, counts, and a brighter current page marked by a thin orange bar.",
+  "files": [{ "path": "sidebar.tsx", "target": "@ui/glassmorphism/sidebar.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active"]
+}

@@ -153,3 +153,5 @@ Raise a budget deliberately in the same pull request that needs it, never just t
    - **Search:** a ⌘K / `/` dialog over styles, subjects and items. The registry build writes a content-hashed index (`/search/index.<hash>.json`), and Orama plus the index load only on first open.
    - **Swatches:** each style page shows its color tokens, light and dark.
 7. **More component styles**, each implementing the same 30 contracts.
+   - **Glassmorphism (batch 1 built):** frosted translucent panes over a warm-gray backdrop (`--gl-stage`), each with a bright rim, an inner top highlight and one soft shadow; Plus Jakarta Sans; orange still marks only focus, the current item and live states. Its first 14 components match Minimalist's first batch (Button, Input, Textarea, Select, Checkbox, Switch, Card, Badge, Avatar, Alert, Progress, Tabs, Dialog, Sidebar), with a skill and a checker that also requires every pane's rim and frost. The other 16 come next.
+   - A frosted element is its own paint layer (`backdrop-filter`), so icons positioned over one come after it in the DOM or carry `z-10`.

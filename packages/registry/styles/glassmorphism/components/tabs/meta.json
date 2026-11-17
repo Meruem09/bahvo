@@ -1,0 +1,7 @@
+{
+  "description": "Tabs on a hairline where the selected tab lifts into a small frosted pane with an orange underline, with full keyboard support.",
+  "files": [{ "path": "tabs.tsx", "target": "@ui/glassmorphism/tabs.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active", "disabled"]
+}

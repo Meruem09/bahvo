@@ -1,4 +1,4 @@
-import { Geist } from "next/font/google";
+import { Geist, Plus_Jakarta_Sans } from "next/font/google";
 
 /**
  * Fonts for hosted styles, keyed by style slug. Imported only by the preview
@@ -14,6 +14,14 @@ const geist = Geist({
   preload: false,
 });
 
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-plus-jakarta-sans",
+  preload: false,
+});
+
 export const previewFonts: Record<string, string> = {
   minimalist: geist.variable,
+  glassmorphism: plusJakarta.variable,
 };

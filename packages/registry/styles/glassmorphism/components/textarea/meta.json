@@ -1,0 +1,7 @@
+{
+  "description": "A labelled frosted glass multi-line field with hint and error text, a live character count and a soft orange focus ring.",
+  "files": [{ "path": "textarea.tsx", "target": "@ui/glassmorphism/textarea.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "disabled", "invalid"]
+}

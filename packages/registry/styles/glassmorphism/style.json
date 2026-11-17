@@ -1,0 +1,22 @@
+{
+  "slug": "glassmorphism",
+  "name": "Glassmorphism",
+  "kind": "components",
+  "tagline": "Frosted glass over a warm-gray backdrop, with one orange touch.",
+  "description": "A soft, layered component style. Panels are translucent white (or smoked, in dark) frosted with a backdrop blur, rimmed by a bright edge and lifted by one soft shadow, so depth comes from what shows through. Type is Plus Jakarta Sans, corners are generous, and orange still marks only focus, the current item and a live state. Every component ships light and dark, with every interactive state, built on native elements.",
+  "tags": ["glass", "frosted", "translucent", "soft"],
+  "accent": "#f76b15",
+  "status": "beta",
+  "fonts": [
+    {
+      "family": "Plus Jakarta Sans",
+      "variable": "--font-plus-jakarta-sans",
+      "weights": [400, 500, 600]
+    }
+  ],
+  "cover": "card",
+  "stage": {
+    "light": "var(--gl-stage)",
+    "dark": "var(--gl-stage)"
+  }
+}

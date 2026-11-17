@@ -1,0 +1,7 @@
+{
+  "description": "Inline messages on a frosted glass pane, with a tone-tinted rim, an icon and an optional action.",
+  "files": [{ "path": "alert.tsx", "target": "@ui/glassmorphism/alert.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

@@ -1,0 +1,7 @@
+{
+  "description": "A native modal dialog: a strong frosted glass panel over a dimmed, blurred page, with a title, description and divided actions.",
+  "files": [{ "path": "dialog.tsx", "target": "@ui/glassmorphism/dialog.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["open", "focus-visible"]
+}

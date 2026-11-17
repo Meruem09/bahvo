@@ -1,0 +1,7 @@
+{
+  "description": "A frosted glass pane with a bright rim and soft shadow, an optional header and a divided footer.",
+  "files": [{ "path": "card.tsx", "target": "@ui/glassmorphism/card.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

@@ -1,0 +1,7 @@
+{
+  "description": "Small translucent status pills that take on the glass behind them: neutral, live with an orange dot, outline and danger.",
+  "files": [{ "path": "badge.tsx", "target": "@ui/glassmorphism/badge.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

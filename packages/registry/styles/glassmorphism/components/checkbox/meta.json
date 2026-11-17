@@ -1,0 +1,7 @@
+{
+  "description": "A native checkbox on a small frosted tile that fills near-black when checked, with a label and a description.",
+  "files": [{ "path": "checkbox.tsx", "target": "@ui/glassmorphism/checkbox.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"]
+}

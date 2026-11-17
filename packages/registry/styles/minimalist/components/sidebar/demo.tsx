@@ -58,14 +58,12 @@ export default function SidebarDemo() {
                 icon: <Icon name="projects" />,
                 current: true,
               },
-              { label: "Analytics", href: "#analytics", icon: <Icon name="chart" /> },
             ],
           },
           {
             label: "Workspace",
             items: [
               { label: "Members", href: "#members", icon: <Icon name="people" />, badge: 12 },
-              { label: "Settings", href: "#settings", icon: <Icon name="settings" /> },
             ],
           },
         ]}

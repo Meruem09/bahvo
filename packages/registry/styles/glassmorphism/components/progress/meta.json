@@ -1,0 +1,7 @@
+{
+  "description": "A thin orange progress bar in a translucent track that shows the glass behind it, with a label, a value and an indeterminate mode.",
+  "files": [{ "path": "progress.tsx", "target": "@ui/glassmorphism/progress.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "loading"]
+}

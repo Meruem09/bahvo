@@ -1,0 +1,7 @@
+{
+  "description": "Round avatars with an image or initials in a translucent well, a bright rim, three sizes and a presence dot.",
+  "files": [{ "path": "avatar.tsx", "target": "@ui/glassmorphism/avatar.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

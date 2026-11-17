@@ -17,6 +17,6 @@ for (const entry of manifest.items.filter((item) => item.kind === "components"))
     const rect = document.body.firstElementChild?.getBoundingClientRect();
     return rect ? `${Math.round(rect.width)}x${Math.round(rect.height)}` : "?";
   });
-  console.log(`${item.slug.padEnd(20)} ${box}`);
+  console.log(`${item.id.padEnd(32)} ${box}`);
 }
 await browser.close();
