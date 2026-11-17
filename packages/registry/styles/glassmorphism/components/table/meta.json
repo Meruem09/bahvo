@@ -1,0 +1,7 @@
+{
+  "description": "A table in a frosted glass pane, with hairline rows that brighten on hover, muted headers, right-aligned numbers and sortable headers.",
+  "files": [{ "path": "table.tsx", "target": "@ui/glassmorphism/table.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

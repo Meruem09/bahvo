@@ -1,0 +1,7 @@
+{
+  "description": "A 56px frosted glass top bar with a bright bottom rim, where the current link brightens to strong glass over a thin orange underline.",
+  "files": [{ "path": "navbar.tsx", "target": "@ui/glassmorphism/navbar.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

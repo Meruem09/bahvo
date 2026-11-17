@@ -78,7 +78,8 @@ packages/config/          shared tsconfig presets
 | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
 | `src/generated/manifest.json`                    | Small index (no source code) for grids, filters and, later, search                                      |
 | `src/generated/items/<s>/<c>.json`               | Full detail for one item. Loaded through `itemLoaders` dynamic imports, so each item is its own chunk   |
-| `src/generated/previews.ts`                      | Dynamic-import map of demo components, so Turbopack splits each into its own chunk                      |
+| `src/generated/previews.ts`                      | Dynamic-import map of server-only demos, rendered on the server with no JS; plus the ids of client demos |
+| `src/generated/client-previews.tsx`              | `"use client"` map of `lazy()` demos with client code, so each loads only its own chunk. Client code reached from the server page would ship every style's client demos with every preview |
 | `apps/web/public/r/**`                           | shadcn registry items (`registry.json`, `<s>/<c>.json`, `<s>/tokens.json`)                              |
 | `apps/web/public/css/<s>/<c>.<hash>.css`         | Per-item stylesheet: preflight + tokens + only that item's utilities                                    |
 | `apps/web/public/r/<s>/kit.json`                 | The style's kit as a `registry:lib` item; every illustration depends on it                              |
@@ -153,5 +154,5 @@ Raise a budget deliberately in the same pull request that needs it, never just t
    - **Search:** a ⌘K / `/` dialog over styles, subjects and items. The registry build writes a content-hashed index (`/search/index.<hash>.json`), and Orama plus the index load only on first open.
    - **Swatches:** each style page shows its color tokens, light and dark.
 7. **More component styles**, each implementing the same 30 contracts.
-   - **Glassmorphism (batch 1 built):** frosted translucent panes over a warm-gray backdrop (`--gl-stage`), each with a bright rim, an inner top highlight and one soft shadow; Plus Jakarta Sans; orange still marks only focus, the current item and live states. Its first 14 components match Minimalist's first batch (Button, Input, Textarea, Select, Checkbox, Switch, Card, Badge, Avatar, Alert, Progress, Tabs, Dialog, Sidebar), with a skill and a checker that also requires every pane's rim and frost. The other 16 come next.
+   - **Glassmorphism (built):** frosted translucent panes over a warm-gray backdrop (`--gl-stage`), each with a bright rim, an inner top highlight and one soft shadow; Plus Jakarta Sans; orange still marks only focus, the current item and live states. All 30 components, with the same props as Minimalist, a skill and a checker that also requires every pane's rim and frost, and an eval suite (`packages/evals/suites/glassmorphism.json`). Only the outermost pane is frosted: rows, items and segments inside it stay flat, so frost never nests. Floral and Gamified come next.
    - A frosted element is its own paint layer (`backdrop-filter`), so icons positioned over one come after it in the DOM or carry `z-10`.

@@ -1,0 +1,7 @@
+{
+  "description": "Native details rows divided by hairlines inside one frosted glass pane, exclusive by default, with a turning chevron.",
+  "files": [{ "path": "accordion.tsx", "target": "@ui/glassmorphism/accordion.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "open"]
+}

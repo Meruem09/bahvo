@@ -1,4 +1,5 @@
-import { previews } from "@bahvo/registry/previews";
+import { ClientPreview } from "@bahvo/registry/client-previews";
+import { clientPreviews, previews } from "@bahvo/registry/previews";
 import { notFound } from "next/navigation";
 import { type CSSProperties, Suspense } from "react";
 import { previewFonts } from "@/lib/preview-fonts";
@@ -24,9 +25,11 @@ export default function PreviewPage({ params }: PageProps<"/preview/[style]/[ite
 async function Preview({ params }: Pick<PageProps<"/preview/[style]/[item]">, "params">) {
   const { style, item: slug } = await params;
   const item = await getItem(style, slug);
-  const load = previews[`${style}/${slug}`];
-  if (!item || !load) notFound();
-  const { default: Demo } = await load();
+  const id = `${style}/${slug}`;
+  const load = previews[id];
+  if (!item || (!load && !clientPreviews.has(id))) notFound();
+  // Server demos render here with no JS; demos with client code load only their own chunk.
+  const Demo = load ? (await load()).default : null;
 
   return (
     <>
@@ -37,9 +40,7 @@ async function Preview({ params }: Pick<PageProps<"/preview/[style]/[item]">, "p
           { "--stage-light": item.stage.light, "--stage-dark": item.stage.dark } as CSSProperties
         }
       >
-        <div data-bahvo-content>
-          <Demo />
-        </div>
+        <div data-bahvo-content>{Demo ? <Demo /> : <ClientPreview id={id} />}</div>
       </div>
     </>
   );

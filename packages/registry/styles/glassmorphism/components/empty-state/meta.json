@@ -1,0 +1,7 @@
+{
+  "description": "A small frosted icon tile, a title, a description and actions, centered in a dashed frame over glass.",
+  "files": [{ "path": "empty-state.tsx", "target": "@ui/glassmorphism/empty-state.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

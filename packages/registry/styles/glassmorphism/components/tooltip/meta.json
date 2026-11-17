@@ -1,0 +1,7 @@
+{
+  "description": "A small smoked glass bubble with an optional dimmed shortcut, shown on hover and keyboard focus.",
+  "files": [{ "path": "tooltip.tsx", "target": "@ui/glassmorphism/tooltip.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "open"]
+}

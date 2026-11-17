@@ -1,0 +1,7 @@
+{
+  "description": "Quiet muted links with faint slash separators straight on the backdrop, ending in the current page in full-strength text.",
+  "files": [{ "path": "breadcrumbs.tsx", "target": "@ui/glassmorphism/breadcrumbs.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

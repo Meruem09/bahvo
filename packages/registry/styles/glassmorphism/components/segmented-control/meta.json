@@ -1,0 +1,9 @@
+{
+  "description": "A radiogroup of segments in a tinted glass well with a bright rim, where the selected one lifts into a small frosted pane.",
+  "files": [
+    { "path": "segmented-control.tsx", "target": "@ui/glassmorphism/segmented-control.tsx" }
+  ],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"]
+}

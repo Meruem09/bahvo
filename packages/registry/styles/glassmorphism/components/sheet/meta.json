@@ -1,0 +1,7 @@
+{
+  "description": "A native modal dialog docked to the right edge: a strong frosted glass panel with a bright leading rim over a dimmed, blurred page, with a header, scrolling body and divided footer.",
+  "files": [{ "path": "sheet.tsx", "target": "@ui/glassmorphism/sheet.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "open"]
+}

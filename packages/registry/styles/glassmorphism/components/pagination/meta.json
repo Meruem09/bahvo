@@ -1,0 +1,7 @@
+{
+  "description": "Ghost glass previous, page and next buttons with gaps, where the current page lifts into a small frosted pane with a bright rim and an orange mark.",
+  "files": [{ "path": "pagination.tsx", "target": "@ui/glassmorphism/pagination.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "disabled"]
+}

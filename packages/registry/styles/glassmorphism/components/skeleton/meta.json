@@ -1,0 +1,7 @@
+{
+  "description": "Flat translucent placeholder shapes for lines, blocks and avatars that pulse quietly over the glass, announced once per group.",
+  "files": [{ "path": "skeleton.tsx", "target": "@ui/glassmorphism/skeleton.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "loading"]
+}

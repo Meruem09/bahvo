@@ -1,0 +1,7 @@
+{
+  "description": "A non-modal panel of strong frosted glass under a glass trigger, with a title, description and close button.",
+  "files": [{ "path": "popover.tsx", "target": "@ui/glassmorphism/popover.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "focus-visible", "open"]
+}

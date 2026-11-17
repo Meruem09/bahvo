@@ -1,0 +1,7 @@
+{
+  "description": "A native range input with a near-black fill on a translucent track, a frosted glass knob and a soft orange focus ring.",
+  "files": [{ "path": "slider.tsx", "target": "@ui/glassmorphism/slider.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "active", "disabled"]
+}

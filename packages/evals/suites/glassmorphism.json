@@ -1,0 +1,24 @@
+{
+  "style": "glassmorphism",
+  "kind": "components",
+  "output": "component.tsx",
+  "prompt": "Create a {subject} as a React + Tailwind component in `{output}`, matching this project's Glassmorphism UI style in light and dark. Export the component by name, and default-export a demo that shows its states.",
+  "tasks": [
+    {
+      "id": "now-playing",
+      "subject": "music now-playing card with cover art, the track and artist, a scrubber and play, pause and skip controls"
+    },
+    {
+      "id": "command-palette",
+      "subject": "command palette with a search field, grouped results, a highlighted result and an empty state"
+    },
+    {
+      "id": "sign-in",
+      "subject": "sign-in card with email and password fields, a show-password toggle, a submit button and an error state"
+    },
+    {
+      "id": "stat-tile",
+      "subject": "dashboard stat tile with a metric, its change since last week (up or down) and a small sparkline"
+    }
+  ]
+}

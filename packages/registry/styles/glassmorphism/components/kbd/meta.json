@@ -1,0 +1,7 @@
+{
+  "description": "Small frosted glass key caps with a bright rim and an inner highlight, alone or as a combination.",
+  "files": [{ "path": "kbd.tsx", "target": "@ui/glassmorphism/kbd.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default"]
+}

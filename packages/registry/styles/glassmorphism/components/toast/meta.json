@@ -1,0 +1,7 @@
+{
+  "description": "Corner notifications on strong frosted glass with a deep soft shadow, an action, dismiss, a live orange spinner and pausing timers.",
+  "files": [{ "path": "toast.tsx", "target": "@ui/glassmorphism/toast.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible"]
+}

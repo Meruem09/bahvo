@@ -1,0 +1,7 @@
+{
+  "description": "Native radios on small frosted discs that fill near-black with a light dot when selected, with labels and descriptions.",
+  "files": [{ "path": "radio-group.tsx", "target": "@ui/glassmorphism/radio-group.tsx" }],
+  "demo": "demo.tsx",
+  "dependencies": [],
+  "states": ["default", "hover", "focus-visible", "checked", "disabled"]
+}

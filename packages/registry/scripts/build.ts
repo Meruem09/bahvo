@@ -5,7 +5,8 @@
  *   src/generated/manifest.json            small index (grids, filters, search)
  *   src/generated/items/<s>/<slug>.json    full detail per item (one chunk each)
  *   src/generated/loaders.ts               lazy loaders for item detail
- *   src/generated/previews.ts              lazy loaders for preview demos
+ *   src/generated/previews.ts              lazy loaders for server-rendered preview demos
+ *   src/generated/client-previews.tsx      lazy client components for demos with client code
  *   apps/web/public/r/**                   shadcn-compatible registry JSON
  *   apps/web/public/css/<s>/<slug>.<h>.css per-item stylesheet (preview, thumbs, HTML export)
  *   apps/web/public/svg/<s>/<slug>.<h>.<theme>.svg  standalone illustrations
@@ -424,6 +425,7 @@ async function build() {
   const registryItems: object[] = [];
   const loaderLines: string[] = [];
   const previewLines: string[] = [];
+  const clientPreviewLines: string[] = [];
   const schemaUrl = "https://ui.shadcn.com/schema/registry-item.json";
 
   for (const source of sources) {
@@ -649,7 +651,13 @@ async function build() {
         .relative(generatedDir, item.demoPath)
         .replaceAll(path.sep, "/")
         .replace(/\.tsx$/, "");
-      previewLines.push(`  "${id}": () => import("${demoImport}"),`);
+      // A demo with any client code loads through the client map, one chunk per demo. Imported
+      // from the server page, every client demo of every style would ship with every preview.
+      const isClient = [item.demoCode, ...item.files.map((f) => f.code)].some((code) =>
+        /^\s*["']use client["']/m.test(code),
+      );
+      if (isClient) clientPreviewLines.push(`  "${id}": lazy(() => import("${demoImport}")),`);
+      else previewLines.push(`  "${id}": () => import("${demoImport}"),`);
     }
 
     if (source.skill) {
@@ -712,7 +720,11 @@ async function build() {
   );
   await write(
     path.join(generatedDir, "previews.ts"),
-    `${banner}import type { ComponentType } from "react";\n\nexport const previews: Record<string, () => Promise<{ default: ComponentType }>> = {\n${previewLines.join("\n")}\n};\n`,
+    `${banner}import type { ComponentType } from "react";\n\n/** Server-rendered demos (no client code). */\nexport const previews: Record<string, () => Promise<{ default: ComponentType }>> = {\n${previewLines.join("\n")}\n};\n\n/** Demos with client code: render them with ClientPreview from "./client-previews". */\nexport const clientPreviews = new Set<string>(${JSON.stringify(clientPreviewLines.map((line) => /"([^"]+)"/.exec(line)?.[1]))});\n`,
+  );
+  await write(
+    path.join(generatedDir, "client-previews.tsx"),
+    `"use client";\n\n${banner}import { type ComponentType, lazy } from "react";\n\nconst demos: Record<string, ComponentType> = {\n${clientPreviewLines.join("\n")}\n};\n\n/** Renders one client demo; each demo is its own lazily loaded chunk. */\nexport function ClientPreview({ id }: { id: string }) {\n  const Demo = demos[id];\n  return Demo ? <Demo /> : null;\n}\n`,
   );
   await write(
     path.join(webPublic, "r", "registry.json"),
