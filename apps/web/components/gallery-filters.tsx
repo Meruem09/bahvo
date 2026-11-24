@@ -2,6 +2,8 @@
 
 import { parseAsString, useQueryStates } from "nuqs";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { titleCase } from "@/lib/text";
+import { SearchIcon } from "./icons";
 
 export interface Facet {
   key: string;
@@ -24,8 +26,6 @@ interface FilterBarProps {
   onChange?: (key: string, value: string) => void;
 }
 
-const title = (value: string) =>
-  value.charAt(0).toUpperCase() + value.slice(1).replaceAll("-", " ");
 /** The query lands inside a quoted CSS attribute selector. */
 const cssString = (text: string) => text.replace(/[\\"]/g, "\\$&").replace(/[\n\r\f]/g, " ");
 
@@ -48,18 +48,7 @@ export function FilterBar({
   return (
     <div className="flex flex-wrap items-center gap-3">
       <div className="relative w-full sm:w-56">
-        <svg
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted"
-        >
-          <circle cx="7" cy="7" r="4.25" />
-          <path d="m10.25 10.25 3 3" />
-        </svg>
+        <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted" />
         <input
           type="search"
           aria-label={`Filter ${label}`}
@@ -95,7 +84,7 @@ export function FilterBar({
                 }
                 className={pill}
               >
-                {title(option.value)}
+                {titleCase(option.value)}
                 <span className="tabular-nums opacity-60">{option.count}</span>
               </button>
             ))}

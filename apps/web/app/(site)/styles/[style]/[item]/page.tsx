@@ -1,14 +1,17 @@
 import type { ItemDetail } from "@bahvo/registry";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CodeBlock } from "@/components/code-block";
 import { type CodeTab, CodeTabs } from "@/components/code-tabs";
+import { CopyButton } from "@/components/copy-button";
+import { InstallPanel } from "@/components/install-panel";
+import { Pager, PagerArrows, StyleSwitcher } from "@/components/item-nav";
 import { PreviewFrame } from "@/components/preview-frame";
-import { getItem, manifest } from "@/lib/registry";
-
-const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+import { agentPrompt } from "@/lib/agent-prompt";
+import { getItem, getStyle, manifest } from "@/lib/registry";
+import { capitalize } from "@/lib/text";
 
 export function generateStaticParams() {
   return manifest.items.map((item) => ({ style: item.style, item: item.slug }));
@@ -42,8 +45,8 @@ function PageSkeleton() {
   );
 }
 
+/** Source tabs: the item's files and kit, then the standalone exports. Install lives above. */
 function codeTabs(item: ItemDetail): CodeTab[] {
-  const cli = [item.install.bahvo, "", "# or with the shadcn CLI", item.install.shadcn].join("\n");
   const tabs: CodeTab[] = item.react.map((file, i) => ({
     id: `react-${file.name}`,
     label: i === 0 ? `React · ${file.name}` : `Kit · ${file.name}`,
@@ -77,54 +80,73 @@ function codeTabs(item: ItemDetail): CodeTab[] {
       },
     );
   }
-  tabs.push({
-    id: "cli",
-    label: "CLI",
-    copy: item.install.bahvo,
-    panel: <pre className="font-mono text-[13px] leading-relaxed whitespace-pre-wrap">{cli}</pre>,
-  });
   return tabs;
 }
 
 async function Item({ params }: Pick<PageProps<"/styles/[style]/[item]">, "params">) {
-  const { style, item: slug } = await params;
-  const item = await getItem(style, slug);
+  const { style: styleSlug, item: slug } = await params;
+  const item = await getItem(styleSlug, slug);
   if (!item) notFound();
+  const style = getStyle(item.style);
+  const noun = item.kind === "illustrations" ? "illustration" : "component";
+  const comesWith = style?.kit.length ? "Its tokens and the drawing kit" : "Its tokens";
 
   return (
     <div className="space-y-10">
       <header className="space-y-3">
-        <nav aria-label="Breadcrumb">
-          <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
-            <li>
-              <Link href={`/${item.kind}`} className="capitalize hover:text-fg">
-                {item.kind}
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li>
-              <Link href={`/styles/${item.style}`} className="hover:text-fg">
-                {item.styleName}
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li aria-current="page" className="text-fg">
-              {item.name}
-            </li>
-          </ol>
-        </nav>
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div className="space-y-2">
+        <Breadcrumbs
+          trail={[
+            { href: `/${item.kind}`, label: capitalize(item.kind) },
+            { href: `/styles/${item.style}`, label: item.styleName },
+          ]}
+          current={item.name}
+        />
+        <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
+          <div className="min-w-0 space-y-2">
             <h1 className="text-3xl font-semibold tracking-tight">{item.name}</h1>
-            <p className="max-w-2xl text-muted">{item.description}</p>
+            <p className="max-w-2xl text-muted text-pretty">{item.description}</p>
+          </div>
+          {/* Like a docs page's "Copy page": a brief an agent can act on, then the neighbours. */}
+          <div className="flex shrink-0 items-center gap-1.5">
+            <CopyButton
+              value={agentPrompt(item, style)}
+              label="Copy prompt"
+              className="mr-1.5 h-8"
+            />
+            <PagerArrows item={item} />
           </div>
         </div>
       </header>
 
-      <PreviewFrame
-        src={`/preview/${item.style}/${item.slug}`}
-        title={`${item.styleName} ${item.name} preview`}
-        download={item.svg && { light: item.svg.lightUrl, dark: item.svg.darkUrl, name: item.slug }}
+      <div className="space-y-4">
+        <StyleSwitcher item={item} />
+        <PreviewFrame
+          src={`/preview/${item.style}/${item.slug}`}
+          title={`${item.styleName} ${item.name} preview`}
+          download={
+            item.svg && { light: item.svg.lightUrl, dark: item.svg.darkUrl, name: item.slug }
+          }
+        />
+      </div>
+
+      <InstallPanel
+        id="install"
+        title="Installation"
+        steps={[
+          {
+            title: `Add the ${noun}`,
+            description:
+              item.dependencies.length > 0
+                ? `${comesWith} come with it, and it installs ${item.dependencies.join(", ")}.`
+                : `${comesWith} come with it.`,
+            command: item.install.bahvo,
+          },
+          {
+            title: "Or use the shadcn CLI",
+            description: "Every bahvo item is also a shadcn registry item.",
+            command: item.install.shadcn,
+          },
+        ]}
       />
 
       <CodeTabs tabs={codeTabs(item)} />
@@ -151,7 +173,7 @@ async function Item({ params }: Pick<PageProps<"/styles/[style]/[item]">, "param
 
       {item.contract && (
         <section className="grid gap-8 lg:grid-cols-[2fr_1fr]">
-          <div className="space-y-3">
+          <div className="min-w-0 space-y-3">
             <h2 className="text-sm font-medium text-muted">Props</h2>
             <div className="overflow-x-auto rounded-xl border border-line bg-card">
               <table className="w-full text-left text-sm">
@@ -192,6 +214,8 @@ async function Item({ params }: Pick<PageProps<"/styles/[style]/[item]">, "param
           </div>
         </section>
       )}
+
+      <Pager item={item} label={`More ${item.styleName} ${noun}s`} />
     </div>
   );
 }

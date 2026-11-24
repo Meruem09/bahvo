@@ -2,7 +2,16 @@
 
 import type { SearchEntry } from "@bahvo/registry";
 import { useRouter } from "next/navigation";
-import { type KeyboardEvent, type ReactNode, useEffect, useId, useRef, useState } from "react";
+import {
+  type KeyboardEvent,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
+import { SearchIcon } from "./icons";
 
 type Searcher = (term: string) => Promise<SearchEntry[]>;
 
@@ -99,11 +108,12 @@ export function Search({ url }: { url: string }) {
   const router = useRouter();
   const id = useId();
 
-  function show() {
+  // The index starts loading on first open; later opens reuse it.
+  const show = useCallback(() => {
     searcher.current ??= loadSearcher(url);
     dialog.current?.showModal();
     setOpen(true);
-  }
+  }, [url]);
 
   function go(entry: SearchEntry | undefined) {
     if (!entry) return;
@@ -117,14 +127,12 @@ export function Search({ url }: { url: string }) {
       const shortcut = event.key === "k" && (event.metaKey || event.ctrlKey);
       if (shortcut || (event.key === "/" && !isTyping(event.target))) {
         event.preventDefault();
-        searcher.current ??= loadSearcher(url);
-        dialog.current?.showModal();
-        setOpen(true);
+        show();
       }
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [url]);
+  }, [show]);
 
   useEffect(() => {
     if (!open || !searcher.current) return;
@@ -163,18 +171,7 @@ export function Search({ url }: { url: string }) {
         onClick={show}
         className="ml-auto inline-flex h-8 shrink-0 items-center gap-2 rounded-lg border border-line bg-card px-2.5 text-muted transition-colors hover:border-fg/25 hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
-        <svg
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          aria-hidden="true"
-          className="size-4"
-        >
-          <circle cx="7" cy="7" r="4.25" />
-          <path d="m10.25 10.25 3 3" />
-        </svg>
+        <SearchIcon className="size-4" />
         <span className="hidden sm:inline">Search</span>
         <kbd className={`hidden sm:inline ${key}`}>{mac ? "⌘K" : "Ctrl K"}</kbd>
       </button>
@@ -192,18 +189,7 @@ export function Search({ url }: { url: string }) {
         className="mx-auto mt-[12vh] w-[min(560px,calc(100%-2rem))] overflow-hidden rounded-xl border border-line bg-card p-0 text-fg shadow-2xl backdrop:bg-black/30 backdrop:backdrop-blur-[2px]"
       >
         <div className="flex items-center gap-2 border-b border-line px-4">
-          <svg
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            aria-hidden="true"
-            className="size-4 shrink-0 text-muted"
-          >
-            <circle cx="7" cy="7" r="4.25" />
-            <path d="m10.25 10.25 3 3" />
-          </svg>
+          <SearchIcon className="size-4 shrink-0 text-muted" />
           <input
             role="combobox"
             aria-expanded={results.length > 0}

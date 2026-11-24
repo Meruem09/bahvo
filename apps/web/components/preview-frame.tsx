@@ -2,8 +2,12 @@
 
 import { cn } from "@bahvo/ui/cn";
 import { useEffect, useRef, useState } from "react";
+import { capitalize } from "@/lib/text";
+import { DownloadIcon, ExternalIcon } from "./icons";
+import { Segmented } from "./segmented";
 
-type Theme = "system" | "light" | "dark";
+const themes = ["system", "light", "dark"] as const;
+type Theme = (typeof themes)[number];
 
 /** Saved motion preference, shared with the preview iframe (same origin). */
 const MOTION_KEY = "bahvo:motion";
@@ -76,20 +80,13 @@ export function PreviewFrame({
     <div className="overflow-hidden rounded-xl border border-line bg-subtle">
       {/* Every control is 34px tall in a 44px bar, so the inset is 5px on all sides. */}
       <div className="flex h-11 items-center gap-2 border-b border-line bg-card px-[5px]">
-        <fieldset className="flex rounded-[7px] border border-line bg-subtle p-0.5">
-          <legend className="sr-only">Preview theme</legend>
-          {(["system", "light", "dark"] as const).map((option) => (
-            <button
-              key={option}
-              type="button"
-              aria-pressed={theme === option}
-              onClick={() => choose(option)}
-              className="h-7 rounded-[4px] border border-transparent px-2.5 text-[13px] text-muted capitalize transition-colors hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent aria-pressed:border-line aria-pressed:bg-card aria-pressed:text-fg aria-pressed:shadow-[0_1px_2px_rgb(0_0_0/0.06)]"
-            >
-              {option}
-            </button>
-          ))}
-        </fieldset>
+        <Segmented
+          legend="Preview theme"
+          options={themes}
+          value={theme}
+          onChange={choose}
+          label={capitalize}
+        />
         {download && (
           <>
             <div className="ml-auto flex items-center">
@@ -102,18 +99,7 @@ export function PreviewFrame({
                     aria-label={`Download ${variant} SVG`}
                     className="flex items-center gap-1.5 px-2.5 text-[13px] text-fg transition-colors hover:bg-subtle focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
                   >
-                    <svg
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                      className="size-3.5 text-muted"
-                    >
-                      <path d="M8 2.75v7.5M4.75 7 8 10.25 11.25 7M3 13.25h10" />
-                    </svg>
+                    <DownloadIcon className="size-3.5 text-muted" />
                     {variant === "light" ? "Light SVG" : "Dark SVG"}
                   </a>
                 ))}
@@ -152,6 +138,17 @@ export function PreviewFrame({
             {motion ? "On" : "Off"}
           </span>
         </button>
+        {/* The bare preview page, to try the item at any window size. */}
+        <a
+          href={src}
+          target="_blank"
+          rel="noopener"
+          aria-label="Open the preview in a new tab"
+          title="Open in a new tab"
+          className="hidden size-[34px] shrink-0 items-center justify-center rounded-[7px] border border-line bg-card text-muted transition-colors hover:bg-subtle hover:text-fg focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent sm:flex"
+        >
+          <ExternalIcon className="size-4" />
+        </a>
       </div>
       {/* The border lives on the wrapper so the iframe's content box is exactly `height`. */}
       <iframe

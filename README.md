@@ -74,7 +74,7 @@ apps/web          Next.js gallery: filter by style, live preview, copy, install
 
 - **Static output.** The build emits shadcn-compatible registry items at `/r/<style>/<component>.json`, so `npx shadcn add <url>` works too, alongside skill zips and preview screenshots.
 - **Isolated previews.** Each component renders in a sandboxed iframe on its style's **stage** (glass needs a colorful backdrop; pixel needs a flat one).
-- **Component page:** Preview | React | HTML | CLI tabs, plus "Copy agent prompt".
+- **Component page:** live preview with a switcher to the same component in every other style, install commands for npm, pnpm, yarn or bun, React | HTML | CSS tabs, previous/next links, and "Copy prompt" (a Markdown brief for your agent).
 - **Style page:** description, token swatches, full component grid, "Install skill", and a public **skill score badge**.
 
 ---

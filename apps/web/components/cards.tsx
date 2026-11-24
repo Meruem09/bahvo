@@ -1,6 +1,7 @@
 import type { ManifestItem, ManifestStyle } from "@bahvo/registry";
 import { Badge } from "@bahvo/ui/badge";
 import Link from "next/link";
+import { plural } from "@/lib/text";
 import { Thumb } from "./thumb";
 
 const card =
@@ -9,7 +10,7 @@ const card =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 const kindLabel = (style: ManifestStyle) =>
-  `${style.items.length} ${style.kind === "illustrations" ? "illustration" : "component"}${style.items.length === 1 ? "" : "s"}`;
+  plural(style.items.length, style.kind === "illustrations" ? "illustration" : "component");
 
 export function StyleCard({
   style,

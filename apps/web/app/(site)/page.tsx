@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ItemCard, StyleCard } from "@/components/cards";
-import { CommandField } from "@/components/command-field";
+import { CommandField, PackageManagerSwitch } from "@/components/command-field";
 import { getCover, getItems, manifest } from "@/lib/registry";
 
 const installs = [
@@ -54,9 +54,10 @@ export default function HomePage() {
           </div>
         </div>
         <div className="flex flex-col rounded-xl border border-line bg-card">
-          <p className="border-b border-line px-4 py-2.5 text-[13px] font-medium">
-            Install anything
-          </p>
+          <div className="flex h-10 items-center justify-between gap-3 border-b border-line pr-[5px] pl-4">
+            <h2 className="text-[13px] font-medium">Install anything</h2>
+            <PackageManagerSwitch />
+          </div>
           <ul className="flex flex-1 flex-col divide-y divide-line">
             {installs.map((install) => (
               <li
